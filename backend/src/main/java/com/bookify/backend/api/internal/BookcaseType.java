@@ -10,16 +10,15 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name="authors")
+@Table(name = "bookcaseTypes")
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class Author {
+public class BookcaseType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String firstName;
-    private String lastName;
-    @OneToMany(mappedBy = "author")
-    private Set<Book> books;
+    private String name;
+    @OneToMany(mappedBy = "bookcaseType")
+    private Set<UserBook> userBooks;
 }

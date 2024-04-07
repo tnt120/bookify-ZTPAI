@@ -13,12 +13,12 @@ public class AuthorController {
 
     @GetMapping
     public AuthorDTO get() {
-        return new AuthorDTO().setId(1).setName("Artur").setEmail("test1@gmail.com");
+        return new AuthorDTO().setId(1).setFirstName("a").setLastName("b");
     }
 
-    @GetMapping("/{email}")
-    public AuthorDTO getByEmail(@PathVariable String email) {
-        return authorService.getByEmail(email);
+    @GetMapping("/{lastName}")
+    public AuthorDTO getByLastName(@PathVariable String lastName) {
+        return authorService.getByLastName(lastName);
     }
 
     @PostMapping

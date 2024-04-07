@@ -6,20 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.util.Set;
-
 @Data
 @Entity
-@Table(name="authors")
+@Table(name = "userDetails")
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class Author {
+public class UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String firstName;
     private String lastName;
-    @OneToMany(mappedBy = "author")
-    private Set<Book> books;
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

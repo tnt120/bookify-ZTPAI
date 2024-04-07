@@ -19,7 +19,7 @@ public class BackendApplication {
 			final AuthorRepository authorRepository
 			) {
 		return args -> {
-			authorRepository.save(new Author().setId(123).setName("ArturTestowy").setEmail("test@gmail.com"));
+			authorRepository.save(new Author().setFirstName("Artur").setLastName("Kowalski"));
         };
     }
 }

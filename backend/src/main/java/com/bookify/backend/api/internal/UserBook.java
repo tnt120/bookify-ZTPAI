@@ -1,25 +1,30 @@
 package com.bookify.backend.api.internal;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.util.Set;
-
 @Data
 @Entity
-@Table(name="authors")
-@NoArgsConstructor
+@Table(name = "userBooks")
 @AllArgsConstructor
+@NoArgsConstructor
 @Accessors(chain = true)
-public class Author {
+public class UserBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String firstName;
-    private String lastName;
-    @OneToMany(mappedBy = "author")
-    private Set<Book> books;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "bookcaseType_id")
+    private BookcaseType bookcaseType;
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
+    private Integer currentPage;
 }

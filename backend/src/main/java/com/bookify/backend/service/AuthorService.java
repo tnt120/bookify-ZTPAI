@@ -5,7 +5,7 @@ import com.bookify.backend.api.internal.Author;
 
 public interface AuthorService {
     AuthorDTO get();
-    AuthorDTO getByEmail(String email);
+    AuthorDTO getByLastName(String lastName);
 
     AuthorDTO save(AuthorDTO authorDTO);
 }

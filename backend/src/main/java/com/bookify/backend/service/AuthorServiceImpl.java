@@ -23,8 +23,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDTO getByEmail(String email) {
-        return authorRepository.findAuthorByEmail(email)
+    public AuthorDTO getByLastName(String lastName) {
+        return authorRepository.findAuthorByLastName(lastName)
                 .map(authorMapper::map)
                 .orElseThrow(() -> new RuntimeException("No author with given email found"));
     }

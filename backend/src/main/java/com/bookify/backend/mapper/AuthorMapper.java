@@ -9,12 +9,14 @@ public class AuthorMapper {
     public AuthorDTO map(Author author) {
         return new AuthorDTO()
                 .setId(author.getId())
-                .setEmail(author.getEmail());
+                .setFirstName(author.getFirstName())
+                .setLastName(author.getLastName());
     }
 
     public Author map(AuthorDTO author) {
         return new Author()
                 .setId(author.getId())
-                .setEmail(author.getEmail());
+                .setFirstName(author.getFirstName())
+                .setLastName(author.getLastName());
     }
 }

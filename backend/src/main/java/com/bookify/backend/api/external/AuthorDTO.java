@@ -9,6 +9,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class AuthorDTO {
     private Integer id;
-    private String name;
-    private String email;
+    private String firstName;
+    private String lastName;
 }
