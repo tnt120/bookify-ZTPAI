@@ -1,13 +1,12 @@
-package com.bookify.backend.service;
+package com.bookify.backend.service.impl;
 
 import com.bookify.backend.api.external.AuthorDTO;
 import com.bookify.backend.api.internal.Author;
 import com.bookify.backend.mapper.AuthorMapper;
 import com.bookify.backend.repository.AuthorRepository;
+import com.bookify.backend.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

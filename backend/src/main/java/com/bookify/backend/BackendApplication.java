@@ -20,6 +20,7 @@ public class BackendApplication {
 			) {
 		return args -> {
 			authorRepository.save(new Author().setFirstName("Artur").setLastName("Kowalski"));
+
         };
     }
 }
