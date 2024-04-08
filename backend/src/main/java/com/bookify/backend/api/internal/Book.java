@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -21,6 +23,8 @@ public class Book {
     private String title;
     private String description;
     private String coverUrl;
+    private Integer pages;
+    private LocalDate releaseDate;
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;

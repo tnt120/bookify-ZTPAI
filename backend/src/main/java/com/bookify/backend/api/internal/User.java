@@ -28,4 +28,8 @@ public class User {
     private UserDetails userDetails;
     @OneToMany(mappedBy = "user")
     private Set<UserBook> userBooks;
+    @OneToMany(mappedBy = "user")
+    private Set<Comment> comments;
+    @OneToMany(mappedBy = "user")
+    private Set<Rating> ratings;
 }
