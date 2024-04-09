@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RatingController {
     @GetMapping("/{id}")
-    public List<RatingDTO> getRatings(@PathVariable int id) {
+    public List<RatingDTO> getRatings(@PathVariable Integer id) {
         return List.of(
                 new RatingDTO()
                 .setId(1)
@@ -32,12 +32,12 @@ public class RatingController {
     }
 
     @PatchMapping("/edit/{id}")
-    public ResponseEntity<Object> editRating(@PathVariable int id, @RequestBody RatingDTO rating) {
+    public ResponseEntity<Object> editRating(@PathVariable Integer id, @RequestBody RatingDTO rating) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteRating(@RequestBody RatingDTO rating) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteRating(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 }

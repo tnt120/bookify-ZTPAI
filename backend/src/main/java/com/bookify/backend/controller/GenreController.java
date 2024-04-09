@@ -30,8 +30,8 @@ public class GenreController {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteGenre(@RequestBody GenreDTO genre) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteGenre(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 }

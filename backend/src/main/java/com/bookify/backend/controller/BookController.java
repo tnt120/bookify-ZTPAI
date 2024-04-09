@@ -51,8 +51,8 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteBook(@RequestBody BookDTO book) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteBook(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
@@ -85,8 +85,8 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/userBooks/delete")
-    public ResponseEntity<Object> deleteUserBook(@RequestBody UserBookDTO userBook) {
+    @DeleteMapping("/userBooks/delete/{id}")
+    public ResponseEntity<Object> deleteUserBook(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 }

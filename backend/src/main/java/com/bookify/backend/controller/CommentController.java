@@ -25,7 +25,7 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public List<CommentDTO> getComments(@PathVariable int id) {
+    public List<CommentDTO> getComments(@PathVariable Integer id) {
         return List.of(new CommentDTO()
                 .setId(1)
                 .setContent("Super ksiazka")
@@ -39,12 +39,12 @@ public class CommentController {
     }
 
     @PatchMapping("/edit/{id}")
-    public ResponseEntity<Object> editComment(@PathVariable int id, @RequestBody CommentDTO comment) {
+    public ResponseEntity<Object> editComment(@PathVariable Integer id, @RequestBody CommentDTO comment) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteComment(@RequestBody CommentDTO comment) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteComment(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 }

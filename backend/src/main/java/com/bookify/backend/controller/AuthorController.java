@@ -27,12 +27,12 @@ public class AuthorController {
     }
 
     @PatchMapping("/edit/{id}")
-    public ResponseEntity<Object> editAuthor(@PathVariable int id, @RequestBody AuthorDTO authorDTO) {
+    public ResponseEntity<Object> editAuthor(@PathVariable Integer id, @RequestBody AuthorDTO authorDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteAuthor(@RequestBody AuthorDTO authorDTO) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteAuthor(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 }
