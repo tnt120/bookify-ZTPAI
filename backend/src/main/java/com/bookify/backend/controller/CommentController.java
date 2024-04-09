@@ -2,7 +2,7 @@ package com.bookify.backend.controller;
 
 import com.bookify.backend.api.external.CommentDTO;
 import com.bookify.backend.api.external.StatusResponseDTO;
-import com.bookify.backend.api.internal.User;
+import com.bookify.backend.api.external.UserDTO;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class CommentController {
                 .setId(1)
                 .setContent("Fajna ksiazka")
                 .setCommentDate(LocalDate.of(2024, 4, 9))
-                .setCommentAuthor(new User().setId(1).setEmail("test@test.com")));
+                .setCommentAuthor(new UserDTO().setId(1).setEmail("test@test.com")));
     }
 
     @GetMapping("/{id}")
@@ -30,7 +30,7 @@ public class CommentController {
                 .setId(1)
                 .setContent("Super ksiazka")
                 .setCommentDate(LocalDate.of(2024, 4, 9))
-                .setCommentAuthor(new User().setId(1).setEmail("test123@test.com")));
+                .setCommentAuthor(new UserDTO().setId(1).setEmail("test123@test.com")));
     }
 
     @PostMapping("/add")

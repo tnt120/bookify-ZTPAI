@@ -2,7 +2,7 @@ package com.bookify.backend.controller;
 
 import com.bookify.backend.api.external.RatingDTO;
 import com.bookify.backend.api.external.StatusResponseDTO;
-import com.bookify.backend.api.internal.User;
+import com.bookify.backend.api.external.UserDTO;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class RatingController {
                 .setId(1)
                 .setValue(10)
                 .setRatingDate(LocalDate.of(2024,4,10))
-                .setRatingAuthor(new User().setId(1).setEmail("abc@abc.com"))
+                .setRatingAuthor(new UserDTO().setId(1).setEmail("abc@abc.com"))
         );
     }
 
