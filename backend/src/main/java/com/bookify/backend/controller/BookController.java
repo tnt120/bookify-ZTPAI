@@ -41,52 +41,18 @@ public class BookController {
                 .setRatings(List.of(new RatingDTO().setId(1).setValue(10), new RatingDTO().setId(2).setValue(5)));
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<Object> addBook(@RequestBody BookDTO book) {
         return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDTO(201));
     }
 
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Object> editBook(@PathVariable Integer id, @RequestBody BookDTO book) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteBook(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
-    }
-
-    @GetMapping("/userBooks/{id}")
-    public List<UserBookDTO> getUserBooks(@PathVariable Integer id) {
-        return List.of(new UserBookDTO()
-                .setId(1)
-                .setUser(new UserDTO().setId(1).setEmail("test@test"))
-                .setBook(new BookDTO()
-                        .setId(1)
-                        .setTitle("Cos")
-                        .setCoverUrl("xd")
-                        .setAuthor(new AuthorDTO().setId(1).setFirstName("Jan").setLastName("Brzechwa"))
-                        .setGenre(new GenreDTO().setId(1).setName("horror"))
-                        .setPages(400)
-                        .setReleaseDate(LocalDate.of(2021, 8, 30))
-                        .setRatings(List.of(new RatingDTO().setId(1).setValue(10), new RatingDTO().setId(2).setValue(5))))
-                .setBookcaseType(new BookcaseTypeDTO().setId(1).setName("W trakcie czytania"))
-                .setCurrentPage(200)
-        );
-    }
-
-    @PostMapping("/userBooks/add")
-    public ResponseEntity<Object> addUserBook(@RequestBody UserBookDTO userBook) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDTO(201));
-    }
-
-    @PatchMapping("/userBooks/edit/{id}")
-    public ResponseEntity<Object> editUserBook(@PathVariable Integer id, @RequestBody UserBookDTO userBook) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
-    }
-
-    @DeleteMapping("/userBooks/delete/{id}")
-    public ResponseEntity<Object> deleteUserBook(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 }

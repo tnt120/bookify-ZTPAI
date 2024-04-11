@@ -20,17 +20,17 @@ public class GenreController {
         return List.of(new GenreDTO().setId(1).setName("horror"), new GenreDTO().setId(2).setName("thriller"));
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<Object> addGenre(@RequestBody GenreDTO genre) {
         return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDTO(201));
     }
 
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Object> editGenre(@PathVariable Integer id, @RequestBody GenreDTO genre) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteGenre(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }

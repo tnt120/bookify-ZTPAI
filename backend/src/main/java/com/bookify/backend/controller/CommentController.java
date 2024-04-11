@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/comments")
 @NoArgsConstructor
 public class CommentController {
-    @GetMapping("")
+    @GetMapping()
     public List<CommentDTO> getComments() {
         return List.of(new CommentDTO()
                 .setId(1)
@@ -33,17 +33,17 @@ public class CommentController {
                 .setCommentAuthor(new UserDTO().setId(1).setEmail("test123@test.com")));
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<Object> addComment(@RequestBody CommentDTO comment) {
         return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDTO(201));
     }
 
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Object> editComment(@PathVariable Integer id, @RequestBody CommentDTO comment) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteComment(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }

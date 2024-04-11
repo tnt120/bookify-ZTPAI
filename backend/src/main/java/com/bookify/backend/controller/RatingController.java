@@ -26,17 +26,17 @@ public class RatingController {
         );
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<Object> addRating(@RequestBody RatingDTO rating) {
         return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDTO(201));
     }
 
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Object> editRating(@PathVariable Integer id, @RequestBody RatingDTO rating) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteRating(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }

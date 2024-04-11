@@ -21,17 +21,17 @@ public class AuthorController {
         return List.of(new AuthorDTO().setId(1).setFirstName("a").setLastName("b"));
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public AuthorDTO saveAuthor(@RequestBody AuthorDTO authorDTO) {
         return authorService.save(authorDTO);
     }
 
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Object> editAuthor(@PathVariable Integer id, @RequestBody AuthorDTO authorDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteAuthor(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
     }
