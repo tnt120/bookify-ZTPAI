@@ -1,0 +1,156 @@
+openapi: 3.0.3
+info:
+  title: ZTPAI - Bookify
+  description: Bookify app for ZTPAI subject. Book search engine and tracker
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+
+paths:
+  /book:
+    get:
+      tags:
+        - Book Controller
+      summary: Get all books
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookOverall"
+    post:
+      tags:
+        - Book Controller
+      summary: Add new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimpleBook"
+      responses:
+        200:
+          description: Success
+    patch:
+      tags:
+        - Book Controller
+      summary: Edit existed book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimpleBook"
+      responses:
+        200:
+          description: Success
+  /book/{id}:
+    get:
+      tags:
+        - Book Controller
+      summary: Gets a books details by id
+      parameters:
+        - in: path
+          name: id
+          description: id of book
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookDetails"
+
+components:
+  schemas:
+    BookOverall:
+      type: array
+      items:
+        $ref: "#/components/schemas/Book"
+    SimpleBook:
+      type: object
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+        coverUrl:
+          type: string
+        description:
+          type: string
+        pages:
+          type: number
+        releaseDate:
+          type: string
+        author:
+          $ref: "#/components/schemas/Author"
+        genre:
+          $ref: "#/components/schemas/Genre"
+    Book:
+      allOf:
+        - $ref: "#/components/schemas/SimpleBook"
+        - type: object
+          properties:
+            ratings:
+              type: array
+              items:
+                $ref: "#/components/schemas/Rating"
+    BookDetails:
+      allOf:
+        - $ref: "#/components/schemas/Book"
+        - type: object
+          properties:
+            comments:
+              type: array
+              items:
+                $ref: "#/components/schemas/Comment"
+    Author:
+      type: object
+      properties:
+        id:
+          type: number
+        firstName:
+          type: string
+        lastName:
+          type: string
+    Genre:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    Comment:
+      type: object
+      properties:
+        id:
+          type: number
+        content:
+          type: string
+        commentAuthor:
+          $ref: "#/components/schemas/User"
+        createdAt:
+          type: string
+    Rating:
+      type: object
+      properties:
+        id:
+          type: number
+        value:
+          type: number
+        ratingAuthor:
+          $ref: "#/components/schemas/User"
+        createdAt:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+        email:
+          type: string
