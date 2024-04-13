@@ -1,1 +1,72 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@import './styles/mat-theme-settings';
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import './styles/_variables.scss';
+
+
+*, *::after, *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient($purple-1 0%, $purple-2 100%);
+    color: $white;
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+}
+
+// scrollbar segment start
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: $purple-1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $purple-3;
+    border-radius: 15px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $purple-4;
+}
+
+// scrollbar segment end
+
+main {
+    margin: 0 auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    width: 80%;
+    background-color: white;
+    color: $black;
+    border-radius: 15px;
+}
+
+@media screen and (max-width: 768px) {
+    main {
+        flex: 1;
+        width: 100%;
+        margin-bottom: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
+
+.mdc-text-field--filled{
+    background: none !important;  
+}

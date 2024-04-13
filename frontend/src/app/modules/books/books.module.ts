@@ -6,7 +6,6 @@ import { HomeComponent } from './pages/home/home.component';
 import { DetailsComponent } from './pages/details/details.component';
 import { BookcaseComponent } from './pages/bookcase/bookcase.component';
 
-
 @NgModule({
   declarations: [
     HomeComponent,

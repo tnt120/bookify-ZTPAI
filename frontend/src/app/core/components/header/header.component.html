@@ -1,0 +1,22 @@
+<header>
+    <div class="logo">
+        <img routerLink="/" (click)="closeMenu()" src="../../../../assets/images/logo-white.svg" alt="logo" />
+    </div>
+    <div class="menu-icon">
+        @if (isOpen) {
+            <img (click)="toggleMenu()" src="../../../../assets/icons/close.svg" alt="menu-icon" />
+        } @else {
+            <img (click)="toggleMenu()" src="../../../../assets/icons/menu.svg" alt="menu-icon" />
+        }
+    </div>
+    <ul class="desktop" [class.hide]="!isOpen">
+        @for (item of items; track item.name) {
+            <li (click)="closeMenu()" [routerLink]="item.path" routerLinkActivate="active">
+                {{ item.name }}
+            </li>
+        }
+        <li (click)="closeMenu()">
+            <img src="../../../../assets/icons/profile.svg" alt="profile-icon">
+        </li>
+    </ul>
+</header>

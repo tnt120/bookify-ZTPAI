@@ -1,0 +1,82 @@
+@import './_variables.scss';
+
+// Create the color maps for the custom palettes
+$custom-primary: (
+  50: $purple-1,
+  100: $purple-1,
+  200: $purple-1,
+  300: $purple-1,
+  400: $purple-1,
+  500: $purple-1,
+  600: $purple-1,
+  700: $purple-1,
+  800: $purple-1,
+  900: $purple-1,
+  A100: $purple-1,
+  A200: $purple-1,
+  A400: $purple-1,
+  A700: $purple-1,
+  contrast: (
+    50: #000,
+    100: #000,
+    200: #000,
+    300: #000,
+    400: #000,
+    500: #fff,
+    600: #fff,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+    A100: #000,
+    A200: #000,
+    A400: #000,
+    A700: #000,
+  )
+);
+
+$custom-accent: (
+  50: $purple-3,
+  100: $purple-3,
+  200: $purple-3,
+  300: $purple-3,
+  400: $purple-3,
+  500: $purple-3,
+  600: $purple-3,
+  700: $purple-3,
+  800: $purple-3,
+  900: $purple-3,
+  A100: $purple-3,
+  A200: $purple-3,
+  A400: $purple-3,
+  A700: $purple-3,
+  contrast: (
+    50: #000,
+    100: #000,
+    200: #000,
+    300: #000,
+    400: #000,
+    500: #fff,
+    600: #fff,
+    700: #fff,
+    800: #fff,
+    900: #fff,
+    A100: #000,
+    A200: #000,
+    A400: #000,
+    A700: #000,
+  )
+);
+
+// Define your theme using the custom palettes
+$frontend-theme: mat.define-light-theme((
+  color: (
+    primary: mat.define-palette($custom-primary),
+    accent: mat.define-palette($custom-accent),
+    warn: mat.define-palette(mat.$red-palette),
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+// Include the theme styles for Angular Material components
+@include mat.all-component-themes($frontend-theme);

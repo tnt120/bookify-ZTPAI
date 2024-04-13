@@ -1,1 +1,18 @@
-<p>login works!</p>
+<div class="container">
+    <h1>Bookify</h1>
+    <form>
+        <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input type="mail" matInput placeholder="Email" color="accent">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Password" color="accent" [type]="hidePassword ? 'password' : 'text'">
+            <button type="button" mat-icon-button matSuffix (click)="toogleHide()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+        <button type="button" mat-flat-button color="accent">Login</button>
+        <button type="button" mat-stroked-button color="accent">Click to Register</button>
+      </form>
+</div>

@@ -1,0 +1,82 @@
+@import "../../../../styles/_variables.scss";
+
+:host {
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 1em;
+        background-color: $purple-1;
+        height: $header-height;
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+
+        ul {
+            display: flex;
+            gap: 2em;
+            list-style: none;
+            
+            li {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: $font-size-l;
+                cursor: pointer;
+            }
+        }
+        
+        .menu-icon {
+            display: none;
+        }
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    
+    
+}
+
+@media screen and (max-width: 768px) {
+    :host {
+        header {
+            ul {
+                position: absolute;
+                top: $header-height;
+                right: 0;
+                width: 100%;
+                flex-direction: column;
+                background-color: $purple-1;
+                gap: 0;
+                transition: .4s ease;
+
+                li {
+                    padding: 1em 0;
+                }
+
+                li:hover {
+                    background-color: $purple-2;
+                }
+            }
+
+            .menu-icon {
+                display: flex;
+                margin-left: auto;
+            }
+        }
+
+        .hide {
+            display: none !important;
+        }
+    }
+}

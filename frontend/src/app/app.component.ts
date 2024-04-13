@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HeaderItem } from './core/models/header-item.model';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Bookify';
+
+  mockHeaderItems: HeaderItem[] = [
+    {
+      name: 'Home',
+      path: '/'
+    },
+    {
+      name: 'Bookcase',
+      path: '/bookcase'
+    }
+  ]
 }
