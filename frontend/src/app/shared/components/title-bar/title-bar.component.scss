@@ -1,0 +1,11 @@
+@import "../../../../styles/variables";
+
+:host {
+  width: 100%;
+  background-color: $purple-3;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-align: center;
+  padding: 1em 1em 1em 3em;
+  color: $white;
+}

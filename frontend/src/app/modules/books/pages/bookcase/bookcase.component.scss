@@ -1,0 +1,40 @@
+:host {
+  .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 0 2em 0;
+
+      .bookcase-book-container {
+        width: 100%;
+
+        app-tabs {
+          app-tab {
+            margin-top: 2em;
+            display: flex;
+            flex-direction: column;
+            gap: 2em;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :host {
+    .container {
+      .bookcase-book-container {
+        app-tabs {
+          app-tab {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 250px);
+            gap: 1em;
+          }
+        }
+      }
+    }
+  }
+}

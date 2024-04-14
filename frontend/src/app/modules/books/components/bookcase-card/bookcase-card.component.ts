@@ -3,13 +3,16 @@ import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 
 @Component({
-  selector: 'app-book-card',
-  templateUrl: './book-card.component.html',
-  styleUrl: './book-card.component.scss'
+  selector: 'app-bookcase-card',
+  templateUrl: './bookcase-card.component.html',
+  styleUrl: './bookcase-card.component.scss'
 })
-export class BookCardComponent {
+export class BookcaseCardComponent {
   @Input({ required: true })
   book!: Book;
+
+  @Input()
+  type!: 'finished' | 'reading' | 'to-read';
 
   avgRating = 0;
 

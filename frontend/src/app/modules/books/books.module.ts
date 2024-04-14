@@ -8,6 +8,11 @@ import { DetailsComponent } from './pages/details/details.component';
 import { BookcaseComponent } from './pages/bookcase/bookcase.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { BookCardComponent } from './components/book-card/book-card.component';
+import { BookcaseCardComponent } from './components/bookcase-card/bookcase-card.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ActionButtonComponent } from './components/action-button/action-button.component';
+
+
 
 @NgModule({
   declarations: [
@@ -15,12 +20,15 @@ import { BookCardComponent } from './components/book-card/book-card.component';
     DetailsComponent,
     BookcaseComponent,
     SearchBarComponent,
-    BookCardComponent
+    BookCardComponent,
+    BookcaseCardComponent,
+    ActionButtonComponent
   ],
   imports: [
     CommonModule,
     BooksRoutingModule,
-    SharedModule
+    SharedModule,
+    MatProgressBarModule
   ]
 })
 export class BooksModule { }

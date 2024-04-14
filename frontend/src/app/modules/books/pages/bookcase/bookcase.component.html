@@ -1,1 +1,28 @@
-<p>bookcase works!</p>
+<div class="container">
+  <app-title-bar title="My Bookcase"></app-title-bar>
+  <div class="bookcase-book-container">
+    <app-tabs>
+      <app-tab title="Finished">
+        @if (books$ | async; as books) {
+          @for (book of books.slice(0, 2); track book.id) {
+            <app-bookcase-card [book]="book" type="finished"></app-bookcase-card>
+          }
+        }
+      </app-tab>
+      <app-tab title="Reading">
+        @if (books$ | async; as books) {
+          @for (book of books.slice(2, 3); track book.id) {
+            <app-bookcase-card [book]="book" type="reading"></app-bookcase-card>
+          }
+        }
+      </app-tab>
+      <app-tab title="To Read">
+        @if (books$ | async; as books) {
+          @for (book of books.slice(3, 6); track book.id) {
+            <app-bookcase-card [book]="book" type="to-read"></app-bookcase-card>
+          }
+        }
+      </app-tab>
+    </app-tabs>
+  </div>
+</div>

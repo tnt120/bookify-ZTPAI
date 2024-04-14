@@ -1,0 +1,109 @@
+@import '../../../../../styles/variables';
+
+:host {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3em;
+
+  .bookcase-card-container {
+    display: flex;
+    gap: 1em;
+    border: 1px solid $purple-3;
+    width: 100%;
+
+    .image {
+      width: 136px;
+      height: 200px;
+      background: url('../../../../../assets/images/covers/fall-of-ruin.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .info-container{
+      flex: 1;
+      padding: 1em 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .details {
+        p {
+          margin-bottom: 10px;
+          font-style: italic;
+
+          span {
+            font-weight: bold;
+          }
+        }
+      }
+
+      .progress-container {
+        width: 50%;
+
+        .text-icon {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 2px;
+
+          img:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .actions-container {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      padding: 0 1em 1em 0;
+      justify-content: space-between;
+
+      .rating {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: $font-size-l;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 0.5em;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :host {
+    width: 250px;
+
+    .bookcase-card-container {
+      flex-direction: column;
+      width: 250px;
+
+      .image {
+        width: 250px;
+        height: 375px;
+      }
+
+      .info-container {
+        padding: 1em;
+
+        .progress-container {
+          width: 100%;
+        }
+      }
+
+      .actions-container {
+        .rating {
+          display: none;
+        }
+      }
+    }
+  }
+}
