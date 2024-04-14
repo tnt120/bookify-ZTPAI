@@ -1,1 +1,10 @@
-<p>home works!</p>
+<div class="container">
+    <app-search-bar></app-search-bar>
+    <div class="books-container" style="height: 100% !important;">
+        @if (books$ | async; as books) {
+            @for (book of books; track book.id) {
+                <app-book-card [book]="book"></app-book-card>
+            }
+        }
+    </div>
+</div>

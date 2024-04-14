@@ -1,0 +1,19 @@
+@import '../../../../styles/variables';
+
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+        height: 50px;
+        width: 60px;
+        border-radius: 50px;
+        background-color: $purple-2;
+        border: none;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

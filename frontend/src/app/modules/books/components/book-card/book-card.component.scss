@@ -1,0 +1,53 @@
+@import '../../../../../styles/variables';
+
+:host {
+    .book-card-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid $purple-3;
+        width: 250px;
+        position: relative;
+
+        .rating-badge {
+            border-radius: 50%;
+            background-color: $purple-1;
+            color: $white;
+            padding: 0.5em;
+            position: absolute;
+            top: -15px;
+            right: -15px;
+        }
+
+        .book-details {
+            .book-image {
+                width: 249px;
+                height: 375px;
+                background: url('../../../../../assets/images/covers/fall-of-ruin.jpg');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .book-title, .book-author {
+                font-size: $font-size-m;
+                height: $font-size-m * 3;
+                width: 100%;
+                text-align: center;
+                margin: auto;
+                padding: 10px;
+                font-style: italic;
+                display: -webkit-box;
+                -webkit-box-orient: vertical; 
+                -webkit-line-clamp: 2; 
+                overflow: hidden; 
+                text-overflow: ellipsis; 
+            }
+
+            .book-author {
+                font-size: $font-size-s;
+                height: $font-size-s * 3;
+            }
+        }
+    }
+}

@@ -1,0 +1,68 @@
+@import '../../../../../styles/variables';
+
+:host {
+    width: 100%;
+    background-color: $purple-3;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 1em 1em 1em 3em;
+
+    .search-bar-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        position: relative;
+        gap: 0.5em;
+
+        app-input {
+            width: 30%;
+        }
+
+        .search-bar-container-select-section {
+            display: flex;
+            width: 50%;
+            gap: 0.5em;
+
+            app-input {
+                width: 50%;
+            }
+        }
+
+        img {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    :host {
+        padding: 1em 2em;
+        .search-bar-container {
+            flex-direction: column;
+
+            app-input {
+                width: 100%;
+            }
+
+            .search-bar-container-select-section {
+                width: 100%;
+            }
+
+            img {
+                position: relative;
+            }
+
+            .search-bar-container-actions {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+        }
+    }
+}

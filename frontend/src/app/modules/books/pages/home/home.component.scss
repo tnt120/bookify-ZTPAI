@@ -1,0 +1,18 @@
+:host {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 4em;
+        justify-content: center;
+        align-items: center;
+        padding: 0 0 2em 0;
+
+        .books-container {
+            max-width: 95%;
+            display: grid;
+            margin: auto;
+            grid-template-columns: repeat(auto-fill, 250px);
+            gap: 2em;
+        }
+    }
+}
