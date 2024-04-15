@@ -1,0 +1,17 @@
+<table>
+  <tr>
+    <th *ngFor="let column of columns">{{ column | capitalizeFirst }}</th>
+    <th>Actions</th>
+  </tr>
+  <tbody>
+    <tr *ngFor="let row of data">
+      <td *ngFor="let column of columns">{{ row[column] }}</td>
+      <td>
+        <div class="buttons-container">
+          <button type="button" (click)="onEdit(row)"><img src="/assets/icons/edit.svg" alt="edit-icon"></button>
+          <button type="button" (click)="onDelete(row)"><img src="/assets/icons/delete.svg" alt="delete-icon"></button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

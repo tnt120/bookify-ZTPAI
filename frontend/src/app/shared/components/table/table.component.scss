@@ -1,0 +1,39 @@
+@use '@angular/material' as mat;
+@import '../../../../styles/variables';
+
+:host {
+  width: 100%;
+
+  table {
+    width: 100%;
+
+    tr {
+      @include mat.elevation(2);
+    }
+
+    th, td {
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 250px;
+      padding: 0.5em;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5em;
+
+      button {
+        border: none;
+        background-color: $white;
+
+
+        img {
+          width: 32px;
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,8 @@ import { SearchButtonComponent } from './components/search-button/search-button.
 import { TitleBarComponent } from './components/title-bar/title-bar.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { TabComponent } from './components/tabs/tab/tab.component';
+import { TableComponent } from './components/table/table.component';
+import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
 
 
 
@@ -16,10 +18,12 @@ import { TabComponent } from './components/tabs/tab/tab.component';
     SearchButtonComponent,
     TitleBarComponent,
     TabsComponent,
-    TabComponent
+    TabComponent,
+    TableComponent,
+    CapitalizeFirstPipe
   ],
   imports: [
-    CommonModule
+    CommonModule,
   ],
   exports: [
     InputComponent,
@@ -27,7 +31,9 @@ import { TabComponent } from './components/tabs/tab/tab.component';
     SearchButtonComponent,
     TitleBarComponent,
     TabsComponent,
-    TabComponent
+    TabComponent,
+    CapitalizeFirstPipe,
+    TableComponent
   ]
 })
 export class SharedModule { }
