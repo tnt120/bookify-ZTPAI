@@ -13,6 +13,11 @@ export class BookService {
     return parseFloat((book.ratings.length ? book.ratings.reduce((acc, item) => acc + item.value, 0) / book.ratings.length : 0).toFixed(1));
   }
 
+  getBook(id: string | null): Observable<Book> {
+    const bookId = id ? parseInt(id) : 0;
+    return of(this.mockedBooks[bookId])
+  }
+
   getBooks(): Observable<Book[]> {
     return of(this.mockedBooks);
   }

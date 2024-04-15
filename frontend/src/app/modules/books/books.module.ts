@@ -11,6 +11,7 @@ import { BookCardComponent } from './components/book-card/book-card.component';
 import { BookcaseCardComponent } from './components/bookcase-card/bookcase-card.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ActionButtonComponent } from './components/action-button/action-button.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 
 
@@ -22,7 +23,8 @@ import { ActionButtonComponent } from './components/action-button/action-button.
     SearchBarComponent,
     BookCardComponent,
     BookcaseCardComponent,
-    ActionButtonComponent
+    ActionButtonComponent,
+    CommentComponent
   ],
   imports: [
     CommonModule,

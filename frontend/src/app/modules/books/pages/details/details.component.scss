@@ -1,0 +1,149 @@
+@import '../../../../../styles/variables';
+
+:host {
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 0 2em 0;
+        gap: 2em;
+  
+        .book-details-container {
+            width: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3em;
+
+            .image {
+                width: 335px;
+                height: 500px;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .info {
+                height: 500px;
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 1em 0 0 0;
+
+                .details {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1em;
+
+                    .community {
+                        p:nth-child(2) {
+                            font-size: $font-size-s;
+                            font-style: italic;
+                        }
+                    }
+
+                    span {
+                        font-weight: bold;
+                    }
+                }
+
+                .actions {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1em;
+                    justify-content: center;
+                    align-items: center;
+
+                    .actions-buttons {
+                        display: flex;
+                        gap: 1em;
+                    }
+                }
+            }
+        }
+
+        .description-container {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+
+        }
+        
+        .community-container {
+            width: 80%;
+            display: flex;           
+            
+            .rating-container {
+                width: 40%;
+
+                .ratings {
+                    display: flex;
+                    flex-direction: column-reverse;
+                    justify-content: center;
+                    align-items: flex-start;
+                    padding: 1em 0 0 1em;
+                    gap: 0.5em;
+
+                    .rating {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            width: 24px;
+                            height: 24px;
+                        }
+                    }
+                }
+            }
+            
+            .comments-container {
+                width: 60%;
+
+                .comments {
+                    padding: 1em 0 0 1em;
+                }
+            }
+        }
+    }
+
+    h2 {
+        font-size: $font-size-l;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    :host {
+        .container {
+            .book-details-container {
+                flex-direction: column;
+                
+                .info {
+                    gap: 2em;
+                }
+            }
+
+            .community-container {
+                flex-direction: column;
+                gap: 2em;
+
+                .rating-container {
+                    width: 100%;
+
+                    .ratings {
+                        display: flex;
+                        justify-content: center;
+                    }
+                }
+
+                .comments-container {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

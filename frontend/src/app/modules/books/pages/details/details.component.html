@@ -1,1 +1,51 @@
-<p>details works!</p>
+<div class="container">
+    @if (book) {
+        <app-title-bar [title]="book.title"></app-title-bar>
+        <div class="book-details-container">
+            <div class="image" [style.background-image]="coverUrl"></div>
+            <div class="info">
+                <div class="details">
+                    <div><span>Author: </span>{{ book.author }}</div>
+                    <div><span>Genre: </span>{{ book.genre }}</div>
+                    <div class="community">
+                        <p><span>Rating: </span>{{ avgRating }}</p>
+                        <p>{{ ratingsAmount }} ratings, {{ commentsAmount }} comments</p>
+                    </div>
+                    <div><span>Release date: </span>{{ book.releaseDate }}</div>
+                    <div><span>Pages: </span>{{ book.pages }}</div>
+                </div>
+
+                <div class="actions">
+                    <h2>Manage bookcase</h2>
+                    <div class="actions-buttons">
+                        <app-action-button text="Finished"></app-action-button>
+                        <app-action-button text="Reading"></app-action-button>
+                        <app-action-button text="To read"></app-action-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="description-container">
+            <h2>Description</h2>
+            <p>{{ book.description }}</p>
+        </div>
+        <div class="community-container">
+            <div class="rating-container">
+                <h2>Ratings</h2>
+                <div class="ratings">
+                    @for (rating of ratingsCount; track rating; let idx = $index) {
+                        <p class="rating"><img src="../../../../../assets/icons/star.svg" alt="star-icon"> {{idx + 1}} - {{ rating }} ratings</p>
+                    }
+                </div>
+            </div>
+            <div class="comments-container">
+                <h2>Comments</h2>
+                <div class="comments">
+                    @for (comment of book.comments; track comment) {
+                        <app-comment [comment]="comment"></app-comment>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
