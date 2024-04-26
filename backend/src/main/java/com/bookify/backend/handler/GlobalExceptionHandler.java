@@ -1,37 +1,33 @@
 package com.bookify.backend.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import static com.bookify.backend.handler.BusinessErrorCodes.BAD_CREDENTIALS;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ExceptionResponse> handleException(BadCredentialsException ex) {
+    @ExceptionHandler(ExceptionResponse.class)
+    public ResponseEntity<BusinessErrorCodes> handleException(ExceptionResponse ex) {
+
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(ex.getBusinessErrorCode().getHttpStatus())
                 .body(
-                        ExceptionResponse.builder()
-                                .businessErrorCode(BusinessErrorCodes.BAD_CREDENTIALS.getCode())
-                                .businessErrorDescription(BusinessErrorCodes.BAD_CREDENTIALS.getDescription())
-                                .error(BusinessErrorCodes.BAD_CREDENTIALS.getDescription())
-                                .build()
+                        ex.getBusinessErrorCode()
                 );
     }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ExceptionResponse> handleException(UserAlreadyExistsException ex) {
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<BusinessErrorCodes> handleException(BadCredentialsException ex) {
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(
-                        ExceptionResponse.builder()
-                                .businessErrorCode(BusinessErrorCodes.ALREADY_EXIST.getCode())
-                                .businessErrorDescription(BusinessErrorCodes.ALREADY_EXIST.getDescription())
-                                .error(BusinessErrorCodes.ALREADY_EXIST.getDescription())
-                                .build()
+                        BAD_CREDENTIALS
                 );
     }
 
@@ -43,8 +39,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(
                         ExceptionResponse.builder()
-                                .businessErrorDescription("Internal server error, please try again later")
-                                .error(ex.getMessage())
+//                                .error(ex.getMessage())
                                 .build()
                 );
     }

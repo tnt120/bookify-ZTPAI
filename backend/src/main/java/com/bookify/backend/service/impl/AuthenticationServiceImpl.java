@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.bookify.backend.handler.BusinessErrorCodes.ALREADY_EXIST;
+import static com.bookify.backend.handler.BusinessErrorCodes.ROLE_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -31,16 +34,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthenticationResponse register(RegisterRequest request) throws UserAlreadyExistsException {
+    public AuthenticationResponse register(RegisterRequest request) {
 
         Role role = roleRepository.findRoleByName("USER")
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(ROLE_NOT_FOUND::getError);
 
 
-        Optional<User> userTest = userRepository.findUserByEmail(request.getEmail());
-
-        if (userTest.isPresent()) {
-            throw new UserAlreadyExistsException("User already exists");
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw ALREADY_EXIST.getError();
         }
 
         var user = User.builder()
