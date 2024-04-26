@@ -18,6 +18,7 @@ public class BookcaseType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(unique = true)
     private String name;
     @OneToMany(mappedBy = "bookcaseType")
     private Set<UserBook> userBooks;

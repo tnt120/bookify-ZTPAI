@@ -1,24 +1,31 @@
 package com.bookify.backend.controller;
 
-import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.bookify.backend.api.external.AuthenticationRequest;
+import com.bookify.backend.api.external.AuthenticationResponse;
+import com.bookify.backend.api.external.RegisterRequest;
+import com.bookify.backend.handler.UserAlreadyExistsException;
+import com.bookify.backend.service.AuthenticationService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class AuthenticationController {
+    private final AuthenticationService authService;
 
     @PostMapping("/login")
-    public String login() {
-        return "login";
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authService.login(request));
     }
 
     @PostMapping("/register")
-    public String register() {
-        return "register";
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws UserAlreadyExistsException {
+        return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/verify")
