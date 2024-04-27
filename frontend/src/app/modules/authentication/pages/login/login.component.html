@@ -1,18 +1,27 @@
 <div class="container">
     <h1>Bookify</h1>
-    <form>
+    <form [formGroup]="loginForm">
+        @if (errors.form) {
+            <mat-error>{{ errors.form }}</mat-error>
+        }
         <mat-form-field class="example-full-width">
             <mat-label>Email</mat-label>
-            <input type="mail" matInput placeholder="Email" color="accent">
+            <input type="mail" formControlName="email" name="email" matInput placeholder="Email" color="accent" required (blur)="updateError('email', 'Email')">
+            @if (loginForm.controls.email.invalid) {
+                <mat-error>{{ errors.email }}</mat-error>
+            }
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Password</mat-label>
-            <input matInput placeholder="Password" color="accent" [type]="hidePassword ? 'password' : 'text'">
+            <input matInput formControlName="password" name="password" placeholder="Password" color="accent" [type]="hidePassword ? 'password' : 'text'" required (blur)="updateError('password', 'Password')">
             <button type="button" mat-icon-button matSuffix (click)="toogleHide()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
                 <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
+            @if (loginForm.controls.password.invalid) {
+                <mat-error>{{ errors.password }}</mat-error>
+            }
         </mat-form-field>
-        <button type="button" mat-flat-button color="accent">Login</button>
-        <button type="button" mat-stroked-button color="accent">Click to Register</button>
-      </form>
+        <button type="button" mat-flat-button color="accent" (click)="onLogin()">Login</button>
+        <button type="button" mat-stroked-button color="accent" (click)="onRegister()">Click to Register</button>
+    </form>
 </div>
