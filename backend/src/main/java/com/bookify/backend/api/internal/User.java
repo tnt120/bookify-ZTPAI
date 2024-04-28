@@ -32,14 +32,6 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
-    @OneToOne(mappedBy = "user")
-    private MyUserDetails myUserDetails;
-    @OneToMany(mappedBy = "user")
-    private Set<UserBook> userBooks;
-    @OneToMany(mappedBy = "user")
-    private Set<Comment> comments;
-    @OneToMany(mappedBy = "user")
-    private Set<Rating> ratings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -31,10 +31,4 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "genre_id")
     private Genre genre;
-    @OneToMany(mappedBy = "book")
-    private Set<UserBook> userBooks;
-    @OneToMany(mappedBy = "book")
-    private Set<Comment> comments;
-    @OneToMany(mappedBy = "book")
-    private Set<Rating> ratings;
 }

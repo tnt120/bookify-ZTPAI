@@ -20,6 +20,4 @@ public class Genre {
     private Integer id;
     @Column(unique = true)
     private String name;
-    @OneToMany(mappedBy = "genre")
-    private Set<Book> books;
 }

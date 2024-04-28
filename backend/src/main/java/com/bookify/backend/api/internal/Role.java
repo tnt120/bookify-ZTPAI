@@ -20,7 +20,4 @@ public class Role {
     private Integer id;
     @Column(unique = true)
     private String name;
-
-    @OneToMany(mappedBy = "role")
-    private Set<User> users;
 }
