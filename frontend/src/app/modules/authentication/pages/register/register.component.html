@@ -1,26 +1,41 @@
 <div class="container">
     <h1>Create account</h1>
-    <form>
+    <form [formGroup]="registerForm">
+        @if (errors.form) {
+            <mat-error>{{ errors.form }}</mat-error>
+        }
         <mat-form-field class="example-full-width">
             <mat-label>First name</mat-label>
-            <input type="mail" matInput placeholder="First name" color="accent">
+            <input type="text" formControlName="firstName" matInput placeholder="First name" color="accent" required (blur)="updateError('firstName', 'First Name')">
+            @if (registerForm.controls.firstName.invalid) {
+                <mat-error>{{ errors.firstName }}</mat-error>
+            }
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Last Name</mat-label>
-            <input type="mail" matInput placeholder="Last name" color="accent">
+            <input type="text" formControlName="lastName" matInput placeholder="Last name" color="accent" required (blur)="updateError('lastName', 'Last Name')">
+            @if (registerForm.controls.lastName.invalid) {
+                <mat-error>{{ errors.lastName }}</mat-error>
+            }
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Email</mat-label>
-            <input type="mail" matInput placeholder="Email" color="accent">
+            <input type="mail" formControlName="email" matInput placeholder="Email" color="accent" required (blur)="updateError('email', 'Email')">
+            @if (registerForm.controls.email.invalid) {
+                <mat-error>{{ errors.email }}</mat-error>
+            }
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Password</mat-label>
-            <input matInput placeholder="Password" color="accent" [type]="hidePassword ? 'password' : 'text'">
+            <input matInput formControlName="password" placeholder="Password" color="accent" [type]="hidePassword ? 'password' : 'text'" required (blur)="updateError('password', 'Password')">
             <button type="button" mat-icon-button matSuffix (click)="toogleHide()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
                 <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
+            @if (registerForm.controls.password.invalid) {
+                <mat-error>{{ errors.password }}</mat-error>
+            }
         </mat-form-field>
-        <button type="button" mat-flat-button color="accent">Register</button>
-        <button type="button" mat-stroked-button color="accent">Have account? Log In</button>
+        <button type="button" mat-flat-button color="accent" (click)="onRegistration()">Register</button>
+        <button type="button" mat-stroked-button color="accent" (click)="onLogin()">Have account? Log In</button>
       </form>
 </div>

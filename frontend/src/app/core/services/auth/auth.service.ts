@@ -3,6 +3,8 @@ import { environment } from '../../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { RegisterRequest } from '../../models/register-request.model';
+import { AuthenticationRequest } from '../../models/authentication-request-model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +18,12 @@ export class AuthService {
     private router: Router
   ) { }
 
-  login(credentials: { email: string, password: string}): Observable<{token: string}> {
+  login(credentials: AuthenticationRequest): Observable<{token: string}> {
     return this.http.post<{token: string}>(`${this.apiUrl}/login`, credentials);
+  }
+
+  register(credentials: RegisterRequest): Observable<{token: string}> {
+    return this.http.post<{token: string}>(`${this.apiUrl}/register`, credentials);
   }
   
 }

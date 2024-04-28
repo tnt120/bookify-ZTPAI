@@ -4,6 +4,7 @@ import { TokenService } from '../../../../core/services/token/token.service';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FormErrorService } from '../../../../core/services/form-error/form-error.service';
+import { AuthenticationRequest } from '../../../../core/models/authentication-request-model';
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,7 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
 
     const { email, password } = this.loginForm.value;
-    const credentials: { email: string, password: string } = {
+    const credentials: AuthenticationRequest = {
       email: email || '',
       password: password || ''
     };
@@ -50,7 +51,7 @@ export class LoginComponent {
       },
       error: err => {
         console.error('Failed to login', err);
-        this.errors.form = err.error.description;
+        this.errors.form = err.error.message;
         this.loginForm.reset();
       }
     });
