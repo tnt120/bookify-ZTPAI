@@ -21,6 +21,7 @@ public enum BusinessErrorCodes {
     ALREADY_EXIST(302, "User with provided email already exists", HttpStatus.CONFLICT),
     ROLE_NOT_FOUND(303, "Request role not found", HttpStatus.BAD_REQUEST),
     USER_NOT_FOUND(304, "User not found", HttpStatus.NOT_FOUND),
+    INVALID_TOKEN(305, "Invalid token", HttpStatus.UNAUTHORIZED),
     ;
 
     private final int code;

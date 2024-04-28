@@ -3,14 +3,12 @@ package com.bookify.backend.controller;
 import com.bookify.backend.api.external.AuthenticationRequest;
 import com.bookify.backend.api.external.AuthenticationResponse;
 import com.bookify.backend.api.external.RegisterRequest;
+import com.bookify.backend.api.external.UserDTO;
 import com.bookify.backend.handler.UserAlreadyExistsException;
 import com.bookify.backend.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,7 +27,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/verify")
-    public String verify() {
-        return "verify";
+    public ResponseEntity<UserDTO> verify(@RequestHeader("Authorization") String jwtToken) {
+        return ResponseEntity.ok(authService.verify(jwtToken));
     }
 }

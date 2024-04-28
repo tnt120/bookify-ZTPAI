@@ -3,10 +3,11 @@ package com.bookify.backend.service.impl;
 import com.bookify.backend.api.external.AuthenticationRequest;
 import com.bookify.backend.api.external.AuthenticationResponse;
 import com.bookify.backend.api.external.RegisterRequest;
+import com.bookify.backend.api.external.UserDTO;
 import com.bookify.backend.api.internal.MyUserDetails;
 import com.bookify.backend.api.internal.Role;
 import com.bookify.backend.api.internal.User;
-import com.bookify.backend.handler.UserAlreadyExistsException;
+import com.bookify.backend.mapper.UserMapper;
 import com.bookify.backend.repository.RoleRepository;
 import com.bookify.backend.repository.UserDetailsRepository;
 import com.bookify.backend.repository.UserRepository;
@@ -18,10 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
-import static com.bookify.backend.handler.BusinessErrorCodes.ALREADY_EXIST;
-import static com.bookify.backend.handler.BusinessErrorCodes.ROLE_NOT_FOUND;
+import static com.bookify.backend.handler.BusinessErrorCodes.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
 
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
@@ -80,5 +79,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwt)
                 .build();
+    }
+
+    @Override
+    public UserDTO verify(String jwtToken) {
+        var token = jwtToken.substring(7);
+
+        String email = jwtService.extractEmail(token);
+
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(INVALID_TOKEN::getError);
+
+        boolean isValid = jwtService.isTokenValid(token, user);
+
+        if (!isValid) {
+            throw INVALID_TOKEN.getError();
+        }
+
+        return userMapper.map(user);
     }
 }

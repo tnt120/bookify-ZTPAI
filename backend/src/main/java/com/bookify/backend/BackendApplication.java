@@ -1,8 +1,12 @@
 package com.bookify.backend;
 
 import com.bookify.backend.api.internal.Author;
+import com.bookify.backend.api.internal.Book;
+import com.bookify.backend.api.internal.Genre;
 import com.bookify.backend.api.internal.Role;
 import com.bookify.backend.repository.AuthorRepository;
+import com.bookify.backend.repository.BookRepository;
+import com.bookify.backend.repository.GenreRepository;
 import com.bookify.backend.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,12 +23,16 @@ public class BackendApplication {
 	@Bean
 	public CommandLineRunner init(
 			final AuthorRepository authorRepository,
-			final RoleRepository roleRepository
+			final RoleRepository roleRepository,
+			final GenreRepository genreRepository,
+			final BookRepository bookRepository
 			) {
 		return args -> {
-			authorRepository.save(new Author().setFirstName("Artur").setLastName("Kowalski"));
+			var author = authorRepository.save(new Author().setFirstName("Artur").setLastName("Kowalski"));
 		    roleRepository.save(new Role().setName("USER"));
 			roleRepository.save(new Role().setName("ADMIN"));
+			var genre = genreRepository.save(new Genre().setName("Fantasy"));
+			bookRepository.save(new Book().setTitle("Harry Potter").setAuthor(author).setGenre(genre).setCoverUrl("cover.jpg"));
         };
     }
 }
