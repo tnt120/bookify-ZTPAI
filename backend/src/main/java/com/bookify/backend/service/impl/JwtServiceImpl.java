@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.bookify.backend.handler.BusinessErrorCodes.INVALID_TOKEN;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -69,16 +68,13 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Claims extractAllClaims(String jwtToken) {
-        try {
             return Jwts
                     .parserBuilder()
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(jwtToken)
                     .getBody();
-        } catch (ExpiredJwtException e) {
-            throw INVALID_TOKEN.getError();
-        }
+
     }
 
     private Key getSigningKey() {

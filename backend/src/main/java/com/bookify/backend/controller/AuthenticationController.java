@@ -27,7 +27,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<UserDTO> verify(@RequestHeader("Authorization") String jwtToken) {
-        return ResponseEntity.ok(authService.verify(jwtToken));
+    public ResponseEntity<UserDTO> verify() {
+        return ResponseEntity.ok(authService.verify());
     }
 }

@@ -1,9 +1,0 @@
-package com.bookify.backend.repository;
-
-import com.bookify.backend.api.internal.MyUserDetails;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface UserDetailsRepository extends JpaRepository<MyUserDetails, Integer> {
-}

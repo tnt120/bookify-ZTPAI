@@ -29,9 +29,7 @@ public enum BusinessErrorCodes {
     private final HttpStatus httpStatus;
 
     public ExceptionResponse getError() {
-        return ExceptionResponse.builder()
-                .businessErrorCode(this)
-                .build();
+        return new ExceptionResponse(this);
     }
 
 public static class ErrorSerializer extends JsonSerializer<BusinessErrorCodes> {

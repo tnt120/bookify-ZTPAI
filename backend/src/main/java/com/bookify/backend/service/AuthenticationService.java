@@ -10,5 +10,5 @@ public interface AuthenticationService {
 
     AuthenticationResponse login(AuthenticationRequest request);
 
-    UserDTO verify(String jwtToken);
+    UserDTO verify();
 }
