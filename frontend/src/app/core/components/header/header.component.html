@@ -15,8 +15,10 @@
                 {{ item.name }}
             </li>
         }
-        <li (click)="closeMenu()">
-            <img src="../../../../assets/icons/profile.svg" alt="profile-icon">
-        </li>
+        @if (isLogged) {
+            <li (click)="closeMenu()">
+                <img src="../../../../assets/icons/profile.svg" alt="profile-icon">
+            </li>
+        }
     </ul>
 </header>

@@ -2,9 +2,10 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { verifyActions } from '../store/actions';
-import { selectRole } from '../store/reducers';
+import { selectUser } from '../store/reducers';
 import { map, switchMap, take } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
+import { Roles } from '../enums/roles.enum';
 
 export function roleGuardGuard(role: string, isAuthorized: boolean): CanActivateFn {
   return (route, state) => {
@@ -18,10 +19,10 @@ export function roleGuardGuard(role: string, isAuthorized: boolean): CanActivate
     return actions$.pipe(
       ofType(verifyActions.verifySuccess, verifyActions.verifyFailure),
       take(1),
-      switchMap(() => store.select(selectRole).pipe(
+      switchMap(() => store.select(selectUser).pipe(
         take(1),
-        map(userRole => {
-          if (userRole !== role && isAuthorized) {
+        map(user => {
+          if (user.role !== role && isAuthorized) {
             router.navigate(['/auth']);
             return false;
           }
@@ -32,6 +33,6 @@ export function roleGuardGuard(role: string, isAuthorized: boolean): CanActivate
   }
 };
 
-export const notAuthenticatedGuard: CanActivateFn = roleGuardGuard('', false);
-export const userGuard: CanActivateFn = roleGuardGuard('USER', true);
-export const adminGuard: CanActivateFn = roleGuardGuard('ADMIN', true);
+export const notAuthenticatedGuard: CanActivateFn = roleGuardGuard(Roles.unAuthorized, false);
+export const userGuard: CanActivateFn = roleGuardGuard(Roles.User, true);
+export const adminGuard: CanActivateFn = roleGuardGuard(Roles.Admin, true);

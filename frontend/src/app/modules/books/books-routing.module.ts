@@ -3,19 +3,23 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { DetailsComponent } from './pages/details/details.component';
 import { BookcaseComponent } from './pages/bookcase/bookcase.component';
+import { notAuthenticatedGuard, userGuard } from '../../core/guards/role-guard.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    canActivate: [notAuthenticatedGuard]
   },
   {
     path: 'bookcase',
-    component: BookcaseComponent
+    component: BookcaseComponent,
+    canActivate: [userGuard]
   },
   {
     path: 'details/:id',
-    component: DetailsComponent
+    component: DetailsComponent,
+    canActivate: [notAuthenticatedGuard]
   }
 ];
 

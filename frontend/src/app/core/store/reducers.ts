@@ -1,19 +1,22 @@
 import { createFeature, createReducer, on } from "@ngrx/store";
-import { User } from "../models/user.model";
 import { verifyActions } from "./actions";
+import { AppState } from "../models/app-state.model";
 
-const initialState: User = {
-  email: '',
-  role: '',
-  firstName: '',
-  lastName: ''
+const initialState: AppState = {
+  user: {
+    email: '',
+    role: '',
+    firstName: '',
+    lastName: ''
+  },
+  isLogged: false
 };
 
 const userFeature = createFeature({
   name: 'user',
   reducer: createReducer(
     initialState,
-    on(verifyActions.verifySuccess, (state, action) => ({ ...state, ...action.user })),
+    on(verifyActions.verifySuccess, (state, action) => ({ ...state, user: action.user, isLogged: true })),
     on(verifyActions.verifyFailure, () => initialState)
   )
 });
@@ -22,5 +25,6 @@ export const {
   name: userFeatureKey,
   reducer: userReducer,
   selectUserState,
-  selectRole
+  selectUser,
+  selectIsLogged
 } = userFeature;

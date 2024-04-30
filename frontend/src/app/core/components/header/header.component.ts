@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { HeaderItem } from '../../models/header-item.model';
+import { unAuthorizedHeaders } from '../../constants/headers';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,10 @@ import { HeaderItem } from '../../models/header-item.model';
 })
 export class HeaderComponent {
   @Input()
-  items!: HeaderItem[];
+  items: HeaderItem[] | null = unAuthorizedHeaders;
+
+  @Input()
+  isLogged: boolean | null = false;
 
   isOpen = false;
 

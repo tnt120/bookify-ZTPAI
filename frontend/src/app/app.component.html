@@ -1,4 +1,4 @@
-<app-header [items]="mockHeaderItems"></app-header>
+<app-header [items]="headerItems$ | async" [isLogged]="isLogged$ | async"></app-header>
 <main>
     <router-outlet />
 </main>

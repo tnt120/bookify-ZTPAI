@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { adminGuard } from './core/guards/role-guard.guard';
 
 const routes: Routes = [
   {
@@ -12,7 +13,8 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./modules/dashboad/dashboad.module').then(m => m.DashboadModule)
+    loadChildren: () => import('./modules/dashboad/dashboad.module').then(m => m.DashboadModule),
+    canActivate: [adminGuard]
   },
   {
     path: '**',
