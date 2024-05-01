@@ -16,9 +16,16 @@
             </li>
         }
         @if (isLogged) {
-            <li (click)="closeMenu()">
+            <li (click)="toggleProfileMenu()" class="profile-icon">
                 <img src="../../../../assets/icons/profile.svg" alt="profile-icon">
             </li>
+            <li (click)="logout()" class="profile-logout">Wyloguj</li>
         }
     </ul>
+    @if (isProfileMenuOpen) {
+      <div class="profile-menu" (click)="toggleProfileMenu()">
+        <p>Witaj {{ (userFirstName$ | async)?.firstName }}!</p>
+        <p (click)="logout()">Wyloguj</p>
+      </div>
+    }
 </header>

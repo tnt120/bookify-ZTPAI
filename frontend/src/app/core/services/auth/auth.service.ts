@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { RegisterRequest } from '../../models/register-request.model';
 import { AuthenticationRequest } from '../../models/authentication-request-model';
 import { User } from '../../models/user.model';
+import { verifyActions } from '../../store/actions';
+import { Store } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) { }
 
   login(credentials: AuthenticationRequest): Observable<{token: string}> {
@@ -29,6 +32,12 @@ export class AuthService {
 
   verify(): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/verify`, {});
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.store.dispatch(verifyActions.verifyFailure());
+    this.router.navigate(['/auth']);
   }
 
 }

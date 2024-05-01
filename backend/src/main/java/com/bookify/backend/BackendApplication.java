@@ -28,11 +28,11 @@ public class BackendApplication {
 			final BookRepository bookRepository
 			) {
 		return args -> {
-			var author = authorRepository.save(new Author().setFirstName("Artur").setLastName("Kowalski"));
-		    roleRepository.save(new Role().setName("USER"));
-			roleRepository.save(new Role().setName("ADMIN"));
-			var genre = genreRepository.save(new Genre().setName("Fantasy"));
-			bookRepository.save(new Book().setTitle("Harry Potter").setAuthor(author).setGenre(genre).setCoverUrl("cover.jpg"));
+//			var author = authorRepository.save(new Author().setFirstName("Artur").setLastName("Kowalski"));
+//		    roleRepository.save(new Role().setName("USER"));
+//			roleRepository.save(new Role().setName("ADMIN"));
+//			var genre = genreRepository.save(new Genre().setName("Fantasy"));
+//			bookRepository.save(new Book().setTitle("Harry Potter").setAuthor(author).setGenre(genre).setCoverUrl("cover.jpg"));
         };
     }
 }
