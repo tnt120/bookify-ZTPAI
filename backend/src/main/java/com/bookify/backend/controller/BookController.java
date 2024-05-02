@@ -1,11 +1,13 @@
 package com.bookify.backend.controller;
 
 import com.bookify.backend.api.external.*;
+import com.bookify.backend.api.external.requests.BookRequest;
 import com.bookify.backend.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,8 +39,17 @@ public class BookController {
     }
 
     @PostMapping()
-    public ResponseEntity<Object> addBook(@RequestBody BookDTO book) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDTO(201));
+    public ResponseEntity<Integer> addBook(@RequestBody BookRequest request) {
+        return ResponseEntity.ok(bookService.save(request));
+    }
+
+    @PostMapping(value = "/cover/{bookId}", consumes = "multipat/form-data")
+    public ResponseEntity<?> uploadBookCover(
+            @PathVariable("bookId") Integer bookId,
+            @RequestPart("file") MultipartFile file
+    ) {
+        bookService.uploadCover(bookId, file);
+        return ResponseEntity.accepted().build();
     }
 
     @PatchMapping("/{id}")

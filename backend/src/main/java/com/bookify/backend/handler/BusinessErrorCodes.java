@@ -21,7 +21,11 @@ public enum BusinessErrorCodes {
     ALREADY_EXIST(302, "User with provided email already exists", HttpStatus.CONFLICT),
     ROLE_NOT_FOUND(303, "Request role not found", HttpStatus.BAD_REQUEST),
     USER_NOT_FOUND(304, "User not found", HttpStatus.NOT_FOUND),
-    INVALID_TOKEN(305, "Invalid token", HttpStatus.UNAUTHORIZED),
+    AUTHOR_NOT_FOUND(305, "Author not found", HttpStatus.NOT_FOUND),
+    GENRE_NOT_FOUND(306, "Genre not found", HttpStatus.NOT_FOUND),
+    BOOK_NOT_FOUND(307, "Book not found", HttpStatus.NOT_FOUND),
+    INVALID_TOKEN(308, "Invalid token", HttpStatus.UNAUTHORIZED),
+    NO_PERMISSION(309, "You do not have permission to perform this operation", HttpStatus.BAD_REQUEST)
     ;
 
     private final int code;
