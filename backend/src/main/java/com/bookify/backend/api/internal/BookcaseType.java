@@ -20,6 +20,4 @@ public class BookcaseType {
     private Integer id;
     @Column(unique = true)
     private String name;
-    @OneToMany(mappedBy = "bookcaseType")
-    private Set<UserBook> userBooks;
 }

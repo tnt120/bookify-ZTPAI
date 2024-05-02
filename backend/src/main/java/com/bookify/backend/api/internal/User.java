@@ -29,6 +29,9 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String sol;
+    private String firstName;
+    private String lastName;
+
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;

@@ -1,7 +1,9 @@
 @import "../../../../styles/_variables.scss";
 
 :host {
+    position: relative;
     z-index: 10;
+
     header {
         display: flex;
         flex-direction: row;
@@ -11,6 +13,25 @@
         padding: 1em;
         background-color: $purple-1;
         height: $header-height;
+
+        .profile-menu {
+            position: absolute;
+            top: calc($header-height - 1em);
+            right: 10px;
+            background-color: $purple-1;
+            border: 1px solid $purple-3;
+            text-align: center;
+
+            p {
+              width: 100%;
+              padding: 1em;
+            }
+
+            p:last-child:hover {
+              background-color: $purple-2;
+              cursor: pointer;
+            }
+        }
 
         .logo {
             display: flex;
@@ -35,10 +56,15 @@
                 font-size: $font-size-l;
                 cursor: pointer;
             }
+
+            .profile-logout {
+                display: none;
+            }
         }
 
         .menu-icon {
             display: none;
+            cursor: pointer;
         }
     }
 }
@@ -68,12 +94,21 @@
                 li:hover {
                     background-color: $purple-2;
                 }
+
+                .profile-icon {
+                    display: none;
+                }
+
+                .profile-logout {
+                  display: flex;
+              }
             }
 
             .menu-icon {
                 display: flex;
                 margin-left: auto;
             }
+
         }
 
         .hide {

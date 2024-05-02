@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -8,6 +8,11 @@ import { SharedModule } from './shared/shared.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpTokenInterceptor } from './core/interceptors/http-token.interceptor';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { userFeatureKey, userReducer } from './core/store/reducers';
+import { EffectsModule } from '@ngrx/effects';
+import * as verifyEffects from './core/store/effects';
 
 @NgModule({
   declarations: [
@@ -18,7 +23,10 @@ import { HttpTokenInterceptor } from './core/interceptors/http-token.interceptor
     AppRoutingModule,
     CoreModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot({ [userFeatureKey]: userReducer}),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), autoPause: true, trace: true, traceLimit: 75 }),
+    EffectsModule.forRoot([verifyEffects])
   ],
   providers: [
     provideAnimationsAsync(),

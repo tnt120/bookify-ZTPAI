@@ -1,7 +1,8 @@
 package com.bookify.backend.controller;
 
 import com.bookify.backend.api.external.*;
-import lombok.NoArgsConstructor;
+import com.bookify.backend.service.BookService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,19 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/book")
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class BookController {
+    private final BookService bookService;
 
     @GetMapping
-    public List<BookDTO> getBooks() {
-        return List.of(
-                new BookDTO()
-                        .setId(1)
-                        .setTitle("Cos")
-                        .setCoverUrl("xd")
-                        .setAuthor(new AuthorDTO().setId(1).setFirstName("Jan").setLastName("Brzechwa"))
-                        .setGenre(new GenreDTO().setId(1).setName("horror"))
-        );
+    public ResponseEntity<List<BookDTO>> getBooks() {
+        return ResponseEntity.ok(bookService.getAllBooks());
     }
 
     @GetMapping("/{id}")
