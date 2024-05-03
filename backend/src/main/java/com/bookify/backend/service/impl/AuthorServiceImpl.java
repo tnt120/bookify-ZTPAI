@@ -8,6 +8,8 @@ import com.bookify.backend.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
@@ -15,17 +17,11 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorMapper authorMapper;
 
     @Override
-    public AuthorDTO get() {
-
-//        authorRepository.findById();
-        return null;
-    }
-
-    @Override
-    public AuthorDTO getByLastName(String lastName) {
-        return authorRepository.findAuthorByLastName(lastName)
+    public List<AuthorDTO> getAllAuthors() {
+        return authorRepository.findAll()
+                .stream()
                 .map(authorMapper::map)
-                .orElseThrow(() -> new RuntimeException("No author with given email found"));
+                .toList();
     }
 
     @Override

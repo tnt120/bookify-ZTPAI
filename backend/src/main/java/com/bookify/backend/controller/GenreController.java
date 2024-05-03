@@ -2,8 +2,8 @@ package com.bookify.backend.controller;
 
 import com.bookify.backend.api.external.GenreDTO;
 import com.bookify.backend.api.external.StatusResponseDTO;
+import com.bookify.backend.service.GenreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,11 @@ import java.util.List;
 @RequestMapping("/api/genre")
 @RequiredArgsConstructor
 public class GenreController {
+    private final GenreService genreService;
 
     @GetMapping
-    public List<GenreDTO> getGenres() {
-        return List.of(new GenreDTO().setId(1).setName("horror"), new GenreDTO().setId(2).setName("thriller"));
+    public ResponseEntity<List<GenreDTO>> getGenres() {
+        return ResponseEntity.ok(genreService.getAllGenres());
     }
 
     @PostMapping()
