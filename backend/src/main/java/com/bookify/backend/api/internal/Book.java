@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Set;
 
 @Data
 @Entity
@@ -21,6 +19,8 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
+    @Lob
+    @Column(columnDefinition = "text")
     private String description;
     private String coverUrl;
     private Integer pages;

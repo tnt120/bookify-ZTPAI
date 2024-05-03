@@ -1,7 +1,8 @@
 package com.bookify.backend.service.impl;
 
-import com.bookify.backend.api.external.BookDTO;
 import com.bookify.backend.api.external.requests.BookRequest;
+import com.bookify.backend.api.external.response.BookResponse;
+import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.Author;
 import com.bookify.backend.api.internal.Book;
 import com.bookify.backend.api.internal.Genre;
@@ -12,7 +13,13 @@ import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.repository.GenreRepository;
 import com.bookify.backend.service.BookService;
 import com.bookify.backend.service.FileStorageService;
+import com.bookify.backend.specification.BookSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,10 +59,30 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDTO> getAllBooks() {
-        return bookRepository.findAll()
-                .stream().map(bookMapper::map)
+    public PageResponse<BookResponse> getAllBooks(Integer page, Integer size, String sortBy, String order, String title, Integer author, Integer genre) {
+
+        Sort sort = order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Specification<Book> spec = Specification.where(null);
+        if (title != null) spec = spec.and(BookSpecification.titleContains(title));
+        if (author != null) spec = spec.and(BookSpecification.authorIdEquals(author));
+        if (genre != null) spec = spec.and(BookSpecification.genreIdEquals(genre));
+
+        Page<Book> books = bookRepository.findAll(spec, pageable);
+
+        List<BookResponse> bookResponse = books.stream()
+                .map(bookMapper::mapToBookResponse)
                 .toList();
+
+        return new PageResponse<BookResponse>()
+                .setContent(bookResponse)
+                .setCurrentPage(books.getNumber())
+                .setPageSize(books.getSize())
+                .setTotalElements(books.getTotalElements())
+                .setTotalPages(books.getTotalPages())
+                .setLast(books.isLast())
+                .setFirst(books.isFirst());
     }
 
     @Override

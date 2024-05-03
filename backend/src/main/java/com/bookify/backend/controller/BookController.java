@@ -2,6 +2,8 @@ package com.bookify.backend.controller;
 
 import com.bookify.backend.api.external.*;
 import com.bookify.backend.api.external.requests.BookRequest;
+import com.bookify.backend.api.external.response.BookResponse;
+import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,16 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ResponseEntity<List<BookDTO>> getBooks() {
-        return ResponseEntity.ok(bookService.getAllBooks());
+    public ResponseEntity<PageResponse<BookResponse>> getBooks(
+            @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+            @RequestParam(name = "sort", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "asc", required = false) String order,
+            @RequestParam(name = "title", required = false) String title,
+            @RequestParam(name = "author", required = false) Integer author,
+            @RequestParam(name = "genre", required = false) Integer genre
+    ) {
+        return ResponseEntity.ok(bookService.getAllBooks(page, size, sortBy, order, title, author, genre));
     }
 
     @GetMapping("/{id}")
