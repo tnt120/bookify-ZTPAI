@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormErrorService } from '../../../../core/services/form-error/form-error.service';
@@ -6,6 +6,10 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { BookRequest } from '../../../../core/models/book-request.model';
 import { BookService } from '../../../../core/services/book/book.service';
 import { Subscription } from 'rxjs';
+import { GenreService } from '../../../../core/services/genre/genre.service';
+import { AuthorService } from '../../../../core/services/author/author.service';
+import { Author } from '../../../../core/models/author.model';
+import { Genre } from '../../../../core/models/genre.model';
 
 @Component({
   selector: 'app-manage-book',
@@ -13,7 +17,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './manage-book.component.scss',
   providers: [provideNativeDateAdapter()]
 })
-export class ManageBookComponent implements OnInit {
+export class ManageBookComponent implements OnInit, OnDestroy {
 
   bookId: number = 0;
 
@@ -25,20 +29,9 @@ export class ManageBookComponent implements OnInit {
 
   subscriptions: Subscription[] = [];
 
-  authors = [
-    {
-      id: 1,
-      firstName: 'Jan',
-      lastName: 'Kowalski'
-    },
-  ]
+  authors: Author[] | null = null;
 
-  genres = [
-    {
-      id: 1,
-      name: 'Fantasy'
-    }
-  ]
+  genres: Genre[] | null = null;
 
   errors = {
     title: '',
@@ -65,6 +58,8 @@ export class ManageBookComponent implements OnInit {
     private formBuilder: FormBuilder,
     private formErrorService: FormErrorService,
     private bookService: BookService,
+    private genreService: GenreService,
+    private authorService: AuthorService,
     private router: Router
   ) { }
 
@@ -78,6 +73,18 @@ export class ManageBookComponent implements OnInit {
     if (this.bookId !== 0) {
       this.title = 'Edit Book';
     }
+
+    this.subscriptions.push(this.authorService.getAuthors().subscribe(authors => {
+      this.authors = authors;
+    }));
+
+    this.subscriptions.push(this.genreService.getGenres().subscribe(genres => {
+      this.genres = genres;
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   updateError(field: keyof typeof this.errors, name: string) {

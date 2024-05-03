@@ -1,6 +1,9 @@
 <div class="container">
   <app-title-bar [title]="title"></app-title-bar>
-  <div class="content-container">
+  <div class="content-container" [class.loading]="!(authors && genres)">
+    <div *ngIf="!(authors && genres)" class="overlay">
+      <mat-spinner></mat-spinner>
+    </div>
     <form [formGroup]="manageForm">
       @if (errors.form) {
         <mat-error>{{ errors.form }}</mat-error>
@@ -41,7 +44,7 @@
             <mat-label>Author</mat-label>
             <mat-select formControlName="authorId" name="authorId" required>
               <mat-option>--</mat-option>
-              @for (author of authors; track author) {
+              @for (author of (authors); track author) {
                 <mat-option [value]="author.id">{{ author.firstName + ' ' + author.lastName }}</mat-option>
               }
             </mat-select>
