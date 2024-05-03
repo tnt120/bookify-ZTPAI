@@ -87,3 +87,22 @@
 
   }
 }
+
+@media screen and (max-width: 768px) {
+  :host {
+    .container {
+      .content-container {
+        form {
+          flex-direction: column;
+
+          .data {
+            width: 90%;
+            .data-without-area {
+              grid-template-columns: 1fr;
+            }
+          }
+        }
+      }
+    }
+  }
+}
