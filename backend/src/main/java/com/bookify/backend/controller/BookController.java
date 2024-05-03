@@ -43,7 +43,7 @@ public class BookController {
         return ResponseEntity.ok(bookService.save(request));
     }
 
-    @PostMapping(value = "/cover/{bookId}", consumes = "multipat/form-data")
+    @PostMapping(value = "/cover/{bookId}", consumes = "multipart/form-data")
     public ResponseEntity<?> uploadBookCover(
             @PathVariable("bookId") Integer bookId,
             @RequestPart("file") MultipartFile file

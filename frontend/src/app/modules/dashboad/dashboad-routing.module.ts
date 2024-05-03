@@ -4,6 +4,7 @@ import { ManageBooksComponent } from './pages/manage-books/manage-books.componen
 import { ManageAuthorsComponent } from './pages/manage-authors/manage-authors.component';
 import { ManageGenresComponent } from './pages/manage-genres/manage-genres.component';
 import { ManageCommentsComponent } from './pages/manage-comments/manage-comments.component';
+import { ManageBookComponent } from './pages/manage-book/manage-book.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'comments',
     component: ManageCommentsComponent
+  },
+  {
+    path: 'manage/:id',
+    component: ManageBookComponent
   }
 ];
 

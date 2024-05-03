@@ -13,7 +13,8 @@ export class FormErrorService {
     const errorMessages: { [key: string]: string } = {
       required: `${name} is required`,
       email: `${name} is invalid`,
-      minlength: `${name} must be at least ${errors['minlength']?.requiredLength} characters`
+      minlength: `${name} must be at least ${errors['minlength']?.requiredLength} characters`,
+      min: `${name} must be at least ${errors['min']?.min}`,
     };
 
     for (const error in errors) {

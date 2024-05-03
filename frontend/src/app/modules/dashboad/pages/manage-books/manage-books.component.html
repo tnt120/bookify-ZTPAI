@@ -6,7 +6,7 @@
       <app-input placeholder="Search by author/title"></app-input>
       <app-search-button></app-search-button>
     </div>
-    <button type="button" mat-flat-button color="accent">Add book</button>
+    <button type="button" mat-flat-button color="accent" [routerLink]="'manage/0'" routerLinkActivate="active">Add book</button>
   </div>
 
   @if (books$ | async; as books) {
