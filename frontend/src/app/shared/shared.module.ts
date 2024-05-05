@@ -12,7 +12,11 @@ import { FilterControlComponent } from './components/filter-control/filter-contr
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { FilterTranformLabelPipe } from './pipes/filter-tranform-label.pipe';
-
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,12 +29,17 @@ import { FilterTranformLabelPipe } from './pipes/filter-tranform-label.pipe';
     TableComponent,
     CapitalizeFirstPipe,
     FilterControlComponent,
-    FilterTranformLabelPipe
+    FilterTranformLabelPipe,
+    SearchBarComponent
   ],
   imports: [
     CommonModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule
   ],
   exports: [
     InputComponent,
@@ -41,7 +50,9 @@ import { FilterTranformLabelPipe } from './pipes/filter-tranform-label.pipe';
     TabComponent,
     CapitalizeFirstPipe,
     TableComponent,
-    FilterControlComponent
+    FilterControlComponent,
+    FilterTranformLabelPipe,
+    SearchBarComponent
   ]
 })
 export class SharedModule { }
