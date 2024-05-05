@@ -1,6 +1,10 @@
 @import '../../../../styles/variables';
 
 :host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   .filter-button {
     background: none;
     border: none;

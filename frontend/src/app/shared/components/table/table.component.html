@@ -5,7 +5,19 @@
   </tr>
   <tbody>
     <tr *ngFor="let row of data">
-      <td *ngFor="let column of columns">{{ row[column] }}</td>
+      <td *ngFor="let column of columns">
+        @switch (column) {
+          @case ('author') {
+            {{ row.author.firstName + ' ' + row.author.lastName }}
+          }
+          @case ('genre') {
+            {{ row.genre.name }}
+          }
+          @default {
+            {{ row[column] }}
+          }
+        }
+      </td>
       <td>
         <div class="buttons-container">
           <button type="button" (click)="onEdit(row)"><img src="/assets/icons/edit.svg" alt="edit-icon"></button>

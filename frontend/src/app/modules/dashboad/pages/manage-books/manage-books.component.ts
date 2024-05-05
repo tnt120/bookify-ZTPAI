@@ -1,8 +1,16 @@
+import { PageResponse } from './../../../../core/models/page-response';
 import { Component, inject } from '@angular/core';
-import { BookService } from '../../../books/services/book.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Book } from '../../../books/models/book.model';
 import { HeaderItem } from '../../../../core/models/header-item.model';
+import { BookService } from '../../../../core/services/book/book.service';
+import { SortOption } from '../../../../core/models/sort-option.model';
+import { PageEvent } from '@angular/material/paginator';
+import { FiltersModel } from '../../../books/models/filters.model';
+import { Author } from '../../../../core/models/author.model';
+import { Genre } from '../../../../core/models/genre.model';
+import { GenreService } from '../../../../core/services/genre/genre.service';
+import { AuthorService } from '../../../../core/services/author/author.service';
 
 @Component({
   selector: 'app-manage-books',
@@ -11,10 +19,12 @@ import { HeaderItem } from '../../../../core/models/header-item.model';
 })
 export class ManageBooksComponent {
   private readonly bookService = inject(BookService);
+  private readonly genreService = inject(GenreService);
+  private readonly authorService = inject(AuthorService);
 
-  protected books$!: Observable<Book[]>;
+  protected bookResponse$!: Observable<PageResponse>;
 
-  displayedColumns: string[] = ['title', 'author', 'genre', 'pages', 'actions'];
+  displayedColumns: string[] = ['title', 'author', 'genre', 'pages', 'releaseDate'];
 
   navItems: HeaderItem[] = [
     {
@@ -33,10 +43,79 @@ export class ManageBooksComponent {
       name: 'Comments',
       path: '/dashboard/comments'
     }
-  ]
+  ];
+
+  genres$: Observable<Genre[]> = this.genreService.getGenres();
+  authors$: Observable<Author[]> = this.authorService.getAuthors();
+
+  filtersValue: FiltersModel = {
+    title: null,
+    author: null,
+    genre: null,
+  }
+
+  pageSize = 10;
+  pageIndex = 0;
+  totalElemets = 50;
+  pageSizeOptions = [5, 10, 25, 50];
+
+  sortOptions: SortOption[] = [
+    {
+      sortBy: 'title',
+      order: 'asc',
+    },
+    {
+      sortBy: 'title',
+      order: 'desc',
+    },
+    {
+      sortBy: 'releaseDate',
+      order: 'asc',
+    },
+    {
+      sortBy: 'releaseDate',
+      order: 'desc',
+    },
+  ];
+
+  sort: SortOption = this.sortOptions[0];
+
+  pageEvent: PageEvent | undefined;
+
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.getBooks();
+  }
+
+  onSearch(filter: FiltersModel) {
+    this.filtersValue = filter;
+    this.pageIndex = 0;
+    this.getBooks();
+  }
+
+  onSort(sort: SortOption) {
+    this.sort = sort;
+    this.pageIndex = 0;
+    this.getBooks();
+  }
 
   ngOnInit(): void {
-    this.books$ = this.bookService.getBooks();
+    this.getBooks();
+
+    if (window.innerWidth < 768) {
+      this.displayedColumns = ['title', 'author'];
+    }
+  }
+
+  getBooks() {
+    this.bookResponse$ = this.bookService.getBooks(this.pageIndex, this.pageSize, this.sort, this.filtersValue).pipe(
+      map(response => {
+        this.totalElemets = response.totalElements;
+        return response;
+      })
+    );
   }
 
   onEdit(book: Book) {
