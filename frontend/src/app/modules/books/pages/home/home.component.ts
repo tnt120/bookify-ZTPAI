@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   pageSize = 10;
   pageIndex = 0;
-  totalElemets = 50;
+  totalElements = 50;
   pageSizeOptions = [5, 10, 25, 50];
 
   sortOptions: SortOption[] = [
@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscribtions.push(this.bookService.getBooks(this.pageIndex, this.pageSize, this.sort, this.filtersValue).subscribe({
       next: response => {
         this.bookResponse = response;
-        this.totalElemets = response.totalElements;
+        this.totalElements = response.totalElements;
       },
       error: err => {
         console.error(err);

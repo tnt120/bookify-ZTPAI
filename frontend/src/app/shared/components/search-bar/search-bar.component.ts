@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Author } from '../../../../core/models/author.model';
-import { Genre } from '../../../../core/models/genre.model';
-import { FiltersModel } from '../../models/filters.model';
-import { SortOption } from '../../../../core/models/sort-option.model';
+import { Author } from '../../../core/models/author.model';
+import { Genre } from '../../../core/models/genre.model';
+import { SortOption } from '../../../core/models/sort-option.model';
+import { FiltersModel } from '../../../modules/books/models/filters.model';
+
 
 @Component({
   selector: 'app-search-bar',
