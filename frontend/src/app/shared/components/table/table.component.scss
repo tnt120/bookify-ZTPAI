@@ -29,6 +29,9 @@
         border: none;
         background-color: $white;
 
+        &:hover {
+          cursor: pointer;
+        }
 
         img {
           width: 32px;
