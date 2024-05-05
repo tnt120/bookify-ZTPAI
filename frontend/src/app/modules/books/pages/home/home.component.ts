@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
   pageSizeOptions = [5, 10, 25, 50];
 
   pageEvent: PageEvent | undefined;
-  
+
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.pageSize = e.pageSize;
@@ -64,6 +64,7 @@ export class HomeComponent implements OnInit {
 
   onSearch(filter: FiltersModel) {
     this.filtersValue = filter;
+    this.pageIndex = 0;
     this.getBooks();
   }
 }
