@@ -29,14 +29,10 @@
             }
         }
 
-        img {
+        app-filter-control {
             position: absolute;
-            top: 0;
+            top: 5px;
             right: 0;
-
-            &:hover{
-                cursor: pointer;
-            }
         }
     }
 }
@@ -55,7 +51,7 @@
                 width: 100%;
             }
 
-            img {
+            app-filter-control {
                 position: relative;
             }
 

@@ -25,6 +25,6 @@
     </div>
     <div class="search-bar-container-actions">
         <app-search-button (click)="onSearch()"></app-search-button>
-        <img src="../../../../../assets/icons/sort.svg" alt="sort-icon">
+        <app-filter-control [sortOptions]="sortOptions" [activeSort]="activeSort" (optionSelected)="onSortSelected($event)"></app-filter-control>
     </div>
 </div>

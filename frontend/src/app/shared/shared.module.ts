@@ -8,7 +8,10 @@ import { TabsComponent } from './components/tabs/tabs.component';
 import { TabComponent } from './components/tabs/tab/tab.component';
 import { TableComponent } from './components/table/table.component';
 import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
-
+import { FilterControlComponent } from './components/filter-control/filter-control.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { FilterTranformLabelPipe } from './pipes/filter-tranform-label.pipe';
 
 
 @NgModule({
@@ -20,10 +23,14 @@ import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
     TabsComponent,
     TabComponent,
     TableComponent,
-    CapitalizeFirstPipe
+    CapitalizeFirstPipe,
+    FilterControlComponent,
+    FilterTranformLabelPipe
   ],
   imports: [
     CommonModule,
+    MatMenuModule,
+    MatIconModule
   ],
   exports: [
     InputComponent,
@@ -33,7 +40,8 @@ import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
     TabsComponent,
     TabComponent,
     CapitalizeFirstPipe,
-    TableComponent
+    TableComponent,
+    FilterControlComponent
   ]
 })
 export class SharedModule { }

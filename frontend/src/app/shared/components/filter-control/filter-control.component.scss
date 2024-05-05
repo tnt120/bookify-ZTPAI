@@ -1,0 +1,16 @@
+@import '../../../../styles/variables';
+
+:host {
+  .filter-button {
+    background: none;
+    border: none;
+
+    &:hover{
+        cursor: pointer;
+    }
+
+    .active {
+        background-color: $purple-1 !important;
+    }
+  }
+}

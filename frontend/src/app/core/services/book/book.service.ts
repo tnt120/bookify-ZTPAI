@@ -5,6 +5,7 @@ import { BookRequest } from '../../models/book-request.model';
 import { Observable } from 'rxjs';
 import { PageResponse } from '../../models/page-response';
 import { FiltersModel } from '../../../modules/books/models/filters.model';
+import { SortOption } from '../../models/sort-option.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +31,12 @@ export class BookService {
     });
   }
 
-  getBooks(page: number, size: number, sortBy: string, order: string, filters: FiltersModel): Observable<PageResponse> {
+  getBooks(page: number, size: number, sort: SortOption, filters: FiltersModel): Observable<PageResponse> {
     let params = new HttpParams()
       .set('page', page)
       .set('size', size)
-      .set('sort', sortBy)
-      .set('order', order);
+      .set('sort', sort.sortBy)
+      .set('order', sort.order);
 
       if (filters.title) params = params.set('title', filters.title);
 
