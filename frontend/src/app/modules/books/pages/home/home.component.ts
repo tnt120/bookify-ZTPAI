@@ -96,6 +96,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onSort(sort: SortOption) {
     this.sort = sort;
+    this.pageIndex = 0;
     this.getBooks();
   }
 }
