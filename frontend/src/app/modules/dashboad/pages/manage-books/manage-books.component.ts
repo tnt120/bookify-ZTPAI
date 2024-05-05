@@ -11,6 +11,8 @@ import { Author } from '../../../../core/models/author.model';
 import { Genre } from '../../../../core/models/genre.model';
 import { GenreService } from '../../../../core/services/genre/genre.service';
 import { AuthorService } from '../../../../core/services/author/author.service';
+import { baseSortOptions } from '../../../../core/constants/sort-options';
+import { dashboardTabHeaders } from '../../../../core/constants/headers';
 
 @Component({
   selector: 'app-manage-books',
@@ -26,24 +28,7 @@ export class ManageBooksComponent {
 
   displayedColumns: string[] = ['title', 'author', 'genre', 'pages', 'releaseDate'];
 
-  navItems: HeaderItem[] = [
-    {
-      name: 'Books',
-      path: '/dashboard',
-    },
-    {
-      name: 'Authors',
-      path: '/dashboard/authors'
-    },
-    {
-      name: 'Genres',
-      path: '/dashboard/genres'
-    },
-    {
-      name: 'Comments',
-      path: '/dashboard/comments'
-    }
-  ];
+  navItems: HeaderItem[] = dashboardTabHeaders;
 
   genres$: Observable<Genre[]> = this.genreService.getGenres();
   authors$: Observable<Author[]> = this.authorService.getAuthors();
@@ -59,24 +44,7 @@ export class ManageBooksComponent {
   totalElemets = 50;
   pageSizeOptions = [5, 10, 25, 50];
 
-  sortOptions: SortOption[] = [
-    {
-      sortBy: 'title',
-      order: 'asc',
-    },
-    {
-      sortBy: 'title',
-      order: 'desc',
-    },
-    {
-      sortBy: 'releaseDate',
-      order: 'asc',
-    },
-    {
-      sortBy: 'releaseDate',
-      order: 'desc',
-    },
-  ];
+  sortOptions: SortOption[] = baseSortOptions;
 
   sort: SortOption = this.sortOptions[0];
 

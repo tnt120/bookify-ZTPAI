@@ -9,6 +9,7 @@ import { Author } from '../../../../core/models/author.model';
 import { AuthorService } from '../../../../core/services/author/author.service';
 import { FiltersModel } from '../../models/filters.model';
 import { SortOption } from '../../../../core/models/sort-option.model';
+import { baseSortOptions } from '../../../../core/constants/sort-options';
 
 @Component({
   selector: 'app-home',
@@ -38,24 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   totalElements = 50;
   pageSizeOptions = [5, 10, 25, 50];
 
-  sortOptions: SortOption[] = [
-    {
-      sortBy: 'title',
-      order: 'asc',
-    },
-    {
-      sortBy: 'title',
-      order: 'desc',
-    },
-    {
-      sortBy: 'releaseDate',
-      order: 'asc',
-    },
-    {
-      sortBy: 'releaseDate',
-      order: 'desc',
-    },
-  ];
+  sortOptions: SortOption[] = baseSortOptions;
 
   sort: SortOption = this.sortOptions[0];
 
