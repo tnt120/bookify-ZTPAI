@@ -3,16 +3,14 @@ package com.bookify.backend.service.impl;
 import com.bookify.backend.api.external.requests.BookRequest;
 import com.bookify.backend.api.external.response.BookResponse;
 import com.bookify.backend.api.external.response.PageResponse;
-import com.bookify.backend.api.internal.Author;
-import com.bookify.backend.api.internal.Book;
-import com.bookify.backend.api.internal.Genre;
-import com.bookify.backend.api.internal.User;
+import com.bookify.backend.api.internal.*;
 import com.bookify.backend.mapper.BookMapper;
 import com.bookify.backend.repository.AuthorRepository;
 import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.repository.GenreRepository;
 import com.bookify.backend.service.BookService;
 import com.bookify.backend.service.FileStorageService;
+import com.bookify.backend.service.RatingService;
 import com.bookify.backend.specification.BookSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.bookify.backend.handler.BusinessErrorCodes.*;
 
@@ -38,6 +35,7 @@ public class BookServiceImpl implements BookService {
     private final GenreRepository genreRepository;
     private final BookMapper bookMapper;
     private final FileStorageService fileStorageService;
+    private final RatingService ratingService;
 
     @Override
     public Integer save(BookRequest request) {
@@ -72,7 +70,11 @@ public class BookServiceImpl implements BookService {
         Page<Book> books = bookRepository.findAll(spec, pageable);
 
         List<BookResponse> bookResponse = books.stream()
-                .map(bookMapper::mapToBookResponse)
+                .map(book -> {
+                    BookResponse response = bookMapper.mapToBookResponse(book);
+                    response.setAvgRating(ratingService.getAvgRating(book.getId()));
+                    return response;
+                })
                 .toList();
 
         return new PageResponse<BookResponse>()

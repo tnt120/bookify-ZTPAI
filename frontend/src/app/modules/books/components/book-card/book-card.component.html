@@ -1,9 +1,11 @@
 <div class="book-card-container">
-    <div class="rating-badge">{{ avgRating }}</div>
+    <div class="rating-badge">{{ book.avgRating }}</div>
     <div class="book-details">
-        <div class="book-image"></div>
+        <div class="book-image">
+            <img [src]="bookCover">
+        </div>
         <p class="book-title">{{ book.title }}</p>
-        <p class="book-author">{{ book.author }}</p>
+        <p class="book-author">{{ book.author.firstName + ' ' + book.author.lastName }}</p>
         <p></p>
     </div>
 </div>

@@ -1,6 +1,5 @@
-import { Component, Input, inject } from '@angular/core';
-import { Book } from '../../models/book.model';
-import { BookService } from '../../services/book.service';
+import { Component, Input } from '@angular/core';
+import { BookReponse } from '../../../../core/models/book-reponse.model';
 
 @Component({
   selector: 'app-book-card',
@@ -9,13 +8,9 @@ import { BookService } from '../../services/book.service';
 })
 export class BookCardComponent {
   @Input({ required: true })
-  book!: Book;
+  book!: BookReponse;
 
-  avgRating = 0;
-
-  private readonly bookService = inject(BookService);
-
-  ngOnInit(): void {
-    this.avgRating = this.bookService.calculateRating(this.book);
+  get bookCover(): string {
+    return `data:image/jpeg;base64 ,${this.book.cover}`
   }
 }

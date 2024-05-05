@@ -14,7 +14,10 @@ export const verifyEffect = createEffect((
     switchMap(() => {
       return authService.verify().pipe(
         map((user: User) => verifyActions.verifySuccess({ user })),
-        catchError(() => of(verifyActions.verifyFailure()))
+        catchError(() => {
+          localStorage.removeItem('token');
+          return of(verifyActions.verifyFailure())
+        })
       )
     })
   )

@@ -5,6 +5,7 @@ import com.bookify.backend.api.external.response.BookResponse;
 import com.bookify.backend.api.internal.Author;
 import com.bookify.backend.api.internal.Book;
 import com.bookify.backend.api.internal.Genre;
+import com.bookify.backend.service.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,7 @@ public class BookMapper {
         return new BookResponse()
                 .setId(book.getId())
                 .setTitle(book.getTitle())
-                .setCoverUrl(book.getCoverUrl())
+                .setCover(FileUtils.readFile(book.getCoverUrl()))
                 .setAuthor(authorMapper.map(book.getAuthor()))
                 .setGenre(genreMapper.map(book.getGenre()))
                 .setPages(book.getPages())

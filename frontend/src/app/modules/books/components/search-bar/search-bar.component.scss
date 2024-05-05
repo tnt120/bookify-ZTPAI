@@ -14,8 +14,9 @@
         position: relative;
         gap: 0.5em;
 
-        app-input {
+        mat-form-field {
             width: 30%;
+            height: 56px;
         }
 
         .search-bar-container-select-section {
@@ -23,7 +24,7 @@
             width: 50%;
             gap: 0.5em;
 
-            app-input {
+            mat-form-field {
                 width: 50%;
             }
         }
@@ -46,7 +47,7 @@
         .search-bar-container {
             flex-direction: column;
 
-            app-input {
+            mat-form-field {
                 width: 100%;
             }
 
