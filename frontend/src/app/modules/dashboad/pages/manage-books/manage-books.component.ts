@@ -13,6 +13,7 @@ import { GenreService } from '../../../../core/services/genre/genre.service';
 import { AuthorService } from '../../../../core/services/author/author.service';
 import { baseSortOptions } from '../../../../core/constants/sort-options';
 import { dashboardTabHeaders } from '../../../../core/constants/headers';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-books',
@@ -23,6 +24,7 @@ export class ManageBooksComponent {
   private readonly bookService = inject(BookService);
   private readonly genreService = inject(GenreService);
   private readonly authorService = inject(AuthorService);
+  private readonly router = inject(Router);
 
   protected bookResponse$!: Observable<PageResponse>;
 
@@ -87,7 +89,7 @@ export class ManageBooksComponent {
   }
 
   onEdit(book: Book) {
-    console.log('edit', book);
+    this.router.navigate(['dashboard', 'manage', book.id]);
   }
 
   onDelete(book: Book) {

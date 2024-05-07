@@ -69,6 +69,10 @@
 
           mat-form-field {
             width: 100%;
+
+            textarea {
+              min-height: 100px;
+            }
           }
 
           mat-hint {

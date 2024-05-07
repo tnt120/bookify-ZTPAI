@@ -7,3 +7,13 @@ export interface BookRequest {
   authorId: number;
   genreId: number;
 }
+
+export interface BookRequestUpdate {
+  id?: number | null;
+  title: string | null;
+  description: string | null;
+  pages: number | null;
+  releaseDate: string | null;
+  authorId: number | null;
+  genreId: number | null;
+}

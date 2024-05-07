@@ -1,9 +1,10 @@
+import { BookReponse } from './../../../../core/models/book-reponse.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormErrorService } from '../../../../core/services/form-error/form-error.service';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { BookRequest } from '../../../../core/models/book-request.model';
+import { BookRequest, BookRequestUpdate } from '../../../../core/models/book-request.model';
 import { BookService } from '../../../../core/services/book/book.service';
 import { Subscription } from 'rxjs';
 import { GenreService } from '../../../../core/services/genre/genre.service';
@@ -32,6 +33,10 @@ export class ManageBookComponent implements OnInit, OnDestroy {
   authors: Author[] | null = null;
 
   genres: Genre[] | null = null;
+
+  bookReponse: BookReponse | null = null;
+
+  bookToCompare: any;
 
   errors = {
     title: '',
@@ -72,8 +77,31 @@ export class ManageBookComponent implements OnInit, OnDestroy {
 
     if (this.bookId !== 0) {
       this.title = 'Edit Book';
-    }
 
+      this.bookService.getBook(this.bookId).subscribe({
+        next: book => {
+          this.bookReponse = book;
+          this.manageForm.patchValue({
+            title: book.title,
+            description: book.description,
+            pages: book.pages,
+            releaseDate: book.releaseDate,
+            authorId: book.author.id as any,
+            genreId: book.genre.id as any,
+          });
+
+          if (book.cover) {
+            this.selectedPicture = `data:image/jpeg;base64 ,${book.cover}`;
+          }
+
+          this.bookToCompare = {...book, authorId: book.author.id, genreId: book.genre.id}
+        },
+        error: err => {
+          console.log('Cant fetch book, ', err);
+          this.router.navigate(['/dashboard']);
+        }
+      });
+    }
     this.subscriptions.push(this.authorService.getAuthors().subscribe(authors => {
       this.authors = authors;
     }));
@@ -103,7 +131,7 @@ export class ManageBookComponent implements OnInit, OnDestroy {
     }
   }
 
-  submit() {
+  onAdd() {
     const formValue = this.manageForm.value;
 
     const data: BookRequest = {
@@ -119,7 +147,6 @@ export class ManageBookComponent implements OnInit, OnDestroy {
       next: (id) => {
         this.subscriptions.push(this.bookService.uploadCover(id, this.selectedBookCover!).subscribe({
           next: (res: any) => {
-            console.log(res);
             this.router.navigate(['/dashboard']);
           }
         }))
@@ -130,7 +157,57 @@ export class ManageBookComponent implements OnInit, OnDestroy {
     }));
   }
 
+  onUpdate() {
+    const data: BookRequestUpdate = this.getModifiedDat();
+
+    this.bookService.updateBook(this.bookId, data).subscribe({
+      next: (res) => {
+        if (this.selectedBookCover) {
+          this.bookService.uploadCover(this.bookId, this.selectedBookCover).subscribe({
+            next: () => {
+              this.router.navigate(['/dashboard']);
+            }
+          })
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
+      },
+      error: (err) => {
+        this.errors.form = err.error.message;
+      }
+    });
+  }
+
   cancel() {
     this.router.navigate(['/dashboard']);
   }
+
+  getModifiedDat(): BookRequestUpdate {
+    const modifiedData: BookRequestUpdate = {} as BookRequestUpdate;
+    const currentData = this.manageForm.value as { [key: string]: any };
+
+    Object.keys(currentData).forEach(key => {
+      if (currentData[key] !== this.bookToCompare[key]) {
+        modifiedData[key as keyof BookRequestUpdate] = currentData[key];
+      } else {
+        modifiedData[key as keyof BookRequestUpdate] = null;
+      }
+    });
+    return modifiedData;
+  }
+
+  get isFormValid() {
+    if (this.bookReponse) {
+      const currentData = this.manageForm.value as { [key: string]: any };
+
+      const isModified = Object.keys(currentData).some(key => {
+        return currentData[key] !== (this.bookToCompare as any)[key];
+      }) || this.selectedPicture !== `data:image/jpeg;base64 ,${this.bookToCompare.cover}`
+
+      return this.manageForm.invalid || !this.selectedPicture || !isModified;
+    } else {
+      return this.manageForm.invalid || !this.selectedPicture;
+    }
+  }
+
 }
