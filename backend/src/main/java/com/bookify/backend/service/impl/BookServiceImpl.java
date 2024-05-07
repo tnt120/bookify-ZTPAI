@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,6 +58,50 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Integer update(Integer bookId, BookRequest request) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
+            throw NO_PERMISSION.getError();
+        }
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(BOOK_NOT_FOUND::getError);
+
+        if (request.title() != null) {
+            book.setTitle(request.title());
+        }
+
+        if (request.description() != null) {
+            book.setDescription(request.description());
+        }
+
+        if (request.pages() != null) {
+            book.setPages(request.pages());
+        }
+
+        if (request.releaseDate() != null) {
+            book.setReleaseDate(request.releaseDate());
+        }
+
+        if (request.authorId() != null) {
+            Author author = authorRepository
+                    .findById(request.authorId())
+                    .orElseThrow(AUTHOR_NOT_FOUND::getError);
+            book.setAuthor(author);
+        }
+
+        if (request.genreId() != null) {
+            Genre genre = genreRepository
+                    .findById(request.genreId())
+                    .orElseThrow(GENRE_NOT_FOUND::getError);
+            book.setGenre(genre);
+        }
+
+        return bookRepository.save(book).getId();
+    }
+
+    @Override
     public PageResponse<BookResponse> getAllBooks(Integer page, Integer size, String sortBy, String order, String title, Integer author, Integer genre) {
 
         Sort sort = order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
@@ -85,6 +130,17 @@ public class BookServiceImpl implements BookService {
                 .setTotalPages(books.getTotalPages())
                 .setLast(books.isLast())
                 .setFirst(books.isFirst());
+    }
+
+    @Override
+    public BookResponse getBook(Integer id) {
+        return bookRepository.findById(id)
+                .map(book -> {
+                    BookResponse response = bookMapper.mapToBookResponse(book);
+                    response.setAvgRating(ratingService.getAvgRating(book.getId()));
+                    return response;
+                })
+                .orElseThrow(BOOK_NOT_FOUND::getError);
     }
 
     @Override

@@ -34,18 +34,8 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public BookDTO getBook(@PathVariable Integer id) {
-        return new BookDTO()
-                .setId(1)
-                .setTitle("Cos")
-                .setCoverUrl("xd")
-                .setAuthor(new AuthorDTO().setId(1).setFirstName("Jan").setLastName("Brzechwa"))
-                .setGenre(new GenreDTO().setId(1).setName("horror"))
-                .setPages(400)
-                .setReleaseDate(LocalDate.of(2021, 8, 30))
-                .setDescription("eloelo321")
-                .setComments(List.of(new CommentDTO().setId(1).setContent("fajne")))
-                .setRatings(List.of(new RatingDTO().setId(1).setValue(10), new RatingDTO().setId(2).setValue(5)));
+    public ResponseEntity<BookResponse> getBook(@PathVariable Integer id) {
+        return ResponseEntity.ok(bookService.getBook(id));
     }
 
     @PostMapping()
@@ -63,8 +53,8 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> editBook(@PathVariable Integer id, @RequestBody BookDTO book) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<Integer> editBook(@PathVariable Integer id, @RequestBody BookRequest book) {
+        return ResponseEntity.status(HttpStatus.OK).body(bookService.update(id, book));
     }
 
     @DeleteMapping("/{id}")
