@@ -1,0 +1,11 @@
+@import '../../../../styles/variables';
+
+:host {
+  h1 {
+    font-size: $font-size-xl;
+  }
+
+  P:nth-child(2) {
+    font-size: $font-size-xs;
+  }
+}

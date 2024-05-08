@@ -7,8 +7,8 @@
       (sortEmitter)="onSort($event)"
     ></app-search-bar>
     <div class="books-container" style="height: 100% !important;">
-        @if (bookResponse) {
-            @for (book of bookResponse.content; track book.id) {
+        @if (books$ | async; as books) {
+            @for (book of books; track book.id) {
                 <app-book-card [book]="book"></app-book-card>
             }
         }

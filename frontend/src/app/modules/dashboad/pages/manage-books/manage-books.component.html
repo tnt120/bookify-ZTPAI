@@ -14,8 +14,8 @@
     <button type="button" mat-flat-button color="accent" [routerLink]="'manage/0'" routerLinkActivate="active">Add book</button>
   </div>
 
-  @if (bookResponse$ | async; as response) {
-    <app-table [data]="response.content" [columns]="displayedColumns" (edit)="onEdit($event)" (delete)="onDelete($event)"></app-table>
+  @if (books$ | async; as books) {
+    <app-table [data]="books" [columns]="displayedColumns" (edit)="onEdit($event)" (delete)="onDelete($event)"></app-table>
   }
 
   <mat-paginator #paginator

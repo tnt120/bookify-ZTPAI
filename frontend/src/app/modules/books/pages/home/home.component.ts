@@ -10,6 +10,7 @@ import { AuthorService } from '../../../../core/services/author/author.service';
 import { FiltersModel } from '../../models/filters.model';
 import { SortOption } from '../../../../core/models/sort-option.model';
 import { baseSortOptions } from '../../../../core/constants/sort-options';
+import { BookReponse } from '../../../../core/models/book-reponse.model';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   subscribtions: Subscription[] = [];
 
-  bookResponse: PageResponse | undefined;
+  protected books$: Observable<BookReponse[]> = this.bookService.books$;
 
   genres$: Observable<Genre[]> = this.genreService.getGenres();
   authors$: Observable<Author[]> = this.authorService.getAuthors();
@@ -62,12 +63,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getBooks() {
     this.subscribtions.push(this.bookService.getBooks(this.pageIndex, this.pageSize, this.sort, this.filtersValue).subscribe({
-      next: response => {
-        this.bookResponse = response;
+      next: (response: PageResponse) => {
         this.totalElements = response.totalElements;
       },
-      error: err => {
-        console.error(err);
+      error: (error) => {
+        console.error(error);
       }
     }));
   }

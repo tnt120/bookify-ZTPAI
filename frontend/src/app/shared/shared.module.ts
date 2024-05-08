@@ -17,6 +17,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { FormsModule } from '@angular/forms';
     CapitalizeFirstPipe,
     FilterControlComponent,
     FilterTranformLabelPipe,
-    SearchBarComponent
+    SearchBarComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +44,9 @@ import { FormsModule } from '@angular/forms';
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule,
+    MatButtonModule
   ],
   exports: [
     InputComponent,
@@ -52,7 +59,8 @@ import { FormsModule } from '@angular/forms';
     TableComponent,
     FilterControlComponent,
     FilterTranformLabelPipe,
-    SearchBarComponent
+    SearchBarComponent,
+    ConfirmationDialogComponent
   ]
 })
 export class SharedModule { }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environments';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BookRequest, BookRequestUpdate } from '../../models/book-request.model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { PageResponse } from '../../models/page-response';
 import { FiltersModel } from '../../../modules/books/models/filters.model';
 import { SortOption } from '../../models/sort-option.model';
@@ -15,12 +15,19 @@ export class BookService {
 
   private readonly apiUrl = `${environment.apiUrl}/book`;
 
+  private booksSubject = new BehaviorSubject<BookReponse[]>([]);
+  books$ = this.booksSubject.asObservable();
+
   constructor(
     private http: HttpClient
   ) {}
 
   saveBook(request: BookRequest): Observable<number> {
     return this.http.post<number>(this.apiUrl, request);
+  }
+
+  deleteBook(id: number): Observable<number> {
+    return this.http.delete<number>(`${this.apiUrl}/${id}`);
   }
 
   updateBook( id: number, request: BookRequestUpdate): Observable<number> {
@@ -49,7 +56,9 @@ export class BookService {
 
       if (filters.genre) params = params.set('genre', filters.genre);
 
-      return this.http.get<PageResponse>(this.apiUrl, { params });
+      return this.http.get<PageResponse>(this.apiUrl, { params }).pipe(
+        tap(response => this.booksSubject.next(response.content))
+      );
   }
 
   getBook(id: number): Observable<BookReponse> {

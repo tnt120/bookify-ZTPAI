@@ -1,7 +1,6 @@
 import { PageResponse } from './../../../../core/models/page-response';
 import { Component, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import { Book } from '../../../books/models/book.model';
+import { Observable } from 'rxjs';
 import { HeaderItem } from '../../../../core/models/header-item.model';
 import { BookService } from '../../../../core/services/book/book.service';
 import { SortOption } from '../../../../core/models/sort-option.model';
@@ -14,6 +13,10 @@ import { AuthorService } from '../../../../core/services/author/author.service';
 import { baseSortOptions } from '../../../../core/constants/sort-options';
 import { dashboardTabHeaders } from '../../../../core/constants/headers';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirimationDialogData } from '../../../../core/models/confirmation-dialog-data.model';
+import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { BookReponse } from '../../../../core/models/book-reponse.model';
 
 @Component({
   selector: 'app-manage-books',
@@ -26,7 +29,12 @@ export class ManageBooksComponent {
   private readonly authorService = inject(AuthorService);
   private readonly router = inject(Router);
 
-  protected bookResponse$!: Observable<PageResponse>;
+  constructor(
+    public dialog: MatDialog
+  ) {}
+
+  protected books$: Observable<BookReponse[]> = this.bookService.books$;
+
 
   displayedColumns: string[] = ['title', 'author', 'genre', 'pages', 'releaseDate'];
 
@@ -80,19 +88,45 @@ export class ManageBooksComponent {
   }
 
   getBooks() {
-    this.bookResponse$ = this.bookService.getBooks(this.pageIndex, this.pageSize, this.sort, this.filtersValue).pipe(
-      map(response => {
+    this.bookService.getBooks(this.pageIndex, this.pageSize, this.sort, this.filtersValue).subscribe({
+      next: (response: PageResponse) => {
         this.totalElemets = response.totalElements;
-        return response;
-      })
-    );
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
 
-  onEdit(book: Book) {
+  onEdit(book: BookReponse) {
     this.router.navigate(['dashboard', 'manage', book.id]);
   }
 
-  onDelete(book: Book) {
-    console.log('delete', book);
+  onDelete(book: BookReponse) {
+    this.openDialog(book);
+  }
+
+  openDialog(book: BookReponse) {
+    const data: ConfirimationDialogData = {
+      title: 'Delete book',
+      message: `Are you sure you want to delete ${book.title}?`,
+      additionalMessage: 'Note that tis action is irreversible and will delete all the data associated with this book.',
+      confirmText: 'Delete'
+    };
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.bookService.deleteBook(book.id).subscribe({
+          next: () => {
+            this.getBooks();
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        })
+      }
+    })
   }
 }
