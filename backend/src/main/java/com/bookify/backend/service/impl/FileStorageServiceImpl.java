@@ -26,6 +26,17 @@ public class FileStorageServiceImpl implements FileStorageService {
         return uploadFile(file);
     }
 
+    @Override
+    public void deleteFile(@NonNull String filePath) {
+        try {
+            Path path = Paths.get(filePath);
+            Files.deleteIfExists(path);
+            log.info("File deleted: {}", filePath);
+        } catch (IOException e) {
+            log.error("Failed to delete the file", e);
+        }
+    }
+
     private String uploadFile(@NonNull MultipartFile file) {
 
         File targetFolder = new File(fileUploadPath);

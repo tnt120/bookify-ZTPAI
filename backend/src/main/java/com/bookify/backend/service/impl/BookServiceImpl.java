@@ -154,6 +154,10 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(BOOK_NOT_FOUND::getError);
 
+        if (book.getCoverUrl() != null && !book.getCoverUrl().isEmpty()) {
+            fileStorageService.deleteFile(book.getCoverUrl());
+        }
+
         String bookCover = fileStorageService.saveFile(file);
 
         book.setCoverUrl(bookCover);
