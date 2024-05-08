@@ -102,6 +102,24 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Integer delete(Integer id) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
+            throw NO_PERMISSION.getError();
+        }
+
+        Book book = bookRepository.findById(id)
+                .orElseThrow(BOOK_NOT_FOUND::getError);
+
+        fileStorageService.deleteFile(book.getCoverUrl());
+
+        bookRepository.delete(book);
+
+        return id;
+    }
+
+    @Override
     public PageResponse<BookResponse> getAllBooks(Integer page, Integer size, String sortBy, String order, String title, Integer author, Integer genre) {
 
         Sort sort = order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
