@@ -37,4 +37,8 @@ export class AuthorService {
       tap(response => this.authorsSubject.next(response))
     );
   }
+
+  saveAuthor(request: Author): Observable<number> {
+    return this.http.post<number>(this.apiUrl, request);
+  }
 }

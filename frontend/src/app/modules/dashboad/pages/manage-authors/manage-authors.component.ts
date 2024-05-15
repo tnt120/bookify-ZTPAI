@@ -9,6 +9,8 @@ import { SortOption } from '../../../../core/models/sort-option.model';
 import { baseSortAuthorsOptions } from '../../../../core/constants/sort-options';
 import { Observable, Subscription } from 'rxjs';
 import { Author } from '../../../../core/models/author.model';
+import { ManageAuthorDialogData } from '../../../books/models/mange-author-dialog-data.model';
+import { ManageAuthorDialogComponent } from '../../components/manage-author-dialog/manage-author-dialog.component';
 
 @Component({
   selector: 'app-manage-authors',
@@ -69,7 +71,43 @@ export class ManageAuthorsComponent implements OnInit, OnDestroy {
   }
 
   onAdd() {
-    console.log('Add author');
+    this.openDialog();
+  }
+
+  openDialog(author?: Author) {
+    let data: ManageAuthorDialogData;
+
+    if (author) {
+      data = {
+        title: 'Edit',
+        confirmText: 'Save',
+        author: author,
+      }
+    } else {
+      data = {
+        title: 'Add',
+        confirmText: 'Save',
+      }
+    }
+
+    const dialogRef = this.dialog.open(ManageAuthorDialogComponent, { data, width: '400px'});
+
+    this.subscribions.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (data.title === 'Add') {
+          this.authorService.saveAuthor(result).subscribe({
+            next: (id: number) => {
+              this.getAuthors();
+            },
+            error: (error) => {
+              console.error(error);
+            }
+          })
+        } else {
+          console.log('Edit author', result);
+        }
+      }
+    }));
   }
 
   onEdit(author: Author) {
