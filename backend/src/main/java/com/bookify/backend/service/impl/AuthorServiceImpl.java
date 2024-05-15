@@ -6,7 +6,10 @@ import com.bookify.backend.api.internal.User;
 import com.bookify.backend.mapper.AuthorMapper;
 import com.bookify.backend.repository.AuthorRepository;
 import com.bookify.backend.service.AuthorService;
+import com.bookify.backend.specification.AuthorSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +25,15 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorMapper authorMapper;
 
     @Override
-    public List<AuthorDTO> getAllAuthors() {
-        return authorRepository.findAll()
+    public List<AuthorDTO> getAllAuthors(String sortBy, String order, String firstName, String lastName) {
+        Sort sort = order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Specification<Author> spec = Specification.where(null);
+
+        if (firstName != null) spec = spec.and(AuthorSpecification.firstNameContains(firstName));
+        if (lastName != null) spec = spec.and(AuthorSpecification.lastNameContains(lastName));
+
+        return authorRepository.findAll(spec, sort)
                 .stream()
                 .map(authorMapper::map)
                 .toList();
