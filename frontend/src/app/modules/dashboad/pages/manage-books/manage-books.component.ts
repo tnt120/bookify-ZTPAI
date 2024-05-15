@@ -1,11 +1,11 @@
 import { PageResponse } from './../../../../core/models/page-response';
-import { Component, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { HeaderItem } from '../../../../core/models/header-item.model';
 import { BookService } from '../../../../core/services/book/book.service';
 import { SortOption } from '../../../../core/models/sort-option.model';
 import { PageEvent } from '@angular/material/paginator';
-import { FiltersModel } from '../../../books/models/filters.model';
+import { FiltersBookModel } from '../../../books/models/filters-books.model';
 import { Author } from '../../../../core/models/author.model';
 import { Genre } from '../../../../core/models/genre.model';
 import { GenreService } from '../../../../core/services/genre/genre.service';
@@ -21,9 +21,9 @@ import { BookReponse } from '../../../../core/models/book-reponse.model';
 @Component({
   selector: 'app-manage-books',
   templateUrl: './manage-books.component.html',
-  styleUrl: './manage-books.component.scss'
+  styleUrls: ['./manage-books.component.scss', '../../styles/manages.style.scss']
 })
-export class ManageBooksComponent {
+export class ManageBooksComponent implements OnInit, OnDestroy {
   private readonly bookService = inject(BookService);
   private readonly genreService = inject(GenreService);
   private readonly authorService = inject(AuthorService);
@@ -35,6 +35,7 @@ export class ManageBooksComponent {
 
   protected books$: Observable<BookReponse[]> = this.bookService.books$;
 
+  subscriptions: Subscription[] = [];
 
   displayedColumns: string[] = ['title', 'author', 'genre', 'pages', 'releaseDate'];
 
@@ -43,7 +44,7 @@ export class ManageBooksComponent {
   genres$: Observable<Genre[]> = this.genreService.getGenres();
   authors$: Observable<Author[]> = this.authorService.getAuthors();
 
-  filtersValue: FiltersModel = {
+  filtersValue: FiltersBookModel = {
     title: null,
     author: null,
     genre: null,
@@ -67,7 +68,7 @@ export class ManageBooksComponent {
     this.getBooks();
   }
 
-  onSearch(filter: FiltersModel) {
+  onSearch(filter: FiltersBookModel) {
     this.filtersValue = filter;
     this.pageIndex = 0;
     this.getBooks();
@@ -87,15 +88,19 @@ export class ManageBooksComponent {
     }
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
   getBooks() {
-    this.bookService.getBooks(this.pageIndex, this.pageSize, this.sort, this.filtersValue).subscribe({
+    this.subscriptions.push(this.bookService.getBooks(this.pageIndex, this.pageSize, this.sort, this.filtersValue).subscribe({
       next: (response: PageResponse) => {
         this.totalElemets = response.totalElements;
       },
       error: (error) => {
         console.error(error);
       }
-    });
+    }));
   }
 
   onEdit(book: BookReponse) {

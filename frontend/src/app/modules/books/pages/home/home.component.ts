@@ -7,7 +7,7 @@ import { GenreService } from '../../../../core/services/genre/genre.service';
 import { Genre } from '../../../../core/models/genre.model';
 import { Author } from '../../../../core/models/author.model';
 import { AuthorService } from '../../../../core/services/author/author.service';
-import { FiltersModel } from '../../models/filters.model';
+import { FiltersBookModel } from '../../models/filters-books.model';
 import { SortOption } from '../../../../core/models/sort-option.model';
 import { baseSortOptions } from '../../../../core/constants/sort-options';
 import { BookReponse } from '../../../../core/models/book-reponse.model';
@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   genres$: Observable<Genre[]> = this.genreService.getGenres();
   authors$: Observable<Author[]> = this.authorService.getAuthors();
 
-  filtersValue: FiltersModel = {
+  filtersValue: FiltersBookModel = {
     title: null,
     author: null,
     genre: null,
@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }));
   }
 
-  onSearch(filter: FiltersModel) {
+  onSearch(filter: FiltersBookModel) {
     this.filtersValue = filter;
     this.pageIndex = 0;
     this.getBooks();

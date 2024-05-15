@@ -1,9 +1,10 @@
 <div class="container">
     <app-search-bar
+      type="books"
       [authors]="(authors$ | async) || []"
       [genres]="(genres$ | async) || []"
       [sortOptions]="sortOptions"
-      (searchEmitter)="onSearch($event)"
+      (searchBookEmitter)="onSearch($event)"
       (sortEmitter)="onSort($event)"
     ></app-search-bar>
     <div class="books-container" style="height: 100% !important;">

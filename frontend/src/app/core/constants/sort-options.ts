@@ -18,3 +18,22 @@ export const baseSortOptions: SortOption[] = [
     order: 'desc',
   },
 ];
+
+export const baseSortAuthorsOptions: SortOption[] = [
+  {
+    sortBy: 'lastName',
+    order: 'asc',
+  },
+  {
+    sortBy: 'lastName',
+    order: 'desc',
+  },
+  {
+    sortBy: 'firstName',
+    order: 'asc',
+  },
+  {
+    sortBy: 'firstName',
+    order: 'desc',
+  },
+]

@@ -4,10 +4,11 @@
   <div class="actions-container">
     <div class="actions-container-search">
       <app-search-bar
+        type="books"
         [authors]="(authors$ | async) || []"
         [genres]="(genres$ | async) || []"
         [sortOptions]="sortOptions"
-        (searchEmitter)="onSearch($event)"
+        (searchBookEmitter)="onSearch($event)"
         (sortEmitter)="onSort($event)"
       ></app-search-bar>
     </div>

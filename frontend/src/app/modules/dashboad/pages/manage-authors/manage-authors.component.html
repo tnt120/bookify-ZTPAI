@@ -1,1 +1,19 @@
-<p>manage-authors works!</p>
+<div class="container">
+  <app-title-bar title="Dashboard"></app-title-bar>
+  <app-nav [items]="navItems" active="Authors"></app-nav>
+  <div class="actions-container">
+    <div class="actions-container-search">
+      <app-search-bar
+        type="authors"
+        [sortOptions]="sortOptions"
+        (searchAuthorEmitter)="onSearch($event)"
+        (sortEmitter)="onSort($event)"
+      ></app-search-bar>
+    </div>
+    <button type="button" mat-flat-button color="accent" (click)="onAdd()">Add author</button>
+  </div>
+
+  @if (authors$ | async; as authors) {
+    <app-table [data]="authors" [columns]="displayedColumns" (edit)="onEdit($event)" (delete)="onDelete($event)"></app-table>
+  }
+</div>

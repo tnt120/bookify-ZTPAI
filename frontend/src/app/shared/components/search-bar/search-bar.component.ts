@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Author } from '../../../core/models/author.model';
 import { Genre } from '../../../core/models/genre.model';
 import { SortOption } from '../../../core/models/sort-option.model';
-import { FiltersModel } from '../../../modules/books/models/filters.model';
+import { FiltersBookModel } from '../../../modules/books/models/filters-books.model';
+import { FiltersAuthorsModel } from '../../../modules/books/models/filters-authors.model';
 
 
 @Component({
@@ -11,27 +12,38 @@ import { FiltersModel } from '../../../modules/books/models/filters.model';
   styleUrl: './search-bar.component.scss'
 })
 export class SearchBarComponent {
-  @Input({ required: true})
+  @Input({ required: true })
+  type!: 'books' | 'authors' | 'genres' | 'comments';
+
+  @Input()
   authors!: Author[];
 
-  @Input({ required: true})
+  @Input()
   genres!: Genre[];
 
-  @Input({ required: true})
+  @Input()
   sortOptions!: SortOption[];
 
   @Output()
-  searchEmitter = new EventEmitter<FiltersModel>();
+  searchBookEmitter = new EventEmitter<FiltersBookModel>();
+
+  @Output()
+  searchAuthorEmitter = new EventEmitter<FiltersAuthorsModel>();
 
   @Output()
   sortEmitter = new EventEmitter<SortOption>();
 
   activeSort!: SortOption;
 
-  filters: FiltersModel = {
+  filtersBook: FiltersBookModel = {
     title: null,
     author: null,
     genre: null
+  }
+
+  filtersAuthor: FiltersAuthorsModel = {
+    firstName: null,
+    lastName: null
   }
 
   ngOnInit(): void {
@@ -39,7 +51,20 @@ export class SearchBarComponent {
   }
 
   onSearch() {
-    this.searchEmitter.emit(this.filters);
+    switch (this.type) {
+      case 'books':
+        this.searchBookEmitter.emit(this.filtersBook);
+        break;
+      case 'authors':
+        this.searchAuthorEmitter.emit(this.filtersAuthor);
+        break;
+      // case 'genres':
+      //   this.searchEmitter.emit(this.filters);
+      //   break;
+      // case 'comments':
+      //   this.searchEmitter.emit(this.filters);
+      //   break;
+    }
   }
 
   onSortSelected(sort: SortOption) {

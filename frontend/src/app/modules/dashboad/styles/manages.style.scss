@@ -1,0 +1,56 @@
+@import '../../../../styles/variables';
+
+:host {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 2em 0;
+    gap: 2em;
+
+    .actions-container {
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      justify-content: space-around;
+      align-items: center;
+
+      .actions-container-search {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
+
+        app-search-bar {
+          background-color: $white;
+        }
+      }
+
+      button {
+        height: 50px;
+        padding: 0 4em;
+      }
+    }
+
+    app-nav {
+      width: 100%;
+      margin-top: -2em;
+    }
+
+    app-table {
+      width: 90%;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :host {
+    .container {
+      .actions-container {
+        gap: 2em;
+      }
+    }
+  }
+}
