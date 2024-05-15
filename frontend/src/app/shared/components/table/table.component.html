@@ -1,6 +1,6 @@
 <table>
   <tr>
-    <th *ngFor="let column of columns">{{ column | capitalizeFirst }}</th>
+    <th *ngFor="let column of columns">{{ column | capitalizeFirst | divieWords }}</th>
     <th>Actions</th>
   </tr>
   <tbody>
