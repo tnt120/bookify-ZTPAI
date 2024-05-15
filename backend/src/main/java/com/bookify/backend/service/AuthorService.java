@@ -7,5 +7,5 @@ import java.util.List;
 public interface AuthorService {
     List<AuthorDTO> getAllAuthors();
 
-    AuthorDTO save(AuthorDTO authorDTO);
+    Integer save(AuthorDTO authorDTO);
 }

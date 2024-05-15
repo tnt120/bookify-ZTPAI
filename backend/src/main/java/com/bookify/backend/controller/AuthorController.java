@@ -22,8 +22,8 @@ public class AuthorController {
     }
 
     @PostMapping()
-    public AuthorDTO saveAuthor(@RequestBody AuthorDTO authorDTO) {
-        return authorService.save(authorDTO);
+    public ResponseEntity<Integer> addAuthor(@RequestBody AuthorDTO authorDTO) {
+        return ResponseEntity.ok(authorService.save(authorDTO));
     }
 
     @PatchMapping("/{id}")
