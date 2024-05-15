@@ -17,8 +17,8 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping
-    public List<AuthorDTO> getAuthors() {
-        return List.of(new AuthorDTO().setId(1).setFirstName("a").setLastName("b"));
+    public ResponseEntity<List<AuthorDTO>> getAuthors() {
+        return ResponseEntity.ok(authorService.getAllAuthors());
     }
 
     @PostMapping()

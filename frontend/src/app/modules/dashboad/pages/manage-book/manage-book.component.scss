@@ -1,0 +1,112 @@
+@import '../../../../../styles/variables';
+
+:host {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 2em 0;
+    gap: 2em;
+
+    .content-container {
+      position: relative;
+      width: 90%;
+      transition: opacity 0.3s;
+
+      &.loading {
+        pointer-events: none;
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+      }
+
+      form {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2em;
+
+        .image-container {
+          display: flex;
+          flex-direction: column;
+          gap: 2em;
+
+          .image {
+            width: 335px;
+            height: 500px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+        }
+
+        .data {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 2em;
+
+          .data-without-area {
+            width: 100%;
+            gap: 2em;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+          }
+
+          mat-form-field {
+            width: 100%;
+
+            textarea {
+              min-height: 100px;
+            }
+          }
+
+          mat-hint {
+            font-size: $font-size-xs;
+          }
+
+          .buttons {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1em;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :host {
+    .container {
+      .content-container {
+        form {
+          flex-direction: column;
+
+          .data {
+            width: 90%;
+            .data-without-area {
+              grid-template-columns: 1fr;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -36,3 +36,22 @@ export const adminHeaders: HeaderItem[] = [
         path: '/dashboard'
     },
 ]
+
+export const dashboardTabHeaders: HeaderItem[] = [
+  {
+    name: 'Books',
+    path: '/dashboard',
+  },
+  {
+    name: 'Authors',
+    path: '/dashboard/authors'
+  },
+  {
+    name: 'Genres',
+    path: '/dashboard/genres'
+  },
+  {
+    name: 'Comments',
+    path: '/dashboard/comments'
+  }
+];

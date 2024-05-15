@@ -1,4 +1,4 @@
-@import '../../../../../styles/variables';
+@import '../../../../styles/variables';
 
 :host {
     width: 100%;
@@ -14,8 +14,9 @@
         position: relative;
         gap: 0.5em;
 
-        app-input {
+        mat-form-field {
             width: 30%;
+            height: 56px;
         }
 
         .search-bar-container-select-section {
@@ -23,19 +24,15 @@
             width: 50%;
             gap: 0.5em;
 
-            app-input {
+            mat-form-field {
                 width: 50%;
             }
         }
 
-        img {
+        app-filter-control {
             position: absolute;
-            top: 0;
+            top: 5px;
             right: 0;
-
-            &:hover{
-                cursor: pointer;
-            }
         }
     }
 }
@@ -46,7 +43,7 @@
         .search-bar-container {
             flex-direction: column;
 
-            app-input {
+            mat-form-field {
                 width: 100%;
             }
 
@@ -54,7 +51,7 @@
                 width: 100%;
             }
 
-            img {
+            app-filter-control {
                 position: relative;
             }
 

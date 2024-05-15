@@ -11,13 +11,21 @@
 
     .actions-container {
       display: flex;
+      flex-direction: column;
       width: 90%;
       justify-content: space-around;
       align-items: center;
 
       .actions-container-search {
+        width: 100%;
         display: flex;
+        justify-content: center;
+        align-items: center;
         gap: 1em;
+
+        app-search-bar {
+          background-color: $white;
+        }
       }
 
       button {
@@ -41,8 +49,7 @@
   :host {
     .container {
       .actions-container {
-        flex-direction: column;
-        gap: 2em
+        gap: 2em;
       }
     }
   }

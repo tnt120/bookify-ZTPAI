@@ -8,7 +8,18 @@ import { TabsComponent } from './components/tabs/tabs.component';
 import { TabComponent } from './components/tabs/tab/tab.component';
 import { TableComponent } from './components/table/table.component';
 import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
-
+import { FilterControlComponent } from './components/filter-control/filter-control.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { FilterTranformLabelPipe } from './pipes/filter-tranform-label.pipe';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -20,10 +31,22 @@ import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
     TabsComponent,
     TabComponent,
     TableComponent,
-    CapitalizeFirstPipe
+    CapitalizeFirstPipe,
+    FilterControlComponent,
+    FilterTranformLabelPipe,
+    SearchBarComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     CommonModule,
+    MatMenuModule,
+    MatIconModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatDialogModule,
+    MatButtonModule
   ],
   exports: [
     InputComponent,
@@ -33,7 +56,11 @@ import { CapitalizeFirstPipe } from './pipes/capitalize-first.pipe';
     TabsComponent,
     TabComponent,
     CapitalizeFirstPipe,
-    TableComponent
+    TableComponent,
+    FilterControlComponent,
+    FilterTranformLabelPipe,
+    SearchBarComponent,
+    ConfirmationDialogComponent
   ]
 })
 export class SharedModule { }

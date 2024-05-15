@@ -1,0 +1,82 @@
+<div class="container">
+  <app-title-bar [title]="title"></app-title-bar>
+  <div class="content-container" [class.loading]="!(authors && genres)">
+    <div *ngIf="!(authors && genres)" class="overlay">
+      <mat-spinner></mat-spinner>
+    </div>
+    <form [formGroup]="manageForm">
+      @if (errors.form) {
+        <mat-error>{{ errors.form }}</mat-error>
+      }
+      <div class="image-container">
+        <div class="image" [style.backgroundImage]="'url(../../../../../assets/images/no-image.svg)'">
+          <img *ngIf="selectedPicture" [src]="selectedPicture" alt="photo" height="100%" width="100%">
+        </div>
+        <input type="file" name="cover-select" id="formFile" accept="image/*" (change)="onFileSelected($event)">
+      </div>
+      <div class="data">
+        <div class="data-without-area">
+          <mat-form-field class="example-full-width">
+            <mat-label>Title</mat-label>
+            <input type="text" formControlName="title" name="title" matInput placeholder="Title" color="accent" required>
+            @if (manageForm.controls.title.hasError('required')) {
+                <mat-error>Title is required</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Pages</mat-label>
+            <input type="number" min="0" formControlName="pages" name="pages" matInput placeholder="Pages" color="accent" required (blur)="updateError('pages', 'Pages')">
+            @if (manageForm.controls.pages.invalid) {
+                <mat-error>{{ errors.pages }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Release date</mat-label>
+            <input formControlName="releaseDate" name="releaseDate" matInput [matDatepicker]="picker" required="">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            @if (manageForm.controls.releaseDate.invalid) {
+              <mat-error>Date is required</mat-error>
+          }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Author</mat-label>
+            <mat-select formControlName="authorId" name="authorId" required>
+              <mat-option>--</mat-option>
+              @for (author of (authors); track author) {
+                <mat-option [value]="author.id">{{ author.firstName + ' ' + author.lastName }}</mat-option>
+              }
+            </mat-select>
+            @if (manageForm.controls.authorId.hasError('required')) {
+              <mat-error>Please choose an author</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Genre</mat-label>
+            <mat-select formControlName="genreId" name="genreId" required>
+              <mat-option>--</mat-option>
+              @for (genre of genres; track genre) {
+                <mat-option [value]="genre.id">{{ genre.name }}</mat-option>
+              }
+            </mat-select>
+            @if (manageForm.controls.genreId.hasError('required')) {
+              <mat-error>Please choose a genre</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <textarea formControlName="description" name="description" matInput required=""></textarea>
+          @if (manageForm.controls.description.hasError('required')) {
+            <mat-error>Description is required</mat-error>
+          }
+        </mat-form-field>
+        <div class="buttons">
+          <button type="button" mat-flat-button color="primary" (click)="bookReponse ? onUpdate() : onAdd()" [disabled]="isFormValid">Save</button>
+          <button type="button" mat-stroked-button color="warn" (click)="cancel()">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,5 +1,11 @@
 <div class="container">
-    <app-search-bar></app-search-bar>
+    <app-search-bar
+      [authors]="(authors$ | async) || []"
+      [genres]="(genres$ | async) || []"
+      [sortOptions]="sortOptions"
+      (searchEmitter)="onSearch($event)"
+      (sortEmitter)="onSort($event)"
+    ></app-search-bar>
     <div class="books-container" style="height: 100% !important;">
         @if (books$ | async; as books) {
             @for (book of books; track book.id) {
@@ -7,4 +13,12 @@
             }
         }
     </div>
+    <mat-paginator #paginator
+        class="paginator"
+        (page)="handlePageEvent($event)"
+        [length]="totalElements"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [pageIndex]="pageIndex">
+    </mat-paginator>
 </div>

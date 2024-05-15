@@ -23,7 +23,7 @@ public class UserBook {
     @ManyToOne
     @JoinColumn(name = "bookcaseType_id")
     private BookcaseType bookcaseType;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "book_id")
     private Book book;
     private Integer currentPage;

@@ -11,7 +11,12 @@
 
         .rating-badge {
             border-radius: 50%;
+            height: 40px;
+            width: 40px;
             background-color: $purple-1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: $white;
             padding: 0.5em;
             position: absolute;
@@ -21,12 +26,13 @@
 
         .book-details {
             .book-image {
-                width: 249px;
+                width: 248px;
                 height: 375px;
-                background: url('../../../../../assets/images/covers/fall-of-ruin.jpg');
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
+
+                img {
+                    width: 248px;
+                    height: 375px;
+                }
             }
 
             .book-title, .book-author {

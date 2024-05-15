@@ -1,0 +1,19 @@
+<button mat-button class="filter-button" [matMenuTriggerFor]="sortMenu">
+  <img src="../../../../../assets/icons/sort.svg" alt="sort-icon">
+</button>
+
+<mat-menu #sortMenu="matMenu">
+  <button mat-menu-item *ngFor="let option of sortOptions"
+    (click)="onSelect(option)"
+    [class.active]="option.order === activeSort.order"
+    [ngStyle]="getActiveStyle(option)"
+  >
+    {{ option.sortBy | filterTranformLabel }}
+    @if (option.order === 'asc') {
+      <mat-icon>arrow_drop_down</mat-icon>
+    }
+    @else {
+      <mat-icon>arrow_drop_up</mat-icon>
+    }
+  </button>
+</mat-menu>
