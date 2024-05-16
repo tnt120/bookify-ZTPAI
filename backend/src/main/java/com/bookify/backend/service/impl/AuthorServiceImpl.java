@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
+import static com.bookify.backend.handler.BusinessErrorCodes.AUTHOR_NOT_FOUND;
 import static com.bookify.backend.handler.BusinessErrorCodes.NO_PERMISSION;
 
 @Service
@@ -48,5 +49,27 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         return authorRepository.save(authorMapper.map(authorDTO)).getId();
+    }
+
+    @Override
+    public Integer update(Integer authorId, AuthorDTO request) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
+            throw NO_PERMISSION.getError();
+        }
+
+        Author author = authorRepository.findById(authorId)
+                .orElseThrow(AUTHOR_NOT_FOUND::getError);
+
+        if (request.getFirstName() != null) {
+            author.setFirstName(request.getFirstName());
+        }
+
+        if (request.getLastName() != null) {
+            author.setLastName(request.getLastName());
+        }
+
+        return authorRepository.save(author).getId();
     }
 }

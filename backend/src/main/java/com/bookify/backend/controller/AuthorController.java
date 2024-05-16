@@ -32,8 +32,8 @@ public class AuthorController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> editAuthor(@PathVariable Integer id, @RequestBody AuthorDTO authorDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<Integer> editAuthor(@PathVariable Integer id, @RequestBody AuthorDTO author) {
+        return ResponseEntity.status(HttpStatus.OK).body(authorService.update(id, author));
     }
 
     @DeleteMapping("/{id}")
