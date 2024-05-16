@@ -32,7 +32,7 @@ public class GenreController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Object> editGenre(@PathVariable Integer id, @RequestBody GenreDTO genre) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+        return ResponseEntity.ok(genreService.update(id, genre));
     }
 
     @DeleteMapping("/{id}")

@@ -8,4 +8,6 @@ public interface GenreService {
     List<GenreDTO> getAllGenres(String sortBy, String order, String name);
 
     Integer save(GenreDTO genreDTO);
+
+    Integer update(Integer id, GenreDTO genre);
 }

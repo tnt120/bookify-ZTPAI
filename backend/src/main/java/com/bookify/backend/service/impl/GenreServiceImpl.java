@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-import static com.bookify.backend.handler.BusinessErrorCodes.GENRE_ALREADY_EXISTS;
-import static com.bookify.backend.handler.BusinessErrorCodes.NO_PERMISSION;
+import static com.bookify.backend.handler.BusinessErrorCodes.*;
 
 @Service
 @RequiredArgsConstructor
@@ -53,5 +52,23 @@ public class GenreServiceImpl implements GenreService {
                 });
 
         return genreRepository.save(genreMapper.map(genre)).getId();
+    }
+
+    @Override
+    public Integer update(Integer genreId, GenreDTO request) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
+            throw NO_PERMISSION.getError();
+        }
+
+        Genre genre = genreRepository.findById(genreId)
+                .orElseThrow(GENRE_NOT_FOUND::getError);
+
+        if (request.getName() != null) {
+            genre.setName(request.getName());
+        }
+
+        return genreRepository.save(genre).getId();
     }
 }
