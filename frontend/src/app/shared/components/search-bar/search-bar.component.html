@@ -35,6 +35,12 @@
       <input [(ngModel)]="filtersAuthor.firstName" type="text" name="firstName" matInput placeholder="First name" color="accent">
     </mat-form-field>
   }
+  @else if (type === 'genres') {
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Genre</mat-label>
+      <input [(ngModel)]="filtersGenre.name" type="text" name="name" matInput placeholder="Genre" color="accent">
+    </mat-form-field>
+  }
   <div class="search-bar-container-actions">
       <app-search-button (click)="onSearch()"></app-search-button>
       <app-filter-control [sortOptions]="sortOptions" [activeSort]="activeSort" (optionSelected)="onSortSelected($event)"></app-filter-control>

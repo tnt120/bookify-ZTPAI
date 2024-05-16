@@ -37,3 +37,14 @@ export const baseSortAuthorsOptions: SortOption[] = [
     order: 'desc',
   },
 ]
+
+export const baseSortGenresOptions: SortOption[] = [
+  {
+    sortBy: 'name',
+    order: 'asc',
+  },
+  {
+    sortBy: 'name',
+    order: 'desc',
+  },
+]

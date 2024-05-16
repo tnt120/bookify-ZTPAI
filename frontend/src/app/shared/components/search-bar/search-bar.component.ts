@@ -4,6 +4,7 @@ import { Genre } from '../../../core/models/genre.model';
 import { SortOption } from '../../../core/models/sort-option.model';
 import { FiltersBookModel } from '../../../modules/books/models/filters-books.model';
 import { FiltersAuthorsModel } from '../../../modules/books/models/filters-authors.model';
+import { FiltersGenresModel } from '../../../modules/books/models/filters-genres-model.model';
 
 
 @Component({
@@ -31,6 +32,9 @@ export class SearchBarComponent {
   searchAuthorEmitter = new EventEmitter<FiltersAuthorsModel>();
 
   @Output()
+  searchGenreEmitter = new EventEmitter<FiltersGenresModel>();
+
+  @Output()
   sortEmitter = new EventEmitter<SortOption>();
 
   activeSort!: SortOption;
@@ -46,6 +50,10 @@ export class SearchBarComponent {
     lastName: null
   }
 
+  filtersGenre: FiltersGenresModel = {
+    name: null
+  }
+
   ngOnInit(): void {
     this.activeSort = this.sortOptions[0];
   }
@@ -58,9 +66,9 @@ export class SearchBarComponent {
       case 'authors':
         this.searchAuthorEmitter.emit(this.filtersAuthor);
         break;
-      // case 'genres':
-      //   this.searchEmitter.emit(this.filters);
-      //   break;
+      case 'genres':
+        this.searchGenreEmitter.emit(this.filtersGenre);
+        break;
       // case 'comments':
       //   this.searchEmitter.emit(this.filters);
       //   break;

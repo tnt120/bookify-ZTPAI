@@ -22,7 +22,6 @@ import { ConfirmationDialogComponent } from '../../../../shared/components/confi
 })
 export class ManageAuthorsComponent implements OnInit, OnDestroy {
   private readonly authorService = inject(AuthorService);
-  private readonly router = inject(Router);
 
   constructor(
     public dialog: MatDialog

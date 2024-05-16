@@ -1,1 +1,19 @@
-<p>manage-genres works!</p>
+<div class="container">
+  <app-title-bar title="Dashboard"></app-title-bar>
+  <app-nav [items]="navItems" active="Genres"></app-nav>
+  <div class="actions-container">
+    <div class="actions-container-search">
+      <app-search-bar
+        type="genres"
+        [sortOptions]="sortOptions"
+        (searchGenreEmitter)="onSearch($event)"
+        (sortEmitter)="onSort($event)"
+      ></app-search-bar>
+    </div>
+    <button type="button" mat-flat-button color="accent" (click)="onAdd()">Add genre</button>
+  </div>
+
+  @if (genres$ | async; as genres) {
+    <app-table [data]="genres" [columns]="displayedColumns" (edit)="onEdit($event)" (delete)="onDelete($event)"></app-table>
+  }
+</div>
