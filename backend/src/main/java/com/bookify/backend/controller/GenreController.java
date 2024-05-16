@@ -17,8 +17,12 @@ public class GenreController {
     private final GenreService genreService;
 
     @GetMapping
-    public ResponseEntity<List<GenreDTO>> getGenres() {
-        return ResponseEntity.ok(genreService.getAllGenres());
+    public ResponseEntity<List<GenreDTO>> getGenres(
+            @RequestParam(name = "sort", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "asc", required = false) String order,
+            @RequestParam(name = "name", required = false) String name
+    ) {
+        return ResponseEntity.ok(genreService.getAllGenres(sortBy, order, name));
     }
 
     @PostMapping()
