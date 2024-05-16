@@ -31,12 +31,12 @@ public class GenreController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> editGenre(@PathVariable Integer id, @RequestBody GenreDTO genre) {
+    public ResponseEntity<Integer> editGenre(@PathVariable Integer id, @RequestBody GenreDTO genre) {
         return ResponseEntity.ok(genreService.update(id, genre));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteGenre(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<Integer> deleteGenre(@PathVariable Integer id) {
+        return ResponseEntity.ok(genreService.delete(id));
     }
 }

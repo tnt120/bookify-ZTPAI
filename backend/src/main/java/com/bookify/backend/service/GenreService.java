@@ -10,4 +10,6 @@ public interface GenreService {
     Integer save(GenreDTO genreDTO);
 
     Integer update(Integer id, GenreDTO genre);
+
+    Integer delete(Integer id);
 }
