@@ -152,17 +152,17 @@ export class ManageAuthorsComponent implements OnInit, OnDestroy {
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscribions.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.authorService.deleteAuthor(author.id!).subscribe({
+        this.subscribions.push(this.authorService.deleteAuthor(author.id!).subscribe({
           next: () => {
             this.getAuthors();
           },
           error: (err) => {
             console.error(err);
           }
-        })
+        }));
       }
-    })
+    }));
   }
 }

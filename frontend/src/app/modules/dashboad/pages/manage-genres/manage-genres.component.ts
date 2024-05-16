@@ -11,6 +11,8 @@ import { baseSortGenresOptions } from '../../../../core/constants/sort-options';
 import { ManageGenreDialogData } from '../../../books/models/manage-genre-dialog-data.model';
 import { ManageGenreDialogComponent } from '../../components/manage-genre-dialog/manage-genre-dialog.component';
 import { GenreRequestUpdate } from '../../../../core/models/genre-request-update.model';
+import { ConfirimationDialogData } from '../../../../core/models/confirmation-dialog-data.model';
+import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-manage-genres',
@@ -120,7 +122,7 @@ export class ManageGenresComponent implements OnInit, OnDestroy {
   }
 
   onDelete(genre: Genre) {
-    console.log('edit: ', genre);
+    this.openDeleteDialog(genre);
   }
 
   getModifiedData(genreOriginal: Genre, genreModified: Genre): GenreRequestUpdate {
@@ -135,5 +137,29 @@ export class ManageGenresComponent implements OnInit, OnDestroy {
     });
 
     return modifiedData as GenreRequestUpdate;
+  }
+
+  openDeleteDialog(genre: Genre) {
+    const data: ConfirimationDialogData = {
+      title: 'Delete genre',
+      message: `Are you sure you want to delete ${genre.name}?`,
+      additionalMessage: 'Note that tis action is irreversible and will delete all the data associated with this genre.',
+      confirmText: 'Delete',
+    };
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.subscriptions.push(this.genreService.deleteGenre(genre.id!).subscribe({
+          next: () => {
+            this.getGenres();
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        }));
+      }
+    }))
   }
 }

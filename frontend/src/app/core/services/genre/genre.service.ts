@@ -44,4 +44,8 @@ export class GenreService {
   updateGenre(id: number, request: GenreRequestUpdate): Observable<number> {
     return this.http.patch<number>(`${this.apiUrl}/${id}`, request);
   }
+
+  deleteGenre(id: number): Observable<number> {
+    return this.http.delete<number>(`${this.apiUrl}/${id}`);
+  }
 }
