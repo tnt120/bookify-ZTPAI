@@ -1,4 +1,3 @@
-import { last } from 'rxjs';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ManageAuthorDialogData } from '../../../books/models/mange-author-dialog-data.model';
@@ -27,7 +26,6 @@ export class ManageAuthorDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) protected data: ManageAuthorDialogData,
     private formBuilder: FormBuilder,
     private formErrorService: FormErrorService,
-    private authorService: AuthorService,
   ) { }
 
   ngOnInit(): void {

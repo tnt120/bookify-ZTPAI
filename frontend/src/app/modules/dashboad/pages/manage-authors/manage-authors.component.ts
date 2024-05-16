@@ -12,6 +12,8 @@ import { Author } from '../../../../core/models/author.model';
 import { ManageAuthorDialogData } from '../../../books/models/mange-author-dialog-data.model';
 import { ManageAuthorDialogComponent } from '../../components/manage-author-dialog/manage-author-dialog.component';
 import { AuthorRequestUpdate } from '../../../../core/models/author-request-update';
+import { ConfirimationDialogData } from '../../../../core/models/confirmation-dialog-data.model';
+import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-manage-authors',
@@ -124,7 +126,7 @@ export class ManageAuthorsComponent implements OnInit, OnDestroy {
   }
 
   onDelete(author: Author) {
-    console.log('Delete author', author);
+    this.openDeleteDialog(author);
   }
 
   getModifiedData(authorOriginal: Author, authorModified: Author): AuthorRequestUpdate {
@@ -139,5 +141,29 @@ export class ManageAuthorsComponent implements OnInit, OnDestroy {
     });
 
     return modifiedData as AuthorRequestUpdate;
+  }
+
+  openDeleteDialog(author: Author) {
+    const data: ConfirimationDialogData = {
+      title: 'Delete author',
+      message: `Are you sure you want to delete ${author.firstName} ${author.lastName}?`,
+      additionalMessage: 'Note that tis action is irreversible and will delete all the data associated with this author.',
+      confirmText: 'Delete'
+    };
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.authorService.deleteAuthor(author.id!).subscribe({
+          next: () => {
+            this.getAuthors();
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        })
+      }
+    })
   }
 }

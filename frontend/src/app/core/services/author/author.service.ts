@@ -43,6 +43,10 @@ export class AuthorService {
     return this.http.post<number>(this.apiUrl, request);
   }
 
+  deleteAuthor(id: number): Observable<number> {
+    return this.http.delete<number>(`${this.apiUrl}/${id}`);
+  }
+
   updateAuthor(id: number, request: AuthorRequestUpdate): Observable<number> {
     return this.http.patch<number>(`${this.apiUrl}/${id}`, request);
   }
