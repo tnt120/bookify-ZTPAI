@@ -2,6 +2,7 @@ package com.bookify.backend.service.impl;
 
 import com.bookify.backend.api.external.GenreDTO;
 import com.bookify.backend.api.internal.Genre;
+import com.bookify.backend.api.internal.User;
 import com.bookify.backend.mapper.GenreMapper;
 import com.bookify.backend.repository.GenreRepository;
 import com.bookify.backend.service.GenreService;
@@ -9,9 +10,14 @@ import com.bookify.backend.specification.GenreSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+
+import static com.bookify.backend.handler.BusinessErrorCodes.GENRE_ALREADY_EXISTS;
+import static com.bookify.backend.handler.BusinessErrorCodes.NO_PERMISSION;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +37,21 @@ public class GenreServiceImpl implements GenreService {
                 .stream()
                 .map(genreMapper::map)
                 .toList();
+    }
+
+    @Override
+    public Integer save(GenreDTO genre) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
+            throw NO_PERMISSION.getError();
+        }
+
+        genreRepository.findGenreByName(genre.getName())
+                .ifPresent(g -> {
+                    throw GENRE_ALREADY_EXISTS.getError();
+                });
+
+        return genreRepository.save(genreMapper.map(genre)).getId();
     }
 }

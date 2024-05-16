@@ -26,8 +26,8 @@ public class GenreController {
     }
 
     @PostMapping()
-    public ResponseEntity<Object> addGenre(@RequestBody GenreDTO genre) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDTO(201));
+    public ResponseEntity<Integer> addGenre(@RequestBody GenreDTO genre) {
+        return ResponseEntity.ok(genreService.save(genre));
     }
 
     @PatchMapping("/{id}")
