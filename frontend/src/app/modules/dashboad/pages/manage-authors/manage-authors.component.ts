@@ -107,14 +107,14 @@ export class ManageAuthorsComponent implements OnInit, OnDestroy {
           })
         } else if (author) {
           const data: AuthorRequestUpdate = this.getModifiedData(author, result);
-          this.authorService.updateAuthor(author.id!, data).subscribe({
+          this.subscribions.push(this.authorService.updateAuthor(author.id!, data).subscribe({
             next: () => {
               this.getAuthors();
             },
             error: (error) => {
               console.error(error);
             }
-          })
+          }));
         }
       }
     }));

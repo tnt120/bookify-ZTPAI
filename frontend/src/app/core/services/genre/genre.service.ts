@@ -5,6 +5,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { SortOption } from '../../models/sort-option.model';
 import { FiltersGenresModel } from '../../../modules/books/models/filters-genres-model.model';
+import { GenreRequestUpdate } from '../../models/genre-request-update.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,9 @@ export class GenreService {
 
   saveGenre(request: Genre): Observable<number> {
     return this.http.post<number>(this.apiUrl, request);
+  }
+
+  updateGenre(id: number, request: GenreRequestUpdate): Observable<number> {
+    return this.http.patch<number>(`${this.apiUrl}/${id}`, request);
   }
 }

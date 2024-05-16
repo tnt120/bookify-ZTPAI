@@ -21,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ManageAuthorDialogComponent } from './components/manage-author-dialog/manage-author-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ManageGenreDialogComponent } from './components/manage-genre-dialog/manage-genre-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     ManageCommentsComponent,
     NavComponent,
     ManageBookComponent,
-    ManageAuthorDialogComponent
+    ManageAuthorDialogComponent,
+    ManageGenreDialogComponent
   ],
   imports: [
     CommonModule,

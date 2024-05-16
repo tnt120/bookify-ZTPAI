@@ -1,0 +1,14 @@
+@import '../../../../../styles/variables';
+
+:host {
+  h1 {
+    font-size: $font-size-xl;
+    padding-bottom: 2em;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+}

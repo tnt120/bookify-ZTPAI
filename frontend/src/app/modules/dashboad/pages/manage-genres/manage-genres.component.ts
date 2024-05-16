@@ -8,6 +8,9 @@ import { HeaderItem } from '../../../../core/models/header-item.model';
 import { FiltersGenresModel } from '../../../books/models/filters-genres-model.model';
 import { SortOption } from '../../../../core/models/sort-option.model';
 import { baseSortGenresOptions } from '../../../../core/constants/sort-options';
+import { ManageGenreDialogData } from '../../../books/models/manage-genre-dialog-data.model';
+import { ManageGenreDialogComponent } from '../../components/manage-genre-dialog/manage-genre-dialog.component';
+import { GenreRequestUpdate } from '../../../../core/models/genre-request-update.model';
 
 @Component({
   selector: 'app-manage-genres',
@@ -65,15 +68,72 @@ export class ManageGenresComponent implements OnInit, OnDestroy {
   }
 
   onAdd() {
-    // this.openDialog();
-    console.log('add');
+    this.openDialog();
+  }
+
+  openDialog(genre?: Genre) {
+    let data: ManageGenreDialogData;
+
+    if (genre) {
+      data = {
+        title: 'Edit',
+        confirmText: 'Save',
+        genre,
+      };
+    } else {
+      data = {
+        title: 'Add',
+        confirmText: 'Save',
+      };
+    }
+
+    const dialogRef = this.dialog.open(ManageGenreDialogComponent, { data, width: '400px' });
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (data.title === 'Add') {
+          this.genreService.saveGenre(result).subscribe({
+            next: (id: number) => {
+              this.getGenres();
+            },
+            error: (error) => {
+              console.error(error);
+            }
+          })
+        } else if (genre) {
+          const data: GenreRequestUpdate = this.getModifiedData(genre, result);
+          this.subscriptions.push(this.genreService.updateGenre(genre.id!, data).subscribe({
+            next: () => {
+              this.getGenres();
+            },
+            error: (error) => {
+              console.error(error);
+            }
+          }));
+        }
+      }
+    }))
   }
 
   onEdit(genre: Genre) {
-    console.log('edit: ', genre);
+    this.openDialog(genre);
   }
 
   onDelete(genre: Genre) {
     console.log('edit: ', genre);
+  }
+
+  getModifiedData(genreOriginal: Genre, genreModified: Genre): GenreRequestUpdate {
+    const modifiedData: GenreRequestUpdate = {} as GenreRequestUpdate;
+
+    Object.keys(genreOriginal).forEach(key => {
+      if (genreOriginal[key as keyof Genre] !== genreModified[key as keyof Genre]) {
+        modifiedData[key as keyof Genre] = genreModified[key as keyof Genre] as any;
+      } else {
+        modifiedData[key as keyof Genre] = null as any;
+      }
+    });
+
+    return modifiedData as GenreRequestUpdate;
   }
 }
