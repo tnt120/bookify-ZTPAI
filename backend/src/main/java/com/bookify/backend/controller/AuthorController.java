@@ -1,7 +1,6 @@
 package com.bookify.backend.controller;
 
 import com.bookify.backend.api.external.AuthorDTO;
-import com.bookify.backend.api.external.StatusResponseDTO;
 import com.bookify.backend.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,7 +36,7 @@ public class AuthorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteAuthor(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<Integer> deleteAuthor(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.OK).body(authorService.delete(id));
     }
 }

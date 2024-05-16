@@ -10,4 +10,6 @@ public interface AuthorService {
     Integer save(AuthorDTO authorDTO);
 
     Integer update(Integer id, AuthorDTO author);
+
+    Integer delete(Integer id);
 }

@@ -5,8 +5,10 @@ import com.bookify.backend.api.internal.Author;
 import com.bookify.backend.api.internal.User;
 import com.bookify.backend.mapper.AuthorMapper;
 import com.bookify.backend.repository.AuthorRepository;
+import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.service.AuthorService;
 import com.bookify.backend.specification.AuthorSpecification;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -24,6 +26,7 @@ import static com.bookify.backend.handler.BusinessErrorCodes.NO_PERMISSION;
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
+    private final BookRepository bookRepository;
 
     @Override
     public List<AuthorDTO> getAllAuthors(String sortBy, String order, String firstName, String lastName) {
@@ -71,5 +74,24 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         return authorRepository.save(author).getId();
+    }
+
+    @Override
+    @Transactional
+    public Integer delete(Integer id) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
+            throw NO_PERMISSION.getError();
+        }
+
+        Author author = authorRepository.findById(id)
+                .orElseThrow(AUTHOR_NOT_FOUND::getError);
+
+        bookRepository.deleteAllByAuthor(author);
+
+        authorRepository.delete(author);
+
+        return id;
     }
 }
