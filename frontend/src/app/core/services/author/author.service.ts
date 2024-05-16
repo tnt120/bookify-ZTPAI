@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Author } from '../../models/author.model';
 import { SortOption } from '../../models/sort-option.model';
 import { FiltersAuthorsModel } from '../../../modules/books/models/filters-authors.model';
+import { AuthorRequestUpdate } from '../../models/author-request-update';
 
 @Injectable({
   providedIn: 'root'
@@ -41,4 +42,9 @@ export class AuthorService {
   saveAuthor(request: Author): Observable<number> {
     return this.http.post<number>(this.apiUrl, request);
   }
+
+  updateAuthor(id: number, request: AuthorRequestUpdate): Observable<number> {
+    return this.http.patch<number>(`${this.apiUrl}/${id}`, request);
+  }
+
 }

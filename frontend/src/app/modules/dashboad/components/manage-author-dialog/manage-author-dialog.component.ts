@@ -1,5 +1,5 @@
 import { last } from 'rxjs';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ManageAuthorDialogData } from '../../../books/models/mange-author-dialog-data.model';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { AuthorService } from '../../../../core/services/author/author.service';
   templateUrl: './manage-author-dialog.component.html',
   styleUrl: './manage-author-dialog.component.scss'
 })
-export class ManageAuthorDialogComponent {
+export class ManageAuthorDialogComponent implements OnInit {
 
   errors = {
     firstName: '',
@@ -29,6 +29,12 @@ export class ManageAuthorDialogComponent {
     private formErrorService: FormErrorService,
     private authorService: AuthorService,
   ) { }
+
+  ngOnInit(): void {
+    if (this.data.title === 'Edit' && this.data.author) {
+      this.manageForm.patchValue(this.data.author);
+    }
+  }
 
   updateError(field: keyof typeof this.errors, name: string) {
     this.errors[field] = this.formErrorService.getErrorMessage(this.manageForm, field, name);

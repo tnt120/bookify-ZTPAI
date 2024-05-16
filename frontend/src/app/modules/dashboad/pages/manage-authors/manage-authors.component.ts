@@ -11,6 +11,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Author } from '../../../../core/models/author.model';
 import { ManageAuthorDialogData } from '../../../books/models/mange-author-dialog-data.model';
 import { ManageAuthorDialogComponent } from '../../components/manage-author-dialog/manage-author-dialog.component';
+import { AuthorRequestUpdate } from '../../../../core/models/author-request-update';
 
 @Component({
   selector: 'app-manage-authors',
@@ -103,18 +104,40 @@ export class ManageAuthorsComponent implements OnInit, OnDestroy {
               console.error(error);
             }
           })
-        } else {
-          console.log('Edit author', result);
+        } else if (author) {
+          const data: AuthorRequestUpdate = this.getModifiedData(author, result);
+          this.authorService.updateAuthor(author.id!, data).subscribe({
+            next: () => {
+              this.getAuthors();
+            },
+            error: (error) => {
+              console.error(error);
+            }
+          })
         }
       }
     }));
   }
 
   onEdit(author: Author) {
-    console.log('Edit author', author);
+    this.openDialog(author);
   }
 
   onDelete(author: Author) {
     console.log('Delete author', author);
+  }
+
+  getModifiedData(authorOriginal: Author, authorModified: Author): AuthorRequestUpdate {
+    const modifiedData: AuthorRequestUpdate = {} as AuthorRequestUpdate;
+
+    Object.keys(authorOriginal).forEach(key => {
+      if (authorOriginal[key as keyof Author] !== authorModified[key as keyof Author]) {
+        modifiedData[key as keyof Author] = authorModified[key as keyof Author] as any;
+      } else {
+        modifiedData[key as keyof Author] = null as any;
+      }
+    });
+
+    return modifiedData as AuthorRequestUpdate;
   }
 }
