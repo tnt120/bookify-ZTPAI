@@ -1,7 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { ActivatedRoute } from '@angular/router';
+import { BookService } from '../../../../core/services/book/book.service';
+import { BookReponse } from '../../../../core/models/book-reponse.model';
+import { Rating } from '../../models/rating.model';
 
 @Component({
   selector: 'app-details',
@@ -14,42 +16,42 @@ export class DetailsComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
 
-  protected id!: string | null;
+  protected bookId: number = 0;
 
-  protected book!: Book;
+  protected book!: BookReponse;
 
-  protected coverUrl!: string;
-
-  protected avgRating = 0;
-
-  protected ratingsAmount = 0;
-
-  protected commentsAmount = 0;
+  protected cover!: string;
 
   protected ratingsCount = Array(10).fill(0);
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.id = params.get('id');
-    })
+    const id = this.route.snapshot.paramMap.get('id');
 
-    this.bookService.getBook(this.id).subscribe(book => {
+    if (id) {
+      this.bookId = parseInt(id);
+    }
+
+    this.bookService.getBook(this.bookId).subscribe(book => {
       if (book) {
         this.book = book;
-        this.coverUrl = `url('/assets/images/covers/${book.imageUrl}')`;
-        this.avgRating = this.bookService.calculateRating(book);
-        this.ratingsAmount = book?.ratings?.length ? book.ratings.length : 0;
-        this.commentsAmount = book?.comments?.length ? book.comments.length : 0;
+        this.cover = this.bookCover;
 
-        this.ratingsCount = book.ratings.reduce((counts, rating) => {
-            if (rating.value >= 1 && rating.value <= 10) {
-              counts[rating.value - 1]++;
-            }
-            return counts;
-          }, Array(10).fill(0));
-        
-        console.log(this.ratingsCount);
+        if (book.ratings) {
+          this.ratingsCount = this.getRatingsCount(book.ratings);
+        }
       }
-    });
+    })
+  }
+
+  get bookCover(): string {
+    return `data:image/jpeg;base64 ,${this.book.cover}`
+  }
+
+  getRatingsCount(ratings: Rating[]) {
+    return ratings.reduce((counts, rating) => {
+      counts[rating.value - 1]++;
+
+      return counts;
+    }, Array(10).fill(0));
   }
 }

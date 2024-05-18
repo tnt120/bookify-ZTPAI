@@ -16,12 +16,9 @@
             justify-content: center;
             gap: 3em;
 
-            .image {
+            img {
                 width: 335px;
                 height: 500px;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
             }
 
             .info {
@@ -106,6 +103,16 @@
 
                 .comments {
                     padding: 1em 0 0 1em;
+
+                    .empty-comments {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        
+                        img {
+                            width: 50%;
+                        }
+                    }
                 }
             }
         }

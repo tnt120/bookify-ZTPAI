@@ -5,8 +5,11 @@ import com.bookify.backend.api.external.response.BookResponse;
 import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.*;
 import com.bookify.backend.mapper.BookMapper;
+import com.bookify.backend.mapper.CommentMapper;
+import com.bookify.backend.mapper.RatingMapper;
 import com.bookify.backend.repository.*;
 import com.bookify.backend.service.BookService;
+import com.bookify.backend.service.CommentService;
 import com.bookify.backend.service.FileStorageService;
 import com.bookify.backend.service.RatingService;
 import com.bookify.backend.specification.BookSpecification;
@@ -33,8 +36,11 @@ public class BookServiceImpl implements BookService {
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
     private final BookMapper bookMapper;
+    private final RatingMapper ratingMapper;
+    private final CommentMapper commentMapper;
     private final FileStorageService fileStorageService;
     private final RatingService ratingService;
+    private final CommentService commentService;
     private final RatingRepository ratingRepository;
     private final CommentRepository commentRepository;
 
@@ -160,6 +166,17 @@ public class BookServiceImpl implements BookService {
                 .map(book -> {
                     BookResponse response = bookMapper.mapToBookResponse(book);
                     response.setAvgRating(ratingService.getAvgRating(book.getId()));
+                    response.setRatings(ratingService.getRatingsForBook(book.getId())
+                            .stream()
+                            .map(ratingMapper::map)
+                            .toList()
+                    );
+                    response.setComments(commentService.getCommentsForBook(book.getId(), 3)
+                            .stream()
+                            .map(commentMapper::map)
+                            .toList()
+                    );
+                    response.setCommentCount(commentService.getCommentCountForBook(book.getId()));
                     return response;
                 })
                 .orElseThrow(BOOK_NOT_FOUND::getError);

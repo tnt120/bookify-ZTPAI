@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -25,5 +25,5 @@ public class Rating {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 }

@@ -15,6 +15,6 @@ export class BookcaseComponent implements OnInit {
   protected books$!: Observable<Book[]>;
 
   ngOnInit(): void {
-    this.books$ = this.bookService.getBooks();
+    // this.books$ = this.bookService.getBooks();
   }
 }

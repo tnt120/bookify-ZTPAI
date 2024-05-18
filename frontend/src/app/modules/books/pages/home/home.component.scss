@@ -7,12 +7,32 @@
         align-items: flex-end;
         padding: 0 0 2em 0;
 
+        .empty-books {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            
+            img {
+                width: 25%;
+            }
+        }
+
         .books-container {
             max-width: 95%;
             display: grid;
             margin: auto;
             grid-template-columns: repeat(auto-fill, 250px);
             gap: 2em;
+
+
+            app-book-card {
+                &:hover {
+                    transform: scale(1.05);
+                    transition: transform 0.3s;
+                    cursor: pointer;
+                }
+            }
         }
     }
 }

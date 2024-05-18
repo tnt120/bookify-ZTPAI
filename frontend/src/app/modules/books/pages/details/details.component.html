@@ -2,14 +2,14 @@
     @if (book) {
         <app-title-bar [title]="book.title"></app-title-bar>
         <div class="book-details-container">
-            <div class="image" [style.background-image]="coverUrl"></div>
+            <img [src]="cover" alt="cover" />
             <div class="info">
                 <div class="details">
-                    <div><span>Author: </span>{{ book.author }}</div>
-                    <div><span>Genre: </span>{{ book.genre }}</div>
+                    <div><span>Author: </span>{{ book.author.firstName }} {{ book.author.lastName }}</div>
+                    <div><span>Genre: </span>{{ book.genre.name }}</div>
                     <div class="community">
-                        <p><span>Rating: </span>{{ avgRating }}</p>
-                        <p>{{ ratingsAmount }} ratings, {{ commentsAmount }} comments</p>
+                        <p><span>Rating: </span>{{ book.avgRating }}</p>
+                        <p>{{ book.ratings?.length }} ratings, {{ book.commentCount }} comments</p>
                     </div>
                     <div><span>Release date: </span>{{ book.releaseDate }}</div>
                     <div><span>Pages: </span>{{ book.pages }}</div>
@@ -41,8 +41,16 @@
             <div class="comments-container">
                 <h2>Comments</h2>
                 <div class="comments">
-                    @for (comment of book.comments; track comment) {
-                        <app-comment [comment]="comment"></app-comment>
+                    @if (book.comments?.length === 0) {
+                        <div class="empty-comments">
+                            <img src="../../../../../assets/images/empty-comments.jpeg" alt="no-comments">
+                            <p>No comments yet</p>
+                        </div>
+                    }
+                    @else {
+                        @for (comment of book.comments; track comment) {
+                            <app-comment [comment]="comment"></app-comment>
+                        }
                     }
                 </div>
             </div>
