@@ -19,6 +19,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ManageAuthorDialogComponent } from './components/manage-author-dialog/manage-author-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ManageGenreDialogComponent } from './components/manage-genre-dialog/manage-genre-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ManageGenresComponent,
     ManageCommentsComponent,
     NavComponent,
-    ManageBookComponent
+    ManageBookComponent,
+    ManageAuthorDialogComponent,
+    ManageGenreDialogComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +47,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatDatepickerModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule
   ]
 })
 export class DashboadModule { }

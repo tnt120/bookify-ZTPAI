@@ -5,13 +5,12 @@ import com.bookify.backend.api.external.response.BookResponse;
 import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.*;
 import com.bookify.backend.mapper.BookMapper;
-import com.bookify.backend.repository.AuthorRepository;
-import com.bookify.backend.repository.BookRepository;
-import com.bookify.backend.repository.GenreRepository;
+import com.bookify.backend.repository.*;
 import com.bookify.backend.service.BookService;
 import com.bookify.backend.service.FileStorageService;
 import com.bookify.backend.service.RatingService;
 import com.bookify.backend.specification.BookSpecification;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +35,8 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final FileStorageService fileStorageService;
     private final RatingService ratingService;
+    private final RatingRepository ratingRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public Integer save(BookRequest request) {
@@ -102,6 +102,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public Integer delete(Integer id) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -113,6 +114,9 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(BOOK_NOT_FOUND::getError);
 
         fileStorageService.deleteFile(book.getCoverUrl());
+
+        ratingRepository.deleteAllByBook(book);
+        commentRepository.deleteAllByBook(book);
 
         bookRepository.delete(book);
 

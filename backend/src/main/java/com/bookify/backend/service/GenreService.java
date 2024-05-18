@@ -5,5 +5,11 @@ import com.bookify.backend.api.external.GenreDTO;
 import java.util.List;
 
 public interface GenreService {
-    List<GenreDTO> getAllGenres();
+    List<GenreDTO> getAllGenres(String sortBy, String order, String name);
+
+    Integer save(GenreDTO genreDTO);
+
+    Integer update(Integer id, GenreDTO genre);
+
+    Integer delete(Integer id);
 }

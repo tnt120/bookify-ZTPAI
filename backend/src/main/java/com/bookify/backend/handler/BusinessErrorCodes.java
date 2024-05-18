@@ -25,7 +25,8 @@ public enum BusinessErrorCodes {
     GENRE_NOT_FOUND(306, "Genre not found", HttpStatus.NOT_FOUND),
     BOOK_NOT_FOUND(307, "Book not found", HttpStatus.NOT_FOUND),
     INVALID_TOKEN(308, "Invalid token", HttpStatus.UNAUTHORIZED),
-    NO_PERMISSION(309, "You do not have permission to perform this operation", HttpStatus.BAD_REQUEST)
+    NO_PERMISSION(309, "You do not have permission to perform this operation", HttpStatus.BAD_REQUEST),
+    GENRE_ALREADY_EXISTS(310, "Genre with provided name already exists", HttpStatus.CONFLICT),
     ;
 
     private final int code;

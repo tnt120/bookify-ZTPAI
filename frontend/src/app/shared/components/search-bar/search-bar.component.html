@@ -1,28 +1,46 @@
 <div class="search-bar-container">
-  <mat-form-field subscriptSizing="dynamic">
-      <mat-label>Title</mat-label>
-      <input [(ngModel)]="filters.title" type="text" name="title" matInput placeholder="Title" color="accent">
+  @if (type === 'books') {
+    <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Title</mat-label>
+        <input [(ngModel)]="filtersBook.title" type="text" name="title" matInput placeholder="Title" color="accent">
     </mat-form-field>
-  <div class="search-bar-container-select-section">
-      <mat-form-field subscriptSizing="dynamic">
-          <mat-label>Author</mat-label>
-          <mat-select [(ngModel)]="filters.author" name="authorId">
-            <mat-option>--</mat-option>
-            @for (author of (authors); track author) {
-              <mat-option [value]="author.id">{{ author.firstName + ' ' + author.lastName }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+    <div class="search-bar-container-select-section">
         <mat-form-field subscriptSizing="dynamic">
-          <mat-label>Genre</mat-label>
-          <mat-select [(ngModel)]="filters.genre" name="genreId">
-            <mat-option>--</mat-option>
-            @for (genre of genres; track genre) {
-              <mat-option [value]="genre.id">{{ genre.name }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-  </div>
+            <mat-label>Author</mat-label>
+            <mat-select [(ngModel)]="filtersBook.author" name="authorId">
+              <mat-option>--</mat-option>
+              @for (author of (authors); track author) {
+                <mat-option [value]="author.id">{{ author.firstName + ' ' + author.lastName }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-label>Genre</mat-label>
+            <mat-select [(ngModel)]="filtersBook.genre" name="genreId">
+              <mat-option>--</mat-option>
+              @for (genre of genres; track genre) {
+                <mat-option [value]="genre.id">{{ genre.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+    </div>
+  }
+  @else if (type ==='authors') {
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Last name</mat-label>
+      <input [(ngModel)]="filtersAuthor.lastName" type="text" name="lastName" matInput placeholder="Last name" color="accent">
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>First name</mat-label>
+      <input [(ngModel)]="filtersAuthor.firstName" type="text" name="firstName" matInput placeholder="First name" color="accent">
+    </mat-form-field>
+  }
+  @else if (type === 'genres') {
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Genre</mat-label>
+      <input [(ngModel)]="filtersGenre.name" type="text" name="name" matInput placeholder="Genre" color="accent">
+    </mat-form-field>
+  }
   <div class="search-bar-container-actions">
       <app-search-button (click)="onSearch()"></app-search-button>
       <app-filter-control [sortOptions]="sortOptions" [activeSort]="activeSort" (optionSelected)="onSortSelected($event)"></app-filter-control>

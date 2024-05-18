@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { DivieWordsPipe } from './pipes/divie-words.pipe';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { MatButtonModule } from '@angular/material/button';
     FilterControlComponent,
     FilterTranformLabelPipe,
     SearchBarComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    DivieWordsPipe
   ],
   imports: [
     CommonModule,
@@ -60,7 +62,8 @@ import { MatButtonModule } from '@angular/material/button';
     FilterControlComponent,
     FilterTranformLabelPipe,
     SearchBarComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    DivieWordsPipe
   ]
 })
 export class SharedModule { }

@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{ data.title }} genre</h1>
+<mat-dialog-content>
+  <form [formGroup]="manageForm">
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input type="text" formControlName="name" name="name" matInput placeholder="Name" color="accent" required (blur)="updateError('name', 'Name')" cdkFocusInitial>
+      <mat-error *ngIf="manageForm.controls.name.hasError('required')">{{ errors.name }}</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="warn" mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="manageForm.value" [disabled]="isFormValid()">{{ data.confirmText }}</button>
+</mat-dialog-actions>

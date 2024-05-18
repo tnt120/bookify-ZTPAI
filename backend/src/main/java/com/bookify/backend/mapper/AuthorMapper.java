@@ -15,7 +15,6 @@ public class AuthorMapper {
 
     public Author map(AuthorDTO author) {
         return new Author()
-                .setId(author.getId())
                 .setFirstName(author.getFirstName())
                 .setLastName(author.getLastName());
     }

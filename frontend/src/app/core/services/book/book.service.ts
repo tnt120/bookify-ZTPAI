@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BookRequest, BookRequestUpdate } from '../../models/book-request.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { PageResponse } from '../../models/page-response';
-import { FiltersModel } from '../../../modules/books/models/filters.model';
+import { FiltersBookModel } from '../../../modules/books/models/filters-books.model';
 import { SortOption } from '../../models/sort-option.model';
 import { BookReponse } from '../../models/book-reponse.model';
 
@@ -43,7 +43,7 @@ export class BookService {
     });
   }
 
-  getBooks(page: number, size: number, sort: SortOption, filters: FiltersModel): Observable<PageResponse> {
+  getBooks(page: number, size: number, sort: SortOption, filters: FiltersBookModel): Observable<PageResponse> {
     let params = new HttpParams()
       .set('page', page)
       .set('size', size)

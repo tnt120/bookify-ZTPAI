@@ -5,7 +5,11 @@ import com.bookify.backend.api.external.AuthorDTO;
 import java.util.List;
 
 public interface AuthorService {
-    List<AuthorDTO> getAllAuthors();
+    List<AuthorDTO> getAllAuthors(String sortBy, String order, String firstName, String lastName);
 
-    AuthorDTO save(AuthorDTO authorDTO);
+    Integer save(AuthorDTO authorDTO);
+
+    Integer update(Integer id, AuthorDTO author);
+
+    Integer delete(Integer id);
 }

@@ -1,7 +1,6 @@
 package com.bookify.backend.controller;
 
 import com.bookify.backend.api.external.AuthorDTO;
-import com.bookify.backend.api.external.StatusResponseDTO;
 import com.bookify.backend.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,22 +16,27 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping
-    public ResponseEntity<List<AuthorDTO>> getAuthors() {
-        return ResponseEntity.ok(authorService.getAllAuthors());
+    public ResponseEntity<List<AuthorDTO>> getAuthors(
+            @RequestParam(name = "sort", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "asc", required = false) String order,
+            @RequestParam(name = "firstName", required = false) String firstName,
+            @RequestParam(name = "lastName", required = false) String lastName
+    ) {
+        return ResponseEntity.ok(authorService.getAllAuthors(sortBy, order, firstName, lastName));
     }
 
     @PostMapping()
-    public AuthorDTO saveAuthor(@RequestBody AuthorDTO authorDTO) {
-        return authorService.save(authorDTO);
+    public ResponseEntity<Integer> addAuthor(@RequestBody AuthorDTO authorDTO) {
+        return ResponseEntity.ok(authorService.save(authorDTO));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> editAuthor(@PathVariable Integer id, @RequestBody AuthorDTO authorDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<Integer> editAuthor(@PathVariable Integer id, @RequestBody AuthorDTO author) {
+        return ResponseEntity.status(HttpStatus.OK).body(authorService.update(id, author));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteAuthor(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<Integer> deleteAuthor(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.OK).body(authorService.delete(id));
     }
 }
