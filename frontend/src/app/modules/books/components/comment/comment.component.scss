@@ -21,6 +21,10 @@
             width: 100%;
             padding: 0.5em 1em;
 
+            .date {
+                font-size: $font-size-s;
+            }
+
             img {
                 height: 24px;
                 width: 24px;
