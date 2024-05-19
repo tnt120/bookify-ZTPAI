@@ -1,3 +1,4 @@
+import { basePagination } from './../../../../core/constants/paginations-options';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
@@ -11,6 +12,7 @@ import { FiltersBookModel } from '../../models/filters-books.model';
 import { SortOption } from '../../../../core/models/sort-option.model';
 import { baseSortOptions } from '../../../../core/constants/sort-options';
 import { BookReponse } from '../../../../core/models/book-reponse.model';
+import { Pagination } from '../../../../core/models/pagination.model';
 
 @Component({
   selector: 'app-home',
@@ -35,21 +37,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     genre: null,
   }
 
-  pageSize = 10;
-  pageIndex = 0;
-  totalElements = 50;
-  pageSizeOptions = [5, 10, 25, 50];
+  pagination: Pagination = {...basePagination};
 
   sortOptions: SortOption[] = baseSortOptions;
 
   sort: SortOption = this.sortOptions[0];
 
-  pageEvent: PageEvent | undefined;
-
   handlePageEvent(e: PageEvent) {
-    this.pageEvent = e;
-    this.pageSize = e.pageSize;
-    this.pageIndex = e.pageIndex;
+    this.pagination.pageEvent = e;
+    this.pagination.pageSize = e.pageSize;
+    this.pagination.pageIndex = e.pageIndex;
     this.getBooks();
   }
 
@@ -62,9 +59,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getBooks() {
-    this.subscribtions.push(this.bookService.getBooks(this.pageIndex, this.pageSize, this.sort, this.filtersValue).subscribe({
-      next: (response: PageResponse) => {
-        this.totalElements = response.totalElements;
+    this.subscribtions.push(this.bookService.getBooks(this.pagination.pageIndex, this.pagination.pageSize, this.sort, this.filtersValue).subscribe({
+      next: (response: PageResponse<BookReponse>) => {
+        this.pagination.totalElements = response.totalElements;
       },
       error: (error) => {
         console.error(error);
@@ -74,13 +71,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onSearch(filter: FiltersBookModel) {
     this.filtersValue = filter;
-    this.pageIndex = 0;
+    this.pagination.pageIndex = 0;
     this.getBooks();
   }
 
   onSort(sort: SortOption) {
     this.sort = sort;
-    this.pageIndex = 0;
+    this.pagination.pageIndex = 0;
     this.getBooks();
   }
 }

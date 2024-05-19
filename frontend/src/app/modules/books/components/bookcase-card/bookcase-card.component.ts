@@ -1,5 +1,5 @@
-import { Component, Input, inject } from '@angular/core';
-import { Book } from '../../models/book.model';
+import { Component, Input } from '@angular/core';
+import { BookBookcaseResponse } from '../../models/book-bookcase-response.model';
 import { BookReponse } from '../../../../core/models/book-reponse.model';
 
 @Component({
@@ -9,12 +9,28 @@ import { BookReponse } from '../../../../core/models/book-reponse.model';
 })
 export class BookcaseCardComponent {
   @Input({ required: true })
-  book!: BookReponse;
+  bookcaseResponse!: BookBookcaseResponse;
 
   @Input()
   type!: 'finished' | 'reading' | 'to-read';
 
-  ngOnInit(): void {
+  book!: BookReponse;
 
+  cover!: string;
+
+  progressPercentege = 0;
+
+  ngOnInit(): void {
+    this.book = this.bookcaseResponse.book;
+    this.cover = this.bookCover;
+    this.calcProgressPercentage();
+  }
+
+  calcProgressPercentage(): void {
+    this.progressPercentege = (this.bookcaseResponse.currentPage / this.book.pages) * 100;
+  }
+
+  get bookCover(): string {
+    return `data:image/jpeg;base64 ,${this.book.cover}`
   }
 }

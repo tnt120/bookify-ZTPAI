@@ -25,9 +25,9 @@
     <mat-paginator #paginator
         class="paginator"
         (page)="handlePageEvent($event)"
-        [length]="totalElements"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="pageSizeOptions"
-        [pageIndex]="pageIndex">
+        [length]="pagination.totalElements"
+        [pageSize]="pagination.pageSize"
+        [pageSizeOptions]="pagination.pageSizeOptions"
+        [pageIndex]="pagination.pageIndex">
     </mat-paginator>
 </div>

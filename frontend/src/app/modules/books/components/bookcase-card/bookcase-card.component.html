@@ -1,19 +1,23 @@
 <div class="bookcase-card-container">
-  <div class="image"></div>
+  <div class="image">
+    <img [src]="cover" alt="cover">
+  </div>
   <div class="info-container">
     <div class="details">
       <p><span>Title:</span> {{ book.title }}</p>
-      <p><span>Author:</span> {{ book.author }}</p>
-      <p><span>Genre:</span> {{ book.genre }}</p>
+      <p><span>Author:</span> {{ book.author.firstName }} {{ book.author.lastName }}</p>
+      <p><span>Genre:</span> {{ book.genre.name }}</p>
       <p><span>Pages:</span> {{ book.pages }}</p>
     </div>
-    <div class="progress-container">
-      <div class="text-icon">
-        <p>Progress:</p>
-        <img src="../../../../../assets/icons/edit.svg" alt="edit-icon">
+    @if (type === 'reading') {
+      <div class="progress-container">
+        <div class="text-icon">
+          <p>Progress:</p>
+          <img src="../../../../../assets/icons/edit.svg" alt="edit-icon">
+        </div>
+        <mat-progress-bar mode="determinate" [value]="progressPercentege" [matTooltip]="'Pages readed: ' + bookcaseResponse.currentPage + '/' + book.pages"></mat-progress-bar>
       </div>
-      <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
-    </div>
+    }
   </div>
   <div class="actions-container">
     <div class="rating">
@@ -21,8 +25,15 @@
       <p>{{ book.avgRating }}</p>
     </div>
     <div class="action-buttons">
-      <app-action-button text="Finished"></app-action-button>
-      <app-action-button text="Reading"></app-action-button>
+      @if (type !== 'finished') {
+        <app-action-button text="Finished"></app-action-button>
+      }
+      @if (type !== 'reading') {
+        <app-action-button text="Reading"></app-action-button>
+      }
+      @if (type !== 'to-read') {
+        <app-action-button text="To read"></app-action-button>
+      }
       <app-action-button text="Delete"></app-action-button>
     </div>
   </div>

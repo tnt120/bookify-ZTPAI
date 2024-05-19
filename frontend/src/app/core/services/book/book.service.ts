@@ -43,7 +43,7 @@ export class BookService {
     });
   }
 
-  getBooks(page: number, size: number, sort: SortOption, filters: FiltersBookModel): Observable<PageResponse> {
+  getBooks(page: number, size: number, sort: SortOption, filters: FiltersBookModel): Observable<PageResponse<BookReponse>> {
     let params = new HttpParams()
       .set('page', page)
       .set('size', size)
@@ -56,7 +56,7 @@ export class BookService {
 
       if (filters.genre) params = params.set('genre', filters.genre);
 
-      return this.http.get<PageResponse>(this.apiUrl, { params }).pipe(
+      return this.http.get<PageResponse<BookReponse>>(this.apiUrl, { params }).pipe(
         tap(response => this.booksSubject.next(response.content))
       );
   }

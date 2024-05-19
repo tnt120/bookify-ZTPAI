@@ -1,7 +1,5 @@
-import { BookReponse } from "./book-reponse.model";
-
-export interface PageResponse {
-    content: BookReponse[];
+export interface PageResponse<T> {
+    content: T[];
     totalPages: number;
     totalElements: number;
     currentPage: number;

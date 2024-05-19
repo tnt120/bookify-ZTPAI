@@ -1,3 +1,4 @@
+import { basePagination } from './../../../../core/constants/paginations-options';
 import { PageResponse } from './../../../../core/models/page-response';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
@@ -17,6 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirimationDialogData } from '../../../../core/models/confirmation-dialog-data.model';
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { BookReponse } from '../../../../core/models/book-reponse.model';
+import { Pagination } from '../../../../core/models/pagination.model';
 
 @Component({
   selector: 'app-manage-books',
@@ -50,33 +52,28 @@ export class ManageBooksComponent implements OnInit, OnDestroy {
     genre: null,
   }
 
-  pageSize = 10;
-  pageIndex = 0;
-  totalElemets = 50;
-  pageSizeOptions = [5, 10, 25, 50];
+  pagination: Pagination = {...basePagination};
 
   sortOptions: SortOption[] = baseSortOptions;
 
   sort: SortOption = this.sortOptions[0];
 
-  pageEvent: PageEvent | undefined;
-
   handlePageEvent(e: PageEvent) {
-    this.pageEvent = e;
-    this.pageSize = e.pageSize;
-    this.pageIndex = e.pageIndex;
+    this.pagination.pageEvent = e;
+    this.pagination.pageSize = e.pageSize;
+    this.pagination.pageIndex = e.pageIndex;
     this.getBooks();
   }
 
   onSearch(filter: FiltersBookModel) {
     this.filtersValue = filter;
-    this.pageIndex = 0;
+    this.pagination.pageIndex = 0;
     this.getBooks();
   }
 
   onSort(sort: SortOption) {
     this.sort = sort;
-    this.pageIndex = 0;
+    this.pagination.pageIndex = 0;
     this.getBooks();
   }
 
@@ -93,9 +90,9 @@ export class ManageBooksComponent implements OnInit, OnDestroy {
   }
 
   getBooks() {
-    this.subscriptions.push(this.bookService.getBooks(this.pageIndex, this.pageSize, this.sort, this.filtersValue).subscribe({
-      next: (response: PageResponse) => {
-        this.totalElemets = response.totalElements;
+    this.subscriptions.push(this.bookService.getBooks(this.pagination.pageIndex, this.pagination.pageSize, this.sort, this.filtersValue).subscribe({
+      next: (response: PageResponse<BookReponse>) => {
+        this.pagination.totalElements = response.totalElements;
       },
       error: (error) => {
         console.error(error);

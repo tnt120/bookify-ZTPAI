@@ -16,10 +16,11 @@
     .image {
       width: 136px;
       height: 200px;
-      background: url('../../../../../assets/images/covers/fall-of-ruin.jpg');
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
+
+      img {
+        width: 136px;
+        height: 200px;
+      }
     }
 
     .info-container{
@@ -89,6 +90,11 @@
       .image {
         width: 250px;
         height: 375px;
+
+        img {
+          width: 250px;
+          height: 375px;
+        }
       }
 
       .info-container {
