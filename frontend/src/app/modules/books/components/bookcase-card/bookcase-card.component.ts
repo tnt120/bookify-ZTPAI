@@ -1,6 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { Book } from '../../models/book.model';
-import { BookService } from '../../services/book.service';
+import { BookReponse } from '../../../../core/models/book-reponse.model';
 
 @Component({
   selector: 'app-bookcase-card',
@@ -9,16 +9,12 @@ import { BookService } from '../../services/book.service';
 })
 export class BookcaseCardComponent {
   @Input({ required: true })
-  book!: Book;
+  book!: BookReponse;
 
   @Input()
   type!: 'finished' | 'reading' | 'to-read';
 
-  avgRating = 0;
-
-  private readonly bookService = inject(BookService);
-
   ngOnInit(): void {
-    this.avgRating = this.bookService.calculateRating(this.book);
+
   }
 }

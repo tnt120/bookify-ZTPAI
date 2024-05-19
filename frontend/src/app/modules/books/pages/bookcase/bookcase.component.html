@@ -1,7 +1,7 @@
 <div class="container">
   <app-title-bar title="My Bookcase"></app-title-bar>
   <div class="bookcase-book-container">
-    <app-tabs>
+    <app-tabs (tabChangeEmitter)="onTabChange($event)">
       <app-tab title="Finished">
         @if (books$ | async; as books) {
           @for (book of books.slice(0, 2); track book.id) {
@@ -24,5 +24,13 @@
         }
       </app-tab>
     </app-tabs>
+    <mat-paginator #paginator
+        class="paginator"
+        (page)="handlePageEvent($event)"
+        [length]="totalElements"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [pageIndex]="pageIndex">
+    </mat-paginator>
   </div>
 </div>
