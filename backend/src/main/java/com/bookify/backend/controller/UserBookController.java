@@ -2,7 +2,11 @@ package com.bookify.backend.controller;
 
 
 import com.bookify.backend.api.external.*;
+import com.bookify.backend.api.external.response.BookBookcaseResponse;
+import com.bookify.backend.api.external.response.PageResponse;
+import com.bookify.backend.service.BookcaseService;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,25 +16,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/userBook")
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class UserBookController {
-    @GetMapping("/{id}")
-    public List<UserBookDTO> getUserBooks(@PathVariable Integer id) {
-        return List.of(new UserBookDTO()
-                .setId(1)
-                .setUser(new UserDTO().setId(1).setEmail("test@test"))
-                .setBook(new BookDTO()
-                        .setId(1)
-                        .setTitle("Cos")
-                        .setCoverUrl("xd")
-                        .setAuthor(new AuthorDTO().setId(1).setFirstName("Jan").setLastName("Brzechwa"))
-                        .setGenre(new GenreDTO().setId(1).setName("horror"))
-                        .setPages(400)
-                        .setReleaseDate(LocalDate.of(2021, 8, 30))
-                        .setRatings(List.of(new RatingDTO().setId(1).setValue(10), new RatingDTO().setId(2).setValue(5))))
-                .setBookcaseType(new BookcaseTypeDTO().setId(1).setName("W trakcie czytania"))
-                .setCurrentPage(200)
-        );
+    private final BookcaseService bookcaseService;
+
+    @GetMapping()
+    public ResponseEntity<PageResponse<BookBookcaseResponse>> getUserBooks(
+            @RequestParam(name = "bookcaseId") Integer bookcaseId,
+            @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+            @RequestParam(name = "sort", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "desc", required = false) String order
+    ) {
+        return ResponseEntity.ok(bookcaseService.getUserBooks(bookcaseId, page, size, sortBy, order));
     }
 
     @PostMapping()
