@@ -2,6 +2,7 @@ package com.bookify.backend.service.impl;
 
 import com.bookify.backend.api.external.requests.UpdateBookcaseRequest;
 import com.bookify.backend.api.external.response.BookBookcaseResponse;
+import com.bookify.backend.api.external.response.DetailsBookcaseResponse;
 import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.Book;
 import com.bookify.backend.api.internal.BookcaseType;
@@ -66,6 +67,29 @@ public class BookcaseServiceImpl implements BookcaseService {
                 .setTotalPages(userBooks.getTotalPages())
                 .setLast(userBooks.isLast())
                 .setFirst(userBooks.isFirst());
+    }
+
+    @Override
+    public DetailsBookcaseResponse getDetailsBookcase(Integer bookId) {
+
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(BOOK_NOT_FOUND::getError);
+
+        Optional<UserBook> userBookOptional = userBookRepository.findByUserAndBook(user, book);
+
+        if (userBookOptional.isEmpty()) {
+            return new DetailsBookcaseResponse()
+                    .setId(0)
+                    .setBookcaseId(0);
+        }
+
+        UserBook userBook = userBookOptional.get();
+
+        return new DetailsBookcaseResponse()
+                .setId(userBook.getId())
+                .setBookcaseId(userBook.getBookcaseType().getId());
     }
 
     @Override

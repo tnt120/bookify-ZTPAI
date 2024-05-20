@@ -3,6 +3,7 @@ package com.bookify.backend.controller;
 
 import com.bookify.backend.api.external.requests.UpdateBookcaseRequest;
 import com.bookify.backend.api.external.response.BookBookcaseResponse;
+import com.bookify.backend.api.external.response.DetailsBookcaseResponse;
 import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.service.BookcaseService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,11 @@ public class UserBookController {
             @RequestParam(name = "order", defaultValue = "desc", required = false) String order
     ) {
         return ResponseEntity.ok(bookcaseService.getUserBooks(bookcaseId, page, size, sortBy, order));
+    }
+
+    @GetMapping("/{bookId}")
+    public ResponseEntity<DetailsBookcaseResponse> getDetailsBookcase(@PathVariable Integer bookId) {
+        return ResponseEntity.ok(bookcaseService.getDetailsBookcase(bookId));
     }
 
     @PostMapping()
