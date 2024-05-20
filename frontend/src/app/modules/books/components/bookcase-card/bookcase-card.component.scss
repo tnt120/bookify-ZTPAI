@@ -31,6 +31,16 @@
       justify-content: space-between;
 
       .details {
+        .book-title, .book-author {
+          max-height: $font-size-m * 3;
+          width: 100%;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+
         p {
           margin-bottom: 10px;
           font-style: italic;
@@ -70,11 +80,6 @@
         font-weight: bold;
         font-size: $font-size-l;
       }
-
-      .action-buttons {
-        display: flex;
-        gap: 0.5em;
-      }
     }
   }
 }
@@ -86,13 +91,14 @@
     .bookcase-card-container {
       flex-direction: column;
       width: 250px;
+      height: 680px;
 
       .image {
-        width: 250px;
+        width: 248px;
         height: 375px;
 
         img {
-          width: 250px;
+          width: 248px;
           height: 375px;
         }
       }
@@ -106,6 +112,10 @@
       }
 
       .actions-container {
+        align-items: center;
+        justify-content: center;
+        padding: 0 0 1em 0;
+
         .rating {
           display: none;
         }

@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { BookcaseActionsComponent } from './components/bookcase-actions/bookcase-actions.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     BookCardComponent,
     BookcaseCardComponent,
     ActionButtonComponent,
-    CommentComponent
+    CommentComponent,
+    BookcaseActionsComponent
   ],
   imports: [
     CommonModule,

@@ -8,7 +8,7 @@
         align-items: center;
         padding: 0 0 2em 0;
         gap: 2em;
-  
+
         .book-details-container {
             width: 80%;
             display: flex;
@@ -45,20 +45,6 @@
                         font-weight: bold;
                     }
                 }
-
-                .actions {
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1em;
-                    justify-content: center;
-                    align-items: center;
-
-                    .actions-buttons {
-                        display: flex;
-                        gap: 1em;
-                    }
-                }
             }
         }
 
@@ -69,11 +55,11 @@
             gap: 1em;
 
         }
-        
+
         .community-container {
             width: 80%;
-            display: flex;           
-            
+            display: flex;
+
             .rating-container {
                 width: 40%;
 
@@ -97,7 +83,7 @@
                     }
                 }
             }
-            
+
             .comments-container {
                 width: 60%;
 
@@ -108,7 +94,7 @@
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        
+
                         img {
                             width: 50%;
                         }
@@ -128,7 +114,7 @@
         .container {
             .book-details-container {
                 flex-direction: column;
-                
+
                 .info {
                     gap: 2em;
                 }

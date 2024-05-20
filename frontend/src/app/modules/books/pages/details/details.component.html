@@ -16,23 +16,7 @@
                 </div>
 
                 @if (detailsBookcaseType !== null) {
-                  <div class="actions">
-                      <h2>Manage bookcase</h2>
-                      <div class="actions-buttons">
-                          @if (detailsBookcaseType.bookcaseId !== bookcaseType.FINISHED) {
-                            <app-action-button text="Finished"></app-action-button>
-                          }
-                          @if (detailsBookcaseType.bookcaseId !== bookcaseType.READING) {
-                            <app-action-button text="Reading"></app-action-button>
-                          }
-                          @if (detailsBookcaseType.bookcaseId !== bookcaseType.TO_READ) {
-                            <app-action-button text="To read"></app-action-button>
-                          }
-                          @if (detailsBookcaseType.bookcaseId !== 0) {
-                            <app-action-button text="Delete"></app-action-button>
-                          }
-                      </div>
-                  </div>
+                  <app-bookcase-actions [detailsBookcaseType]="detailsBookcaseType"></app-bookcase-actions>
                 }
             </div>
         </div>

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { BookBookcaseResponse } from '../../models/book-bookcase-response.model';
 import { BookReponse } from '../../../../core/models/book-reponse.model';
+import { DetailsBookcaseResponse } from '../../models/details-bookcase-response.model';
 
 @Component({
   selector: 'app-bookcase-card',
@@ -20,10 +21,20 @@ export class BookcaseCardComponent {
 
   progressPercentege = 0;
 
+  detailsBookcaseType!: DetailsBookcaseResponse;
+
   ngOnInit(): void {
     this.book = this.bookcaseResponse.book;
     this.cover = this.bookCover;
     this.calcProgressPercentage();
+    this.setBookcaseType();
+  }
+
+  setBookcaseType(): void {
+    this.detailsBookcaseType = {
+      id: this.bookcaseResponse.id,
+      bookcaseId: this.bookcaseResponse.bookcaseType.id
+    }
   }
 
   calcProgressPercentage(): void {

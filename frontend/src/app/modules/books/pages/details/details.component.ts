@@ -34,12 +34,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   protected ratingsCount = Array(10).fill(0);
 
-  bookcaseType = {
-    FINISHED: BookcaseType.FINISHED,
-    READING: BookcaseType.READING,
-    TO_READ: BookcaseType.TO_READ
-  };
-
   subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
