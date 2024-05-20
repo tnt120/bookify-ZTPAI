@@ -15,14 +15,25 @@
                     <div><span>Pages: </span>{{ book.pages }}</div>
                 </div>
 
-                <div class="actions">
-                    <h2>Manage bookcase</h2>
-                    <div class="actions-buttons">
-                        <app-action-button text="Finished"></app-action-button>
-                        <app-action-button text="Reading"></app-action-button>
-                        <app-action-button text="To read"></app-action-button>
-                    </div>
-                </div>
+                @if (detailsBookcaseType !== null) {
+                  <div class="actions">
+                      <h2>Manage bookcase</h2>
+                      <div class="actions-buttons">
+                          @if (detailsBookcaseType.bookcaseId !== bookcaseType.FINISHED) {
+                            <app-action-button text="Finished"></app-action-button>
+                          }
+                          @if (detailsBookcaseType.bookcaseId !== bookcaseType.READING) {
+                            <app-action-button text="Reading"></app-action-button>
+                          }
+                          @if (detailsBookcaseType.bookcaseId !== bookcaseType.TO_READ) {
+                            <app-action-button text="To read"></app-action-button>
+                          }
+                          @if (detailsBookcaseType.bookcaseId !== 0) {
+                            <app-action-button text="Delete"></app-action-button>
+                          }
+                      </div>
+                  </div>
+                }
             </div>
         </div>
         <div class="description-container">
