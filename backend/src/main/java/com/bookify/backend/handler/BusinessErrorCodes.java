@@ -25,9 +25,10 @@ public enum BusinessErrorCodes {
     GENRE_NOT_FOUND(306, "Genre not found", HttpStatus.NOT_FOUND),
     BOOK_NOT_FOUND(307, "Book not found", HttpStatus.NOT_FOUND),
     BOOKCASE_TYPE_NOT_FOUND(308, "Bookcase type not found", HttpStatus.NOT_FOUND),
-    INVALID_TOKEN(309, "Invalid token", HttpStatus.UNAUTHORIZED),
-    NO_PERMISSION(310, "You do not have permission to perform this operation", HttpStatus.BAD_REQUEST),
-    GENRE_ALREADY_EXISTS(311, "Genre with provided name already exists", HttpStatus.CONFLICT),
+    USER_BOOK_NOT_FOUND(309, "User book not found", HttpStatus.NOT_FOUND),
+    INVALID_TOKEN(310, "Invalid token", HttpStatus.UNAUTHORIZED),
+    NO_PERMISSION(311, "You do not have permission to perform this operation", HttpStatus.BAD_REQUEST),
+    GENRE_ALREADY_EXISTS(312, "Genre with provided name already exists", HttpStatus.CONFLICT),
     ;
 
     private final int code;

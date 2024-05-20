@@ -1,13 +1,11 @@
 package com.bookify.backend.controller;
 
 
-import com.bookify.backend.api.external.*;
 import com.bookify.backend.api.external.requests.UpdateBookcaseRequest;
 import com.bookify.backend.api.external.response.BookBookcaseResponse;
 import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.service.BookcaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,13 +31,8 @@ public class UserBookController {
         return ResponseEntity.ok(bookcaseService.updateUserBook(request));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Object> editUserBook(@PathVariable Integer id, @RequestBody UserBookDTO userBook) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
-    }
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUserBook(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<Integer> deleteUserBook(@PathVariable Integer id) {
+        return ResponseEntity.ok(bookcaseService.deleteUserBook(id));
     }
 }

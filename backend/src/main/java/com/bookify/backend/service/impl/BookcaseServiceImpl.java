@@ -97,4 +97,15 @@ public class BookcaseServiceImpl implements BookcaseService {
 
         return userBookRepository.save(userBook).getId();
     }
+
+    @Override
+    public Integer deleteUserBook(Integer id) {
+
+        UserBook userBook = userBookRepository.findById(id)
+                .orElseThrow(BOOK_NOT_FOUND::getError);
+
+        userBookRepository.delete(userBook);
+
+        return id;
+    }
 }
