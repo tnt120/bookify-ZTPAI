@@ -1,14 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { BookBookcaseResponse } from '../../models/book-bookcase-response.model';
 import { BookReponse } from '../../../../core/models/book-reponse.model';
 import { DetailsBookcaseAction, DetailsBookcaseResponse } from '../../models/details-bookcase-response.model';
+import { BookcaseService } from '../../services/bookcase/bookcase.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateBookcaseRequest } from '../../models/update-bookcase-request.model';
+import { ProgressDialogData } from '../../models/progres-dialog-data.model';
+import { BookcaseProgresDialogComponent } from '../bookcase-progres-dialog/bookcase-progres-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-bookcase-card',
   templateUrl: './bookcase-card.component.html',
   styleUrl: './bookcase-card.component.scss'
 })
-export class BookcaseCardComponent {
+export class BookcaseCardComponent implements OnInit, OnDestroy {
   @Input({ required: true })
   bookcaseResponse!: BookBookcaseResponse;
 
@@ -17,6 +23,11 @@ export class BookcaseCardComponent {
 
   @Output()
   updateResolveEmitter = new EventEmitter<number>();
+
+  constructor(
+    public dialog: MatDialog,
+    private bookcaseService: BookcaseService
+  ) {}
 
   book!: BookReponse;
 
@@ -28,11 +39,17 @@ export class BookcaseCardComponent {
 
   detailsBookcaseAction!: DetailsBookcaseAction;
 
+  subscriptions: Subscription[] = [];
+
   ngOnInit(): void {
     this.book = this.bookcaseResponse.book;
     this.cover = this.bookCover;
     this.calcProgressPercentage();
     this.setBookcaseType();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   setBookcaseType(): void {
@@ -54,5 +71,39 @@ export class BookcaseCardComponent {
 
   onBookUpdate(newBookcaseId: number) {
     this.updateResolveEmitter.emit(newBookcaseId);
+  }
+
+  updateProgress() {
+    const data: ProgressDialogData = {
+      title: 'Update progress',
+      message: 'Enter the current page',
+      confirmText: 'Update'
+    };
+
+    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data });
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.updateBookcase(this.detailsBookcaseAction.bookcaseId, result.currentPage);
+      }
+    }));
+  }
+
+  private updateBookcase(bookcaseId: number, currentPage: number) {
+    const request: UpdateBookcaseRequest = {
+      bookId: this.detailsBookcaseAction.bookId,
+      bookcaseId,
+      currentPage
+    };
+
+    this.subscriptions.push(this.bookcaseService.updateUserBook(request).subscribe({
+      next: res => {
+        this.bookcaseResponse.currentPage = currentPage;
+        this.calcProgressPercentage();
+      },
+      error: err => {
+        console.error('Update bookcase error: ', err);
+      }
+    }));
   }
 }

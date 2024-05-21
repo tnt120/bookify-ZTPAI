@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
 <mat-dialog-content>
   <p>{{ data.message }}</p>
-  <p>{{ data.additionalMessage }}</p>
+  <p *ngIf="data.additionalMessage">{{ data.additionalMessage }}</p>
   <mat-form-field class="example-full-width">
     <mat-label>Current page</mat-label>
     <input [(ngModel)]="currentPage" type="number" min="0" name="currentPage" matInput placeholder="Current page" color="accent" required cdkFocusInitial>

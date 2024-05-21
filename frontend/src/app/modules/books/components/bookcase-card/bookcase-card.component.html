@@ -13,7 +13,7 @@
       <div class="progress-container">
         <div class="text-icon">
           <p>Progress:</p>
-          <img src="../../../../../assets/icons/edit.svg" alt="edit-icon">
+          <img src="../../../../../assets/icons/edit.svg" alt="edit-icon" (click)="updateProgress()">
         </div>
         <mat-progress-bar mode="determinate" [value]="progressPercentege" [matTooltip]="'Pages readed: ' + bookcaseResponse.currentPage + '/' + book.pages"></mat-progress-bar>
       </div>
