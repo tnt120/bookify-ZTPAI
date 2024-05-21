@@ -20,6 +20,9 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BookcaseActionsComponent } from './components/bookcase-actions/bookcase-actions.component';
+import { BookcaseProgresDialogComponent } from './components/bookcase-progres-dialog/bookcase-progres-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import { BookcaseActionsComponent } from './components/bookcase-actions/bookcase
     BookcaseCardComponent,
     ActionButtonComponent,
     CommentComponent,
-    BookcaseActionsComponent
+    BookcaseActionsComponent,
+    BookcaseProgresDialogComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +48,9 @@ import { BookcaseActionsComponent } from './components/bookcase-actions/bookcase
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule,
+    MatButtonModule
   ]
 })
 export class BooksModule { }

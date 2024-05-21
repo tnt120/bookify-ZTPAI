@@ -80,4 +80,20 @@ export class BookcaseComponent implements OnInit, OnDestroy {
         break;
     }
   }
+
+  onUpdate(newBookcaseId: number, oldBookcaseId: number) {
+    if (newBookcaseId !== oldBookcaseId) {
+      if (newBookcaseId !== 0) {
+        this.resetPagination(newBookcaseId);
+      }
+      this.resetPagination(oldBookcaseId);
+    } else {
+      this.resetPagination(newBookcaseId);
+    }
+  }
+
+  private resetPagination(bookcaseId: number) {
+    this.paginations[bookcaseId].pageIndex = 0;
+    this.getBooks(bookcaseId);
+  }
 }

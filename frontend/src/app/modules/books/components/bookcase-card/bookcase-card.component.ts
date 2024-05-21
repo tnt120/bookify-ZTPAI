@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BookBookcaseResponse } from '../../models/book-bookcase-response.model';
 import { BookReponse } from '../../../../core/models/book-reponse.model';
-import { DetailsBookcaseResponse } from '../../models/details-bookcase-response.model';
+import { DetailsBookcaseAction, DetailsBookcaseResponse } from '../../models/details-bookcase-response.model';
 
 @Component({
   selector: 'app-bookcase-card',
@@ -15,6 +15,9 @@ export class BookcaseCardComponent {
   @Input()
   type!: 'finished' | 'reading' | 'to-read';
 
+  @Output()
+  updateResolveEmitter = new EventEmitter<number>();
+
   book!: BookReponse;
 
   cover!: string;
@@ -22,6 +25,8 @@ export class BookcaseCardComponent {
   progressPercentege = 0;
 
   detailsBookcaseType!: DetailsBookcaseResponse;
+
+  detailsBookcaseAction!: DetailsBookcaseAction;
 
   ngOnInit(): void {
     this.book = this.bookcaseResponse.book;
@@ -35,6 +40,8 @@ export class BookcaseCardComponent {
       id: this.bookcaseResponse.id,
       bookcaseId: this.bookcaseResponse.bookcaseType.id
     }
+
+    this.detailsBookcaseAction = {...this.detailsBookcaseType, bookId: this.book.id};
   }
 
   calcProgressPercentage(): void {
@@ -43,5 +50,9 @@ export class BookcaseCardComponent {
 
   get bookCover(): string {
     return `data:image/jpeg;base64 ,${this.book.cover}`
+  }
+
+  onBookUpdate(newBookcaseId: number) {
+    this.updateResolveEmitter.emit(newBookcaseId);
   }
 }

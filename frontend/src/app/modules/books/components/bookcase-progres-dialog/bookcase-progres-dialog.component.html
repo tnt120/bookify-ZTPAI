@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+  <p>{{ data.additionalMessage }}</p>
+  <mat-form-field class="example-full-width">
+    <mat-label>Current page</mat-label>
+    <input [(ngModel)]="currentPage" type="number" min="0" name="currentPage" matInput placeholder="Current page" color="accent" required cdkFocusInitial>
+    <mat-error *ngIf="!isValid()">Current page minimum value is 0</mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="warn" mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="{ currentPage }" cdkFocusInitial [disabled]="!isValid()">{{ data.confirmText }}</button>
+</mat-dialog-actions>

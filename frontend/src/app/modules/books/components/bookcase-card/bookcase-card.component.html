@@ -24,6 +24,6 @@
       <img src="../../../../../assets/icons/star.svg" alt="star-icon">
       <p>{{ book.avgRating }}</p>
     </div>
-    <app-bookcase-actions [detailsBookcaseType]="detailsBookcaseType" [isCard]="true"></app-bookcase-actions>
+    <app-bookcase-actions (updateResolveEmitter)="onBookUpdate($event)" [detailsBookcaseAction]="detailsBookcaseAction" [isCard]="true"></app-bookcase-actions>
   </div>
 </div>

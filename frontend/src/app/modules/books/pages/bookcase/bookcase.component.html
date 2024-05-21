@@ -5,7 +5,7 @@
       <app-tab title="Finished">
         @if (finishedBooks$ | async; as books) {
           @for (book of books; track book.id) {
-            <app-bookcase-card [bookcaseResponse]="book" type="finished"></app-bookcase-card>
+            <app-bookcase-card [bookcaseResponse]="book" type="finished" (updateResolveEmitter)="onUpdate($event, finished)"></app-bookcase-card>
           }
         }
         <mat-paginator #paginator
@@ -20,7 +20,7 @@
       <app-tab title="Reading">
         @if (readingBooks$ | async; as books) {
           @for (book of books; track book.id) {
-            <app-bookcase-card [bookcaseResponse]="book" type="reading"></app-bookcase-card>
+            <app-bookcase-card [bookcaseResponse]="book" type="reading" (updateResolveEmitter)="onUpdate($event, reading)"></app-bookcase-card>
           }
         }
         <mat-paginator #paginator
@@ -35,7 +35,7 @@
       <app-tab title="To Read">
         @if (toReadBooks$ | async; as books) {
           @for (book of books; track book.id) {
-            <app-bookcase-card [bookcaseResponse]="book" type="to-read"></app-bookcase-card>
+            <app-bookcase-card [bookcaseResponse]="book" type="to-read" (updateResolveEmitter)="onUpdate($event, toRead)"></app-bookcase-card>
           }
         }
         <mat-paginator #paginator

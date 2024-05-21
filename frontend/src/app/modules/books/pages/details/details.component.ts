@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../../../../core/services/book/book.service';
 import { BookReponse } from '../../../../core/models/book-reponse.model';
 import { Rating } from '../../models/rating.model';
-import { DetailsBookcaseResponse } from '../../models/details-bookcase-response.model';
+import { DetailsBookcaseAction, DetailsBookcaseResponse } from '../../models/details-bookcase-response.model';
 import { BookcaseService } from '../../services/bookcase/bookcase.service';
 import { Subscription, take } from 'rxjs';
 import { BookcaseType } from '../../../../core/enums/bookcase-type.enum';
@@ -28,7 +28,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   protected book!: BookReponse;
 
-  protected detailsBookcaseType: DetailsBookcaseResponse |null = null;
+  protected detailsBookcaseType: DetailsBookcaseResponse | null = null;
+
+  protected detailsBookcaseAction: DetailsBookcaseAction | null = null;
 
   protected cover!: string;
 
@@ -78,6 +80,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.bookcaseService.getBookcaseType(this.bookId).subscribe({
           next: details => {
             this.detailsBookcaseType = details;
+            this.detailsBookcaseAction = { ...details, bookId: this.bookId};
           },
           error: error => {
             console.error(error);
