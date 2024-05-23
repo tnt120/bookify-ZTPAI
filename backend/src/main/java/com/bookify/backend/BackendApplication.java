@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.kafka.core.KafkaTemplate;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -25,9 +26,11 @@ public class BackendApplication {
 			final AuthorRepository authorRepository,
 			final RoleRepository roleRepository,
 			final GenreRepository genreRepository,
-			final BookRepository bookRepository
+			final BookRepository bookRepository,
+			KafkaTemplate<String, String> kafkaTemplate
 			) {
 		return args -> {
+//			kafkaTemplate.send("mails", "Hello, kafka! First message!");
 //			var author = authorRepository.save(new Author().setFirstName("Artur").setLastName("Kowalski"));
 //		    roleRepository.save(new Role().setName("USER"));
 //			roleRepository.save(new Role().setName("ADMIN"));

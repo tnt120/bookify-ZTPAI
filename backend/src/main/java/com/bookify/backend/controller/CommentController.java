@@ -3,7 +3,11 @@ package com.bookify.backend.controller;
 import com.bookify.backend.api.external.CommentDTO;
 import com.bookify.backend.api.external.StatusResponseDTO;
 import com.bookify.backend.api.external.UserDTO;
+import com.bookify.backend.api.external.requests.CommentRequest;
+import com.bookify.backend.service.CommentService;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class CommentController {
+    private final CommentService commentService;
+
     @GetMapping()
     public List<CommentDTO> getComments() {
         return List.of(new CommentDTO()
@@ -34,8 +40,8 @@ public class CommentController {
     }
 
     @PostMapping()
-    public ResponseEntity<Object> addComment(@RequestBody CommentDTO comment) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDTO(201));
+    public ResponseEntity<Integer> addComment(@RequestBody CommentRequest comment) {
+        return ResponseEntity.ok(this.commentService.addComment(comment));
     }
 
     @PatchMapping("/{id}")

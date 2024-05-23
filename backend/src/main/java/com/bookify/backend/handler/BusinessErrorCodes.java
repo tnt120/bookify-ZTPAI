@@ -30,8 +30,9 @@ public enum BusinessErrorCodes {
     INVALID_TOKEN(311, "Invalid token", HttpStatus.UNAUTHORIZED),
     INVALID_USER(312, "Invalid user", HttpStatus.UNAUTHORIZED),
     INVALID_RATING_VALUE(313, "Rating value must be between 1 and 10", HttpStatus.BAD_REQUEST),
-    NO_PERMISSION(314, "You do not have permission to perform this operation", HttpStatus.BAD_REQUEST),
-    GENRE_ALREADY_EXISTS(315, "Genre with provided name already exists", HttpStatus.CONFLICT),
+    EMPTY_COMMENT(314, "Comment cannot be empty", HttpStatus.BAD_REQUEST),
+    NO_PERMISSION(315, "You do not have permission to perform this operation", HttpStatus.BAD_REQUEST),
+    GENRE_ALREADY_EXISTS(316, "Genre with provided name already exists", HttpStatus.CONFLICT),
     ;
 
     private final int code;
