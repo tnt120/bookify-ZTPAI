@@ -131,10 +131,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Integer deleteComment(Integer commenId) {
+    public Integer deleteComment(Integer commentId) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Comment comment = commentRepository.findById(commenId)
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(COMMENT_NOT_FOUND::getError);
 
         if (!comment.getUser().getId().equals(user.getId())) {
@@ -143,7 +143,14 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.delete(comment);
 
-        return commenId;
+        return commentId;
+    }
+
+    @Override
+    public BasicCommentResponse getComment(Integer id) {
+        return commentRepository.findById(id)
+                .map(commentMapper::map)
+                .orElseThrow(COMMENT_NOT_FOUND::getError);
     }
 
     private void verifyComment(Comment comment) {

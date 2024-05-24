@@ -28,13 +28,18 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getAllComments(page, size, sortBy, order, book, user));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("allByBook/{id}")
     public ResponseEntity<PageResponse<BasicCommentResponse>> getComments
             (@PathVariable Integer id,
              @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
              @RequestParam(name = "size", defaultValue = "10", required = false) Integer size
             ) {
         return ResponseEntity.ok(commentService.getCommentsForBook(id, page, size));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BasicCommentResponse> getComment(@PathVariable Integer id) {
+        return ResponseEntity.ok(commentService.getComment(id));
     }
 
     @PostMapping()
