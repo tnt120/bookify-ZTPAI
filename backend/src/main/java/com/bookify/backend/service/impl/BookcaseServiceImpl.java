@@ -54,7 +54,9 @@ public class BookcaseServiceImpl implements BookcaseService {
         List<BookBookcaseResponse> booksBookcaseResponse = userBooks.stream()
                 .map(userBook -> {
                     BookBookcaseResponse response = bookcaseMapper.map(userBook);
-                    response.getBook().setAvgRating(ratingService.getAvgRating(userBook.getBook().getId()));
+                    if (bookcaseType.getId() == 1) {
+                        response.getBook().setRatings(List.of(ratingService.getUserRating(user.getId(), response.getBook().getId())));
+                    }
                     return response;
                 })
                 .toList();

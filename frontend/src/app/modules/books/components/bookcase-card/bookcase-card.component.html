@@ -20,10 +20,16 @@
     }
   </div>
   <div class="actions-container">
-    <div class="rating">
-      <img src="../../../../../assets/icons/star.svg" alt="star-icon">
-      <p>{{ book.avgRating }}</p>
-    </div>
+    @if (book.ratings && book.ratings[0] && type === 'finished') {
+      <div class="rating">
+        <img src="../../../../../assets/icons/edit.svg" alt="edit-icon" (click)="changeRating()">
+        <img src="../../../../../assets/icons/star.svg" alt="star-icon">
+        <p>{{ book.ratings[0].value }}</p>
+      </div>
+    }
+    @else {
+      <div></div>
+    }
     <app-bookcase-actions (updateResolveEmitter)="onBookUpdate($event)" [detailsBookcaseAction]="detailsBookcaseAction" [isCard]="true"></app-bookcase-actions>
   </div>
 </div>

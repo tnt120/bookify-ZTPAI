@@ -1,9 +1,11 @@
 package com.bookify.backend.service.impl;
 
 import com.bookify.backend.api.external.requests.RatingRequest;
+import com.bookify.backend.api.external.response.BasicRatingResponse;
 import com.bookify.backend.api.internal.Book;
 import com.bookify.backend.api.internal.Rating;
 import com.bookify.backend.api.internal.User;
+import com.bookify.backend.mapper.RatingMapper;
 import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.repository.RatingRepository;
 import com.bookify.backend.service.RatingService;
@@ -21,6 +23,7 @@ import static com.bookify.backend.handler.BusinessErrorCodes.*;
 public class RatingServiceImpl implements RatingService {
     private final RatingRepository ratingRepository;
     private final BookRepository bookRepository;
+    private final RatingMapper ratingMapper;
 
     @Override
     public List<Rating> getRatingsForBook(Integer bookId) {
@@ -96,5 +99,12 @@ public class RatingServiceImpl implements RatingService {
         ratingRepository.delete(rating);
 
         return ratingId;
+    }
+
+    @Override
+    public BasicRatingResponse getUserRating(Integer userId, Integer bookId) {
+
+        return ratingMapper.map(ratingRepository.findByBookIdAndUserId(bookId, userId)
+                .orElseThrow(RATING_NOT_FOUND::getError));
     }
 }

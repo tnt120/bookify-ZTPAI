@@ -91,9 +91,9 @@ export class BookcaseActionsComponent implements OnDestroy {
   }
 
   progressDialog(context: ConfirimationDialogData) {
-    const data: ProgressDialogData = {...context, additionalMessage: 'Set your current page'};
+    const data: ProgressDialogData = {...context, additionalMessage: 'Set your current page', type: 'page', value: 0};
 
-    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data });
+    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data, width: '400px', height: '300px'});
 
     this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {

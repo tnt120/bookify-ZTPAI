@@ -14,4 +14,5 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
     List<Rating> findAllByBookId(Integer bookId);
     void deleteAllByBook(Book book);
     Optional<Rating> findByBookAndUser(Book book, User user);
+    Optional<Rating> findByBookIdAndUserId(Integer ratingId, Integer userId);
 }

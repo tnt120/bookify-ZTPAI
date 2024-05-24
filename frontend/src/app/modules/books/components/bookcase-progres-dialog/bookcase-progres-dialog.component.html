@@ -2,13 +2,23 @@
 <mat-dialog-content>
   <p>{{ data.message }}</p>
   <p *ngIf="data.additionalMessage">{{ data.additionalMessage }}</p>
-  <mat-form-field class="example-full-width">
-    <mat-label>Current page</mat-label>
-    <input [(ngModel)]="currentPage" type="number" min="0" name="currentPage" matInput placeholder="Current page" color="accent" required cdkFocusInitial>
-    <mat-error *ngIf="!isValid()">Current page minimum value is 0</mat-error>
-  </mat-form-field>
+  @if (data.type === 'page') {
+    <mat-form-field class="example-full-width">
+      <mat-label>Current page</mat-label>
+      <input [(ngModel)]="currentPage" (keydown)="onType($event)" type="number" min="0" step="1" name="currentPage" matInput placeholder="Current page" color="accent" required cdkFocusInitial>
+      <mat-error *ngIf="!isValid()">Current page minimum value is 0</mat-error>
+    </mat-form-field>
+  }
+
+  @if (data.type === 'rating') {
+    <mat-form-field class="example-full-width">
+      <mat-label>Rating</mat-label>
+      <input [(ngModel)]="rating" (keydown)="onType($event)" type="number" min="0" max="10" step="1" name="rating" matInput placeholder="Rating" color="accent" required cdkFocusInitial>
+      <mat-error *ngIf="!isValid()">Rating must be integer between 1 - 10</mat-error>
+    </mat-form-field>
+  }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-stroked-button color="warn" mat-dialog-close>Cancel</button>
-  <button mat-flat-button color="primary" [mat-dialog-close]="{ currentPage }" cdkFocusInitial [disabled]="!isValid()">{{ data.confirmText }}</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="data.type === 'page' ? { currentPage } : { rating }" cdkFocusInitial [disabled]="!isValid()">{{ data.confirmText }}</button>
 </mat-dialog-actions>

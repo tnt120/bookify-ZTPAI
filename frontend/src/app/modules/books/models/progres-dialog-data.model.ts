@@ -3,4 +3,6 @@ export interface ProgressDialogData {
   message: string;
   additionalMessage?: string;
   confirmText: string;
+  type: 'page' | 'rating';
+  value: number;
 }

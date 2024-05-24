@@ -8,6 +8,7 @@ import { UpdateBookcaseRequest } from '../../models/update-bookcase-request.mode
 import { ProgressDialogData } from '../../models/progres-dialog-data.model';
 import { BookcaseProgresDialogComponent } from '../bookcase-progres-dialog/bookcase-progres-dialog.component';
 import { Subscription } from 'rxjs';
+import { RatingService } from '../../../../core/services/rating/rating.service';
 
 @Component({
   selector: 'app-bookcase-card',
@@ -26,7 +27,8 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private bookcaseService: BookcaseService
+    private bookcaseService: BookcaseService,
+    private ratingService: RatingService
   ) {}
 
   book!: BookReponse;
@@ -77,14 +79,34 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
     const data: ProgressDialogData = {
       title: 'Update progress',
       message: 'Enter the current page',
-      confirmText: 'Update'
+      confirmText: 'Update',
+      type: 'page',
+      value: this.bookcaseResponse.currentPage
     };
 
-    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data });
+    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data, width: '400px', height: '300px'});
 
     this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.updateBookcase(this.detailsBookcaseAction.bookcaseId, result.currentPage);
+      }
+    }));
+  }
+
+  changeRating() {
+    const data: ProgressDialogData = {
+      title: 'Change rating',
+      message: 'Enter new rating',
+      confirmText: 'Update',
+      type: 'rating',
+      value: this.bookcaseResponse.book.ratings![0].value
+    };
+
+    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data, width: '400px', height: '300px'});
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.editRating(result.rating);
       }
     }));
   }
@@ -103,6 +125,17 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
       },
       error: err => {
         console.error('Update bookcase error: ', err);
+      }
+    }));
+  }
+
+  private editRating(rating: number) {
+    this.subscriptions.push(this.ratingService.editRating(this.bookcaseResponse.book.ratings![0].id, rating, this.bookcaseResponse.book.id).subscribe({
+      next: res => {
+        this.bookcaseResponse.book.ratings![0].value = rating;
+      },
+      error: err => {
+        console.error('Edit rating error: ', err);
       }
     }));
   }
