@@ -1,6 +1,6 @@
 package com.bookify.backend.kafka;
 
-import com.bookify.backend.service.EmailService;
+import com.bookify.backend.service.impl.EmailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

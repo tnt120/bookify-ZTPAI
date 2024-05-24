@@ -1,4 +1,4 @@
-package com.bookify.backend.service;
+package com.bookify.backend.service.impl;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
