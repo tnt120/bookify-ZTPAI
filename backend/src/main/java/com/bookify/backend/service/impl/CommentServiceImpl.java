@@ -53,24 +53,41 @@ public class CommentServiceImpl implements CommentService {
         Book book = bookRepository.findById(request.getBookId())
                 .orElseThrow(BOOK_NOT_FOUND::getError);
 
+        commentRepository.findByBookAndUser(book, user)
+                .ifPresent(comment -> {
+                    throw COMMENT_ALREADY_EXISTS.getError();
+                });
+
         Comment comment = new Comment()
                 .setBook(book)
                 .setUser(user)
                 .setContent(request.getContent())
-                .setCreatedAt(LocalDateTime.now());
+                .setCreatedAt(LocalDateTime.now())
+                .setVerified(true);
 
         Integer commentId = commentRepository.save(comment).getId();
 
-        List<User> admins = userRepository.findUserByRoleId(2);
-
-        KafkaReceiveModel kafkaReceiveModel = new KafkaReceiveModel()
-                .setCommentId(commentId)
-                .setEmails(admins.stream().map(User::getEmail).toList())
-                .setStrategy("VERIFY")
-                .setSubject("Verify comment");
-
-        this.kafkaTemplate.send("mails", kafkaReceiveModel);
+        verifyComment(comment);
 
         return commentId;
+    }
+
+    private void verifyComment(Comment comment) {
+
+        List<String> bannedWords = List.of("bad", "ugly", "nasty");
+
+        if (bannedWords.stream().anyMatch(comment.getContent().toLowerCase()::contains)) {
+            List<User> admins = userRepository.findUserByRoleId(2);
+
+            KafkaReceiveModel kafkaReceiveModel = new KafkaReceiveModel()
+                    .setCommentId(comment.getId())
+                    .setEmails(admins.stream().map(User::getEmail).toList())
+                    .setStrategy("VERIFY")
+                    .setSubject("Verify comment");
+
+            this.kafkaTemplate.send("mails", kafkaReceiveModel);
+            comment.setVerified(false);
+            commentRepository.save(comment);
+        }
     }
 }

@@ -33,6 +33,8 @@ public enum BusinessErrorCodes {
     EMPTY_COMMENT(314, "Comment cannot be empty", HttpStatus.BAD_REQUEST),
     NO_PERMISSION(315, "You do not have permission to perform this operation", HttpStatus.BAD_REQUEST),
     GENRE_ALREADY_EXISTS(316, "Genre with provided name already exists", HttpStatus.CONFLICT),
+    COMMENT_ALREADY_EXISTS(317, "You have already added a comment to this book", HttpStatus.CONFLICT),
+    RATING_ALREADY_EXISTS(318, "You have already rated this book", HttpStatus.CONFLICT),
     ;
 
     private final int code;

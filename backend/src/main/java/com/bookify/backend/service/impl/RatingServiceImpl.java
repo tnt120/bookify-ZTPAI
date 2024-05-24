@@ -48,6 +48,11 @@ public class RatingServiceImpl implements RatingService {
         Book book = bookRepository.findById(request.getBookId())
                 .orElseThrow(BOOK_NOT_FOUND::getError);
 
+        ratingRepository.findByBookAndUser(book, user)
+                .ifPresent(rating -> {
+                    throw RATING_ALREADY_EXISTS.getError();
+                });
+
         Rating rating = new Rating()
                 .setBook(book)
                 .setUser(user)
