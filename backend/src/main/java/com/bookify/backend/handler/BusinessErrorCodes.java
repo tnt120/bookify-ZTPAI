@@ -27,14 +27,15 @@ public enum BusinessErrorCodes {
     BOOKCASE_TYPE_NOT_FOUND(308, "Bookcase type not found", HttpStatus.NOT_FOUND),
     USER_BOOK_NOT_FOUND(309, "User book not found", HttpStatus.NOT_FOUND),
     RATING_NOT_FOUND(310, "Rating not found", HttpStatus.NOT_FOUND),
-    INVALID_TOKEN(311, "Invalid token", HttpStatus.UNAUTHORIZED),
-    INVALID_USER(312, "Invalid user", HttpStatus.UNAUTHORIZED),
-    INVALID_RATING_VALUE(313, "Rating value must be between 1 and 10", HttpStatus.BAD_REQUEST),
-    EMPTY_COMMENT(314, "Comment cannot be empty", HttpStatus.BAD_REQUEST),
-    NO_PERMISSION(315, "You do not have permission to perform this operation", HttpStatus.BAD_REQUEST),
-    GENRE_ALREADY_EXISTS(316, "Genre with provided name already exists", HttpStatus.CONFLICT),
-    COMMENT_ALREADY_EXISTS(317, "You have already added a comment to this book", HttpStatus.CONFLICT),
-    RATING_ALREADY_EXISTS(318, "You have already rated this book", HttpStatus.CONFLICT),
+    COMMENT_NOT_FOUND(311, "Comment not found", HttpStatus.NOT_FOUND),
+    INVALID_TOKEN(312, "Invalid token", HttpStatus.UNAUTHORIZED),
+    INVALID_USER(313, "Invalid user", HttpStatus.UNAUTHORIZED),
+    INVALID_RATING_VALUE(314, "Rating value must be between 1 and 10", HttpStatus.BAD_REQUEST),
+    EMPTY_COMMENT(315, "Comment cannot be empty", HttpStatus.BAD_REQUEST),
+    NO_PERMISSION(316, "You do not have permission to perform this operation", HttpStatus.BAD_REQUEST),
+    GENRE_ALREADY_EXISTS(317, "Genre with provided name already exists", HttpStatus.CONFLICT),
+    COMMENT_ALREADY_EXISTS(318, "You have already added a comment to this book", HttpStatus.CONFLICT),
+    RATING_ALREADY_EXISTS(319, "You have already rated this book", HttpStatus.CONFLICT),
     ;
 
     private final int code;

@@ -19,12 +19,12 @@ public class RatingController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> editRating(@PathVariable Integer id, @RequestBody RatingRequest rating) {
+    public ResponseEntity<Integer> editRating(@PathVariable Integer id, @RequestBody RatingRequest rating) {
         return ResponseEntity.ok(this.ratingService.updateRating(id, rating));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteRating(@PathVariable Integer id) {
+    public ResponseEntity<Integer> deleteRating(@PathVariable Integer id) {
         return ResponseEntity.ok(this.ratingService.deleteRating(id));
     }
 }

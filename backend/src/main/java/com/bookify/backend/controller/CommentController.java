@@ -1,8 +1,6 @@
 package com.bookify.backend.controller;
 
-import com.bookify.backend.api.external.CommentDTO;
 import com.bookify.backend.api.external.StatusResponseDTO;
-import com.bookify.backend.api.external.UserDTO;
 import com.bookify.backend.api.external.requests.CommentRequest;
 import com.bookify.backend.api.external.response.BasicCommentResponse;
 import com.bookify.backend.api.external.response.PageResponse;
@@ -11,9 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -48,8 +43,8 @@ public class CommentController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> editComment(@PathVariable Integer id, @RequestBody CommentDTO comment) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<Integer> editComment(@PathVariable Integer id, @RequestBody CommentRequest comment) {
+        return ResponseEntity.ok(this.commentService.updateComment(id, comment));
     }
 
     @DeleteMapping("/{id}")

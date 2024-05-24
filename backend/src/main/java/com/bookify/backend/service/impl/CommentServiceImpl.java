@@ -110,6 +110,26 @@ public class CommentServiceImpl implements CommentService {
         return this.getAllComments(page, size, "createdAt", "desc", bookId, null);
     }
 
+    @Override
+    public Integer updateComment(Integer id, CommentRequest commentRequest) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(COMMENT_NOT_FOUND::getError);
+
+        if (!comment.getUser().getId().equals(user.getId())) {
+            throw INVALID_USER.getError();
+        }
+
+        comment.setContent(commentRequest.getContent());
+        comment.setCreatedAt(LocalDateTime.now());
+        comment.setVerified(true);
+
+        this.verifyComment(comment);
+
+        return commentRepository.save(comment).getId();
+    }
+
     private void verifyComment(Comment comment) {
 
         List<String> bannedWords = List.of("bad", "ugly", "nasty");
