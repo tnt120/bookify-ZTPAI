@@ -23,4 +23,6 @@ public interface CommentService {
     Integer deleteComment(Integer id);
 
     BasicCommentResponse getComment(Integer id);
+
+    Integer verifyComment(Integer id);
 }

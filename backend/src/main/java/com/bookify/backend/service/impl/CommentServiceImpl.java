@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static com.bookify.backend.handler.BusinessErrorCodes.*;
 
@@ -151,6 +152,22 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findById(id)
                 .map(commentMapper::map)
                 .orElseThrow(COMMENT_NOT_FOUND::getError);
+    }
+
+    @Override
+    public Integer verifyComment(Integer id) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
+            throw NO_PERMISSION.getError();
+        }
+
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(COMMENT_NOT_FOUND::getError);
+
+        comment.setVerified(true);
+
+        return commentRepository.save(comment).getId();
     }
 
     private void verifyComment(Comment comment) {
