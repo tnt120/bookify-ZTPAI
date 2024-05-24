@@ -1,9 +1,5 @@
 package com.bookify.backend;
 
-import com.bookify.backend.api.internal.Author;
-import com.bookify.backend.api.internal.Book;
-import com.bookify.backend.api.internal.Genre;
-import com.bookify.backend.api.internal.Role;
 import com.bookify.backend.repository.AuthorRepository;
 import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.repository.GenreRepository;
@@ -12,7 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.kafka.core.KafkaTemplate;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -26,11 +21,9 @@ public class BackendApplication {
 			final AuthorRepository authorRepository,
 			final RoleRepository roleRepository,
 			final GenreRepository genreRepository,
-			final BookRepository bookRepository,
-			KafkaTemplate<String, String> kafkaTemplate
+			final BookRepository bookRepository
 			) {
 		return args -> {
-//			kafkaTemplate.send("mails", "Hello, kafka! First message!");
 //			var author = authorRepository.save(new Author().setFirstName("Artur").setLastName("Kowalski"));
 //		    roleRepository.save(new Role().setName("USER"));
 //			roleRepository.save(new Role().setName("ADMIN"));

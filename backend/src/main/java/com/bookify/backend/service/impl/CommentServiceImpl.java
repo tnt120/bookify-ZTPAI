@@ -3,10 +3,11 @@ package com.bookify.backend.service.impl;
 import com.bookify.backend.api.external.requests.CommentRequest;
 import com.bookify.backend.api.internal.Book;
 import com.bookify.backend.api.internal.Comment;
-import com.bookify.backend.api.internal.Rating;
 import com.bookify.backend.api.internal.User;
+import com.bookify.backend.kafka.KafkaReceiveModel;
 import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.repository.CommentRepository;
+import com.bookify.backend.repository.UserRepository;
 import com.bookify.backend.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +27,8 @@ import static com.bookify.backend.handler.BusinessErrorCodes.*;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final BookRepository bookRepository;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, KafkaReceiveModel> kafkaTemplate;
+    private final UserRepository userRepository;
 
     @Override
     public List<Comment> getCommentsForBook(Integer bookId, Integer limit) {
@@ -57,8 +59,18 @@ public class CommentServiceImpl implements CommentService {
                 .setContent(request.getContent())
                 .setCreatedAt(LocalDateTime.now());
 
-        this.kafkaTemplate.send("mails", request.getContent());
+        Integer commentId = commentRepository.save(comment).getId();
 
-        return commentRepository.save(comment).getId();
+        List<User> admins = userRepository.findUserByRoleId(2);
+
+        KafkaReceiveModel kafkaReceiveModel = new KafkaReceiveModel()
+                .setCommentId(commentId)
+                .setEmails(admins.stream().map(User::getEmail).toList())
+                .setStrategy("VERIFY")
+                .setSubject("Verify comment");
+
+        this.kafkaTemplate.send("mails", kafkaReceiveModel);
+
+        return commentId;
     }
 }
