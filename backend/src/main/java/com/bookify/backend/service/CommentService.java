@@ -19,4 +19,6 @@ public interface CommentService {
     PageResponse<BasicCommentResponse> getCommentsForBook(Integer bookId, Integer page, Integer size);
 
     Integer updateComment(Integer id, CommentRequest commentRequest);
+
+    Integer deleteComment(Integer id);
 }

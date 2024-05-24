@@ -48,7 +48,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteComment(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<Integer> deleteComment(@PathVariable Integer id) {
+        return ResponseEntity.ok(this.commentService.deleteComment(id));
     }
 }

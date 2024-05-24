@@ -130,6 +130,22 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(comment).getId();
     }
 
+    @Override
+    public Integer deleteComment(Integer commenId) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Comment comment = commentRepository.findById(commenId)
+                .orElseThrow(COMMENT_NOT_FOUND::getError);
+
+        if (!comment.getUser().getId().equals(user.getId())) {
+            throw INVALID_USER.getError();
+        }
+
+        commentRepository.delete(comment);
+
+        return commenId;
+    }
+
     private void verifyComment(Comment comment) {
 
         List<String> bannedWords = List.of("bad", "ugly", "nasty");
