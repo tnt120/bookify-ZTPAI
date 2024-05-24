@@ -1,18 +1,24 @@
 package com.bookify.backend.service.impl;
 
 import com.bookify.backend.api.external.requests.CommentRequest;
+import com.bookify.backend.api.external.response.BasicCommentResponse;
+import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.Book;
 import com.bookify.backend.api.internal.Comment;
 import com.bookify.backend.api.internal.User;
 import com.bookify.backend.kafka.KafkaReceiveModel;
+import com.bookify.backend.mapper.CommentMapper;
 import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.repository.CommentRepository;
 import com.bookify.backend.repository.UserRepository;
 import com.bookify.backend.service.CommentService;
+import com.bookify.backend.specification.CommentSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -29,6 +35,7 @@ public class CommentServiceImpl implements CommentService {
     private final BookRepository bookRepository;
     private final KafkaTemplate<String, KafkaReceiveModel> kafkaTemplate;
     private final UserRepository userRepository;
+    private final CommentMapper commentMapper;
 
     @Override
     public List<Comment> getCommentsForBook(Integer bookId, Integer limit) {
@@ -70,6 +77,32 @@ public class CommentServiceImpl implements CommentService {
         verifyComment(comment);
 
         return commentId;
+    }
+
+    @Override
+    public PageResponse<BasicCommentResponse> getAllComments(Integer page, Integer size, String sortBy, String order, Integer book, Integer user) {
+
+        Sort sort = order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Specification<Comment> spec = Specification.where(null);
+        if(book != null) spec = spec.and(CommentSpecification.bookIdEquals(book));
+        if(user != null) spec = spec.and(CommentSpecification.userIdEquals(user));
+
+        Page<Comment> comments = commentRepository.findAll(spec, pageable);
+
+        List<BasicCommentResponse> commentResponse = comments.stream()
+                .map(commentMapper::map)
+                .toList();
+
+        return new PageResponse<BasicCommentResponse>()
+                .setContent(commentResponse)
+                .setCurrentPage(comments.getNumber())
+                .setPageSize(comments.getSize())
+                .setTotalElements(comments.getTotalElements())
+                .setTotalPages(comments.getTotalPages())
+                .setLast(comments.isLast())
+                .setFirst(comments.isFirst());
     }
 
     private void verifyComment(Comment comment) {

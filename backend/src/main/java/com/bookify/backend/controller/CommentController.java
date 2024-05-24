@@ -4,10 +4,10 @@ import com.bookify.backend.api.external.CommentDTO;
 import com.bookify.backend.api.external.StatusResponseDTO;
 import com.bookify.backend.api.external.UserDTO;
 import com.bookify.backend.api.external.requests.CommentRequest;
+import com.bookify.backend.api.external.response.BasicCommentResponse;
+import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.service.CommentService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +21,16 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
 
-    @GetMapping()
-    public List<CommentDTO> getComments() {
-        return List.of(new CommentDTO()
-                .setId(1)
-                .setContent("Fajna ksiazka")
-                .setCommentDate(LocalDate.of(2024, 4, 9))
-                .setCommentAuthor(new UserDTO().setId(1).setEmail("test@test.com")));
+    @GetMapping("/all")
+    public ResponseEntity<PageResponse<BasicCommentResponse>> getComments(
+            @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+            @RequestParam(name = "sort", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "asc", required = false) String order,
+            @RequestParam(name = "book", required = false) Integer book,
+            @RequestParam(name = "user", required = false) Integer user
+    ) {
+        return ResponseEntity.ok(commentService.getAllComments(page, size, sortBy, order, book, user));
     }
 
     @GetMapping("/{id}")
