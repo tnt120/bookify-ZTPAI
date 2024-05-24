@@ -105,6 +105,11 @@ public class CommentServiceImpl implements CommentService {
                 .setFirst(comments.isFirst());
     }
 
+    @Override
+    public PageResponse<BasicCommentResponse> getCommentsForBook(Integer bookId, Integer page, Integer size) {
+        return this.getAllComments(page, size, "createdAt", "desc", bookId, null);
+    }
+
     private void verifyComment(Comment comment) {
 
         List<String> bannedWords = List.of("bad", "ugly", "nasty");

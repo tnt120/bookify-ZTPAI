@@ -34,12 +34,12 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public List<CommentDTO> getComments(@PathVariable Integer id) {
-        return List.of(new CommentDTO()
-                .setId(1)
-                .setContent("Super ksiazka")
-                .setCommentDate(LocalDate.of(2024, 4, 9))
-                .setCommentAuthor(new UserDTO().setId(1).setEmail("test123@test.com")));
+    public ResponseEntity<PageResponse<BasicCommentResponse>> getComments
+            (@PathVariable Integer id,
+             @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+             @RequestParam(name = "size", defaultValue = "10", required = false) Integer size
+            ) {
+        return ResponseEntity.ok(commentService.getCommentsForBook(id, page, size));
     }
 
     @PostMapping()
