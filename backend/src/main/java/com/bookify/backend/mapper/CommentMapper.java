@@ -12,6 +12,7 @@ public class CommentMapper {
                 .setUserId(comment.getUser().getId())
                 .setUserFirstname(comment.getUser().getFirstName())
                 .setCreatedAt(comment.getCreatedAt())
-                .setContent(comment.getContent());
+                .setContent(comment.getContent())
+                .setVerified(comment.isVerified());
     }
 }

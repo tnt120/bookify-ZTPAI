@@ -19,4 +19,5 @@ public class BasicCommentResponse {
     private String userFirstname;
     private LocalDateTime createdAt;
     private String content;
+    private boolean isVerified;
 }

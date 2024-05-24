@@ -1,6 +1,7 @@
 package com.bookify.backend.service.impl;
 
 import com.bookify.backend.api.external.requests.BookRequest;
+import com.bookify.backend.api.external.response.BasicCommentResponse;
 import com.bookify.backend.api.external.response.BookResponse;
 import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.*;
@@ -174,6 +175,7 @@ public class BookServiceImpl implements BookService {
                     response.setComments(commentService.getCommentsForBook(book.getId(), 3)
                             .stream()
                             .map(commentMapper::map)
+                            .filter(BasicCommentResponse::isVerified)
                             .toList()
                     );
                     response.setCommentCount(commentService.getCommentCountForBook(book.getId()));
