@@ -1,0 +1,23 @@
+@import '../../../../../styles/variables';
+
+:host {
+  h1 {
+    font-size: $font-size-xl;
+  }
+
+  mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+
+    form {
+      mat-form-field {
+        width: 100%;
+
+        textarea {
+          min-height: 100px;
+        }
+      }
+    }
+  }
+}

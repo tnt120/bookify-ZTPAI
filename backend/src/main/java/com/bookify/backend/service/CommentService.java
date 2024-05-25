@@ -4,6 +4,7 @@ import com.bookify.backend.api.external.requests.CommentRequest;
 import com.bookify.backend.api.external.response.BasicCommentResponse;
 import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.Comment;
+import com.bookify.backend.api.internal.User;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public interface CommentService {
     Integer getCommentCountForBook(Integer bookId);
 
     Integer addComment(CommentRequest commentRequest);
+
+    Integer addComment(CommentRequest request, User user);
 
     PageResponse<BasicCommentResponse> getAllComments(Integer page, Integer size, String sortBy, String order, Integer book, Integer user);
 

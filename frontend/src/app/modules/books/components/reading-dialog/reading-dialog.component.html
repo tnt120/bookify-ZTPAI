@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+
+  <form>
+    <mat-form-field class="example-full-width">
+      <mat-label>Your rating</mat-label>
+      <input [(ngModel)]="rating" (keydown)="onType($event)" type="number" min="1" max="10" step="1" name="rating" matInput placeholder="Your rating" color="accent" required cdkFocusInitial>
+      <mat-error *ngIf="!isValid()">Rating must be integer between 1 - 10</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Comment</mat-label>
+      <textarea [(ngModel)]="comment" name="comment" matInput maxlength="250"></textarea>
+      <mat-hint align="end">{{comment.length}}/250</mat-hint>
+    </mat-form-field>
+    <p>You can leave optionally comment</p>
+  </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="warn" mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="{ rating, comment }" cdkFocusInitial [disabled]="!isValid()">{{ data.confirmText }}</button>
+</mat-dialog-actions>

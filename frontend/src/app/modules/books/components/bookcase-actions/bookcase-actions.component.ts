@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { UpdateBookcaseRequest } from '../../models/update-bookcase-request.model';
 import { ProgressDialogData } from '../../models/progres-dialog-data.model';
 import { BookcaseProgresDialogComponent } from '../bookcase-progres-dialog/bookcase-progres-dialog.component';
+import { ReadingDialogComponent } from '../reading-dialog/reading-dialog.component';
 
 @Component({
   selector: 'app-bookcase-actions',
@@ -57,6 +58,7 @@ export class BookcaseActionsComponent implements OnDestroy {
 
     switch (bookcaseId) {
       case BookcaseType.FINISHED:
+        this.readingDialog(data);
         break;
       case BookcaseType.READING:
         this.progressDialog(data);
@@ -93,7 +95,7 @@ export class BookcaseActionsComponent implements OnDestroy {
   progressDialog(context: ConfirimationDialogData) {
     const data: ProgressDialogData = {...context, additionalMessage: 'Set your current page', type: 'page', value: 0};
 
-    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data, width: '400px', height: '300px'});
+    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data, width: '400px', height: '350px'});
 
     this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -102,11 +104,23 @@ export class BookcaseActionsComponent implements OnDestroy {
     }))
   }
 
-  private updateBookcase(bookcaseId: number, currentPage: number) {
+  readingDialog(data: ConfirimationDialogData) {
+    const dialogRef = this.dialog.open(ReadingDialogComponent, { data, width: '400px', height: '500px' });
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.updateBookcase(BookcaseType.FINISHED, 0, result.rating, result.comment);
+      }
+    }))
+  }
+
+  private updateBookcase(bookcaseId: number, currentPage: number, rating?: number, comment?: string) {
     const request: UpdateBookcaseRequest = {
       bookId: this.detailsBookcaseAction.bookId,
       bookcaseId,
-      currentPage
+      currentPage,
+      ...(rating && { rating }),
+      ...(comment && { comment })
     };
 
     this.subscriptions.push(this.bookcaseService.updateUserBook(request).subscribe({

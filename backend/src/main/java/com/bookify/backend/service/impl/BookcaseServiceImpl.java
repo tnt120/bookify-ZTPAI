@@ -1,18 +1,16 @@
 package com.bookify.backend.service.impl;
 
+import com.bookify.backend.api.external.requests.CommentRequest;
+import com.bookify.backend.api.external.requests.RatingRequest;
 import com.bookify.backend.api.external.requests.UpdateBookcaseRequest;
 import com.bookify.backend.api.external.response.BookBookcaseResponse;
 import com.bookify.backend.api.external.response.DetailsBookcaseResponse;
 import com.bookify.backend.api.external.response.PageResponse;
-import com.bookify.backend.api.internal.Book;
-import com.bookify.backend.api.internal.BookcaseType;
-import com.bookify.backend.api.internal.User;
-import com.bookify.backend.api.internal.UserBook;
+import com.bookify.backend.api.internal.*;
 import com.bookify.backend.mapper.BookcaseMapper;
-import com.bookify.backend.repository.BookRepository;
-import com.bookify.backend.repository.BookcaseTypeRepository;
-import com.bookify.backend.repository.UserBookRepository;
+import com.bookify.backend.repository.*;
 import com.bookify.backend.service.BookcaseService;
+import com.bookify.backend.service.CommentService;
 import com.bookify.backend.service.RatingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +33,11 @@ public class BookcaseServiceImpl implements BookcaseService {
     private final UserBookRepository userBookRepository;
     private final BookRepository bookRepository;
     private final BookcaseTypeRepository bookcaseTypeRepository;
+    private final RatingRepository ratingRepository;
+    private final CommentRepository commentRepository;
     private final BookcaseMapper bookcaseMapper;
     private final RatingService ratingService;
+    private final CommentService commentService;
 
     @Override
     @Transactional
@@ -106,6 +107,8 @@ public class BookcaseServiceImpl implements BookcaseService {
 
         Optional<UserBook> userBookOptional = userBookRepository.findByUserAndBook(user, book);
 
+        Integer userBookId;
+
         if (userBookOptional.isEmpty()) {
             UserBook userBook = new UserBook()
                     .setUser(user)
@@ -113,15 +116,37 @@ public class BookcaseServiceImpl implements BookcaseService {
                     .setBookcaseType(bookcaseType)
                     .setCurrentPage(request.getCurrentPage());
 
-            return userBookRepository.save(userBook).getId();
+            deleteRatingAndComment(userBook);
+
+            userBookId = userBookRepository.save(userBook).getId();
+        } else {
+            UserBook userBook = userBookOptional.get();
+
+            userBook.setBookcaseType(bookcaseType);
+            userBook.setCurrentPage(request.getCurrentPage());
+
+            deleteRatingAndComment(userBook);
+
+            userBookId = userBookRepository.save(userBook).getId();
         }
 
-        UserBook userBook = userBookOptional.get();
+        if (request.getRating() != null) {
+            RatingRequest ratingRequest = new RatingRequest()
+                    .setBookId(request.getBookId())
+                    .setValue(request.getRating());
 
-        userBook.setBookcaseType(bookcaseType);
-        userBook.setCurrentPage(request.getCurrentPage());
+            ratingService.addRating(ratingRequest, user);
+        }
 
-        return userBookRepository.save(userBook).getId();
+        if (request.getComment() != null && !request.getComment().isEmpty()) {
+            CommentRequest commentRequest = new CommentRequest()
+                    .setBookId(request.getBookId())
+                    .setContent(request.getComment());
+
+            commentService.addComment(commentRequest, user);
+        }
+
+        return userBookId;
     }
 
     @Override
@@ -130,8 +155,18 @@ public class BookcaseServiceImpl implements BookcaseService {
         UserBook userBook = userBookRepository.findById(id)
                 .orElseThrow(BOOK_NOT_FOUND::getError);
 
+        deleteRatingAndComment(userBook);
+
         userBookRepository.delete(userBook);
 
         return id;
+    }
+
+    private void deleteRatingAndComment(UserBook userBook) {
+        ratingRepository.findByBookIdAndUserId(userBook.getBook().getId(), userBook.getUser().getId())
+                .ifPresent(ratingRepository::delete);
+
+        commentRepository.findByBookAndUser(userBook.getBook(), userBook.getUser())
+                .ifPresent(commentRepository::delete);
     }
 }

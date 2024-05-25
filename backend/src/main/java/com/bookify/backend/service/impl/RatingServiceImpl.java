@@ -43,7 +43,11 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public Integer addRating(RatingRequest request) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return addRating(request, user);
+    }
 
+    @Override
+    public Integer addRating(RatingRequest request, User user) {
         if (request.getValue() > 10 || request.getValue() < 1) {
             throw INVALID_RATING_VALUE.getError();
         }

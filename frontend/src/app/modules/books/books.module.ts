@@ -23,6 +23,7 @@ import { BookcaseActionsComponent } from './components/bookcase-actions/bookcase
 import { BookcaseProgresDialogComponent } from './components/bookcase-progres-dialog/bookcase-progres-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { ReadingDialogComponent } from './components/reading-dialog/reading-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatButtonModule } from '@angular/material/button';
     ActionButtonComponent,
     CommentComponent,
     BookcaseActionsComponent,
-    BookcaseProgresDialogComponent
+    BookcaseProgresDialogComponent,
+    ReadingDialogComponent
   ],
   imports: [
     CommonModule,

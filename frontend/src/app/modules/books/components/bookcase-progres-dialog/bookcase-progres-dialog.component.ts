@@ -21,6 +21,7 @@ export class BookcaseProgresDialogComponent implements OnInit {
       this.rating = this.data.value;
     } else if (this.data.type === 'page') {
       this.currentPage = this.data.value;
+      if (this.data.value === 0) this.data.value = -1;
     }
   }
 

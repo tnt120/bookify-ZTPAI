@@ -53,7 +53,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Integer addComment(CommentRequest request) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return addComment(request, user);
+    }
 
+    @Override
+    public Integer addComment(CommentRequest request, User user) {
         if (request.getContent().isEmpty()) {
             throw EMPTY_COMMENT.getError();
         }

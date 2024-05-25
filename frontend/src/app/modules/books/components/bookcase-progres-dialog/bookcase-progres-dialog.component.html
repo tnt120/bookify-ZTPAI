@@ -13,7 +13,7 @@
   @if (data.type === 'rating') {
     <mat-form-field class="example-full-width">
       <mat-label>Rating</mat-label>
-      <input [(ngModel)]="rating" (keydown)="onType($event)" type="number" min="0" max="10" step="1" name="rating" matInput placeholder="Rating" color="accent" required cdkFocusInitial>
+      <input [(ngModel)]="rating" (keydown)="onType($event)" type="number" min="1" max="10" step="1" name="rating" matInput placeholder="Rating" color="accent" required cdkFocusInitial>
       <mat-error *ngIf="!isValid()">Rating must be integer between 1 - 10</mat-error>
     </mat-form-field>
   }

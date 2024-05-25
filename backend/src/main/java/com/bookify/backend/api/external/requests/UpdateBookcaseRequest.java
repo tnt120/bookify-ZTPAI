@@ -13,4 +13,6 @@ public class UpdateBookcaseRequest {
     private Integer bookId;
     private Integer bookcaseId;
     private Integer currentPage;
+    private Integer rating;
+    private String comment;
 }
