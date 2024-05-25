@@ -7,6 +7,12 @@
           @for (book of books; track book.id) {
             <app-bookcase-card [bookcaseResponse]="book" type="finished" (updateResolveEmitter)="onUpdate($event, finished)"></app-bookcase-card>
           }
+          @if (books.length === 0) {
+            <div class="empty-books">
+              <img src="../../../../../assets/images/no-books.jpeg" alt="no-books" />
+              <p>No finished books.</p>
+          </div>
+          }
         }
         <mat-paginator #paginator
           class="paginator"
@@ -22,6 +28,12 @@
           @for (book of books; track book.id) {
             <app-bookcase-card [bookcaseResponse]="book" type="reading" (updateResolveEmitter)="onUpdate($event, reading)"></app-bookcase-card>
           }
+          @if (books.length === 0) {
+            <div class="empty-books">
+              <img src="../../../../../assets/images/no-books.jpeg" alt="no-books" />
+              <p>No currently reading books.</p>
+            </div>
+          }
         }
         <mat-paginator #paginator
           class="paginator"
@@ -36,6 +48,12 @@
         @if (toReadBooks$ | async; as books) {
           @for (book of books; track book.id) {
             <app-bookcase-card [bookcaseResponse]="book" type="to-read" (updateResolveEmitter)="onUpdate($event, toRead)"></app-bookcase-card>
+          }
+          @if (books.length === 0) {
+            <div class="empty-books">
+              <img src="../../../../../assets/images/no-books.jpeg" alt="no-books" />
+              <p>No books to read.</p>
+            </div>
           }
         }
         <mat-paginator #paginator
