@@ -176,7 +176,7 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
     
     this.subscriptions.push(this.commentService.addComment(request).subscribe({
       next: res => {
-        this.bookcaseResponse.book.comments![0] = res;
+        this.bookcaseResponse.book.comments?.push(res);
       },
       error: err => {
         console.error('Add comment error: ', err);

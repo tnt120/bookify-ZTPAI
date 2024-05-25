@@ -29,7 +29,6 @@ export class BookcaseProgresDialogComponent implements OnInit {
         break;
       case 'comment':
         if (!this.data.comment) this.data.comment = '';
-        console.log(this.data.comment);
         this.comment = this.data.comment;
         break;
     }
