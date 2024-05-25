@@ -30,6 +30,18 @@
     @else {
       <div></div>
     }
+    @if (book.comments && book.comments[0] && type === 'finished') {
+      <div class="comment">
+        <p (click)="commentAction('modify')">Show & edit comment</p>
+        @if (!book.comments[0].verified) {
+          <img src="../../../../../assets/icons/warning.svg" alt="warning" matTooltip="Your comment is suspicious and must be verified by admin"/>
+        }
+      </div>
+    } @else if (type === 'finished') {
+      <div class="comment">
+        <p (click)="commentAction('add')">Add comment</p>
+      </div>
+    }
     <app-bookcase-actions (updateResolveEmitter)="onBookUpdate($event)" [detailsBookcaseAction]="detailsBookcaseAction" [isCard]="true"></app-bookcase-actions>
   </div>
 </div>

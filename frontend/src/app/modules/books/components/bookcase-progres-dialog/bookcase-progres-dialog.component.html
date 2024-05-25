@@ -17,8 +17,18 @@
       <mat-error *ngIf="!isValid()">Rating must be integer between 1 - 10</mat-error>
     </mat-form-field>
   }
+
+  @if (data.type === 'comment') {
+    <mat-form-field>
+      <mat-label>Comment</mat-label>
+      <textarea [(ngModel)]="comment" name="comment" matInput maxlength="250" required></textarea>
+      <mat-hint align="end">{{comment.length}}/250</mat-hint>
+      <mat-error *ngIf="comment.length === 0">Comment must have at least one character</mat-error>
+    </mat-form-field>
+  }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-stroked-button color="warn" mat-dialog-close>Cancel</button>
-  <button mat-flat-button color="primary" [mat-dialog-close]="data.type === 'page' ? { currentPage } : { rating }" cdkFocusInitial [disabled]="!isValid()">{{ data.confirmText }}</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="dialogResolve('submit')" [disabled]="!isValid()">{{ data.confirmText }}</button>
+  <button *ngIf="data.type === 'comment' && data.comment !== ''" mat-flat-button color="warn" [mat-dialog-close]="dialogResolve('delete')">Delete</button>
 </mat-dialog-actions>

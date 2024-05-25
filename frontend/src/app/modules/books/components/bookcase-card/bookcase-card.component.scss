@@ -73,14 +73,25 @@
       padding: 0 1em 1em 0;
       justify-content: space-between;
 
-      .rating {
+      .rating, .comment {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-weight: bold;
-        font-size: $font-size-l;
 
         img {
+          cursor: pointer;
+        }
+      }
+
+      .rating {
+        font-weight: bold;
+        font-size: $font-size-l;
+      }
+
+      .comment {
+        gap: 0.5em;
+
+        p {
           cursor: pointer;
         }
       }
@@ -95,7 +106,7 @@
     .bookcase-card-container {
       flex-direction: column;
       width: 250px;
-      height: 680px;
+      height: 750px;
 
       .image {
         width: 248px;

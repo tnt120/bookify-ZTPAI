@@ -3,5 +3,6 @@ export interface Comment {
     userId: number,
     userFirstname: string,
     createdAt: string,
-    content: string
+    content: string,
+    verified: boolean
 }

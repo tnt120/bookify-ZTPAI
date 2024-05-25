@@ -9,6 +9,8 @@ import { ProgressDialogData } from '../../models/progres-dialog-data.model';
 import { BookcaseProgresDialogComponent } from '../bookcase-progres-dialog/bookcase-progres-dialog.component';
 import { Subscription } from 'rxjs';
 import { RatingService } from '../../../../core/services/rating/rating.service';
+import { CommentService } from '../../../../core/services/comment/comment.service';
+import { commentRequest } from '../../../../core/models/comment-request.model';
 
 @Component({
   selector: 'app-bookcase-card',
@@ -28,7 +30,8 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private bookcaseService: BookcaseService,
-    private ratingService: RatingService
+    private ratingService: RatingService,
+    private commentService: CommentService
   ) {}
 
   book!: BookReponse;
@@ -111,6 +114,31 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
     }));
   }
 
+  commentAction(type: 'modify' | 'add') {
+    const data: ProgressDialogData = {
+      title: type === 'add' ? 'Add comment' : 'Preview & modify comment',
+      message: type === 'add' ? 'Enter your comment' : 'Your comment. You can simply modify it or delete',
+      confirmText: type === 'add' ? 'Add' : 'Modify',
+      type: 'comment',
+      value: 0,
+      comment: this.bookcaseResponse.book.comments![0]?.content
+    }
+
+    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data, width: '400px', height: '600px'});
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (type === 'add') {
+          this.addComment(result.comment);
+        } else if (result.type === 'submit') {
+          this.editComment(result.comment);
+        } else {
+          this.deleteComment();
+        }
+      }
+    }))
+  }
+
   private updateBookcase(bookcaseId: number, currentPage: number) {
     const request: UpdateBookcaseRequest = {
       bookId: this.detailsBookcaseAction.bookId,
@@ -136,6 +164,49 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
       },
       error: err => {
         console.error('Edit rating error: ', err);
+      }
+    }));
+  }
+
+  private addComment(comment: string) {
+    const request: commentRequest = {
+      bookId: this.book.id,
+      content: comment
+    };
+    
+    this.subscriptions.push(this.commentService.addComment(request).subscribe({
+      next: res => {
+        this.bookcaseResponse.book.comments![0] = res;
+      },
+      error: err => {
+        console.error('Add comment error: ', err);
+      }
+    }));
+  }
+
+  private editComment(comment: string) {
+    const request: commentRequest = {
+      bookId: this.book.id,
+      content: comment
+    };
+
+    this.subscriptions.push(this.commentService.updateComment(this.bookcaseResponse.book.comments![0].id, request).subscribe({
+      next: res => {
+        this.bookcaseResponse.book.comments![0] = res;
+      },
+      error: err => {
+        console.error('Edit comment error: ', err);
+      }
+    }));
+  }
+
+  private deleteComment() {
+    this.subscriptions.push(this.commentService.deleteComment(this.bookcaseResponse.book.comments![0].id).subscribe({
+      next: res => {
+        this.bookcaseResponse.book.comments = [];
+      },
+      error: err => {
+        console.error('Delete comment error: ', err);
       }
     }));
   }

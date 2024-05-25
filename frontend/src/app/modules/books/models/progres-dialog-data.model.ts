@@ -3,6 +3,7 @@ export interface ProgressDialogData {
   message: string;
   additionalMessage?: string;
   confirmText: string;
-  type: 'page' | 'rating';
+  type: 'page' | 'rating' | 'comment';
   value: number;
+  comment?: string;
 }
