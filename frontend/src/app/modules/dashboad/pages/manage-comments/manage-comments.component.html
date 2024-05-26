@@ -1,1 +1,27 @@
-<p>manage-comments works!</p>
+<div class="container">
+  <app-title-bar title="Dashboard"></app-title-bar>
+  <app-nav [items]="navItems" active="Comments"></app-nav>
+  <div class="actions-container">
+    <div class="actions-container-search">
+      <app-search-bar
+        type="comments"
+        [sortOptions]="sortOptions"
+        (searchCommentsEmitter)="onSearch($event)"
+        (sortEmitter)="onSort($event)"
+      ></app-search-bar>
+    </div>
+  </div>
+
+  @if (comments$ | async; as comments) {
+    <app-table [data]="comments" [columns]="displayedColumns" (verify)="onVerify($event)" (delete)="onDelete($event)" [comments]="{ comment: true, verified: filtersValue.verified}"></app-table>
+  }
+
+  <mat-paginator #paginator
+        class="paginator"
+        (page)="handlePageEvent($event)"
+        [length]="pagination.totalElements"
+        [pageSize]="pagination.pageSize"
+        [pageSizeOptions]="pagination.pageSizeOptions"
+        [pageIndex]="pagination.pageIndex">
+    </mat-paginator>
+</div>

@@ -1,29 +1,38 @@
-<table>
-  <tr>
-    <th *ngFor="let column of columns">{{ column | capitalizeFirst | divieWords }}</th>
-    <th>Actions</th>
-  </tr>
-  <tbody>
-    <tr *ngFor="let row of data">
-      <td *ngFor="let column of columns">
-        @switch (column) {
-          @case ('author') {
-            {{ row.author.firstName + ' ' + row.author.lastName }}
-          }
-          @case ('genre') {
-            {{ row.genre.name }}
-          }
-          @default {
-            {{ row[column] }}
-          }
-        }
-      </td>
-      <td>
-        <div class="buttons-container">
-          <button type="button" (click)="onEdit(row)"><img src="/assets/icons/edit.svg" alt="edit-icon"></button>
-          <button type="button" (click)="onDelete(row)"><img src="/assets/icons/delete.svg" alt="delete-icon"></button>
-        </div>
-      </td>
+@if (data.length === 0) {
+  <div class="empty-data">
+    <img src="../../../../assets/images/no-books.jpeg" alt="no-data" />
+    <p>No data. Try to change filters</p>
+  </div>
+}
+@else {
+  <table>
+    <tr>
+      <th *ngFor="let column of columns">{{ column | capitalizeFirst | divieWords }}</th>
+      <th>Actions</th>
     </tr>
-  </tbody>
-</table>
+    <tbody>
+      <tr *ngFor="let row of data">
+        <td *ngFor="let column of columns">
+          @switch (column) {
+            @case ('author') {
+              {{ row.author.firstName + ' ' + row.author.lastName }}
+            }
+            @case ('genre') {
+              {{ row.genre.name }}
+            }
+            @default {
+              {{ row[column] }}
+            }
+          }
+        </td>
+        <td>
+          <div class="buttons-container">
+            <button *ngIf="!comments.comment" type="button" (click)="onEdit(row)"><img src="/assets/icons/edit.svg" alt="edit-icon"></button>
+            <button *ngIf="comments.comment && !comments.verified" type="button" (click)="onVerify(row)"><img src="/assets/icons/verify.svg" alt="verify-icon"></button>
+            <button type="button" (click)="onDelete(row)"><img src="/assets/icons/delete.svg" alt="delete-icon"></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+}

@@ -17,7 +17,7 @@ public interface CommentService {
 
     BasicCommentResponse addComment(CommentRequest request, User user);
 
-    PageResponse<BasicCommentResponse> getAllComments(Integer page, Integer size, String sortBy, String order, Integer book, Integer user);
+    PageResponse<BasicCommentResponse> getAllComments(Integer page, Integer size, String sortBy, String order, Boolean verified, Integer book, Integer user, String title);
 
     PageResponse<BasicCommentResponse> getCommentsForBook(Integer bookId, Integer page, Integer size);
 

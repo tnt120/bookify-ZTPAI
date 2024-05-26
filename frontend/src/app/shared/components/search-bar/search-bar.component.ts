@@ -5,6 +5,7 @@ import { SortOption } from '../../../core/models/sort-option.model';
 import { FiltersBookModel } from '../../../modules/books/models/filters-books.model';
 import { FiltersAuthorsModel } from '../../../modules/books/models/filters-authors.model';
 import { FiltersGenresModel } from '../../../modules/books/models/filters-genres-model.model';
+import { FiltersCommentModel } from '../../../core/models/filters-comment-model';
 
 
 @Component({
@@ -35,6 +36,9 @@ export class SearchBarComponent {
   searchGenreEmitter = new EventEmitter<FiltersGenresModel>();
 
   @Output()
+  searchCommentsEmitter = new EventEmitter<FiltersCommentModel>();
+
+  @Output()
   sortEmitter = new EventEmitter<SortOption>();
 
   activeSort!: SortOption;
@@ -54,6 +58,12 @@ export class SearchBarComponent {
     name: null
   }
 
+  filtersComments: FiltersCommentModel = {
+    title: null,
+    user: null,
+    verified: true
+  }
+
   ngOnInit(): void {
     this.activeSort = this.sortOptions[0];
   }
@@ -69,14 +79,21 @@ export class SearchBarComponent {
       case 'genres':
         this.searchGenreEmitter.emit(this.filtersGenre);
         break;
-      // case 'comments':
-      //   this.searchEmitter.emit(this.filters);
-      //   break;
+      case 'comments':
+        this.searchCommentsEmitter.emit(this.filtersComments);
+        break;
     }
   }
 
   onSortSelected(sort: SortOption) {
     this.activeSort = sort;
     this.sortEmitter.emit(sort);
+  }
+
+  onType(event: any): void {
+    const invalidChars = ['.', ',', 'e', 'E', '+', '-'];
+    if (invalidChars.includes(event.key)) {
+      event.preventDefault();
+    }
   }
 }

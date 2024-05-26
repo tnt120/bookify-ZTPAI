@@ -20,10 +20,11 @@ public class CommentController {
             @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
             @RequestParam(name = "sort", defaultValue = "id", required = false) String sortBy,
             @RequestParam(name = "order", defaultValue = "asc", required = false) String order,
-            @RequestParam(name = "book", required = false) Integer book,
+            @RequestParam(name = "verified") Boolean verified,
+            @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "user", required = false) Integer user
     ) {
-        return ResponseEntity.ok(commentService.getAllComments(page, size, sortBy, order, book, user));
+        return ResponseEntity.ok(commentService.getAllComments(page, size, sortBy, order, verified, null, user, title));
     }
 
     @GetMapping("allByBook/{id}")

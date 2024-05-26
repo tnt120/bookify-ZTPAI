@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environments';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { commentRequest } from '../../models/comment-request.model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Comment } from '../../../modules/books/models/comment.model';
 import { PageResponse } from '../../models/page-response';
+import { SortOption } from '../../models/sort-option.model';
+import { FiltersCommentModel } from '../../models/filters-comment-model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,9 @@ import { PageResponse } from '../../models/page-response';
 export class CommentService {
 
   private readonly apiUrl = `${environment.apiUrl}/comments`;
+
+  private commentsSubject = new BehaviorSubject<Comment[]>([]);
+  comments$ = this.commentsSubject.asObservable();
 
   constructor(
     private http: HttpClient
@@ -43,5 +48,22 @@ export class CommentService {
 
   approveComment(commentId: number): Observable<number> {
     return this.http.patch<number>(`${this.apiUrl}/verify/${commentId}`, {});
+  }
+
+  getAllComments(page: number, size: number, sort: SortOption, filter: FiltersCommentModel): Observable<PageResponse<Comment>> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('sort', sort.sortBy)
+      .set('order', sort.order)
+      .set('verified', filter.verified);
+
+    if (filter.title) params = params.set('title', filter.title);
+
+    if (filter.user) params = params.set('user', filter.user);
+
+    return this.http.get<PageResponse<Comment>>(`${this.apiUrl}/all`, { params }).pipe(
+      tap(response => this.commentsSubject.next(response.content))
+    );
   }
 }

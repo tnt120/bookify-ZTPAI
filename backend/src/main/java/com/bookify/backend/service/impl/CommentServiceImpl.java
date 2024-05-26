@@ -85,14 +85,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public PageResponse<BasicCommentResponse> getAllComments(Integer page, Integer size, String sortBy, String order, Integer book, Integer user) {
+    public PageResponse<BasicCommentResponse> getAllComments(Integer page, Integer size, String sortBy, String order, Boolean verified, Integer book, Integer user, String title) {
 
         Sort sort = order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
         Specification<Comment> spec = Specification.where(null);
         if(book != null) spec = spec.and(CommentSpecification.bookIdEquals(book));
+        if(title != null) spec = spec.and(CommentSpecification.titleContains(title));
         if(user != null) spec = spec.and(CommentSpecification.userIdEquals(user));
+
+        spec = spec.and(CommentSpecification.verifiedEquals(verified));
 
         Page<Comment> comments = commentRepository.findAll(spec, pageable);
 
@@ -112,7 +115,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public PageResponse<BasicCommentResponse> getCommentsForBook(Integer bookId, Integer page, Integer size) {
-        return this.getAllComments(page, size, "createdAt", "desc", bookId, null);
+        return this.getAllComments(page, size, "createdAt", "desc", true, bookId, null, null);
     }
 
     @Override
