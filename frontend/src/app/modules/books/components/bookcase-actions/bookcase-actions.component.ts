@@ -10,6 +10,7 @@ import { UpdateBookcaseRequest } from '../../models/update-bookcase-request.mode
 import { ProgressDialogData } from '../../models/progres-dialog-data.model';
 import { BookcaseProgresDialogComponent } from '../bookcase-progres-dialog/bookcase-progres-dialog.component';
 import { ReadingDialogComponent } from '../reading-dialog/reading-dialog.component';
+import { CustomSnackbarService } from '../../../../core/services/custom-snackbar/custom-snackbar.service';
 
 @Component({
   selector: 'app-bookcase-actions',
@@ -28,7 +29,8 @@ export class BookcaseActionsComponent implements OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private bookcaseService: BookcaseService
+    private bookcaseService: BookcaseService,
+    private customSnackbarService: CustomSnackbarService
   ) {}
 
   bookcaseType = {
@@ -128,9 +130,11 @@ export class BookcaseActionsComponent implements OnDestroy {
         this.detailsBookcaseAction.bookcaseId = bookcaseId;
         this.detailsBookcaseAction.id = res;
         this.updateResolveEmitter.emit(bookcaseId);
+        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Bookcase updated successfully', type: 'success', duration: 2500})
       },
       error: err => {
         console.error('Update bookcase error: ', err);
+        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while updating bookcase', type: 'error', duration: 2500})
       }
     }));
   }

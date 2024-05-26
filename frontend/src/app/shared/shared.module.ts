@@ -21,6 +21,8 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { DivieWordsPipe } from './pipes/divie-words.pipe';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CustomSnackbarComponent } from './components/snackbar/custom-snackbar/custom-snackbar.component';
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import { DivieWordsPipe } from './pipes/divie-words.pipe';
     FilterTranformLabelPipe,
     SearchBarComponent,
     ConfirmationDialogComponent,
-    DivieWordsPipe
+    DivieWordsPipe,
+    CustomSnackbarComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +51,8 @@ import { DivieWordsPipe } from './pipes/divie-words.pipe';
     MatFormFieldModule,
     FormsModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule
   ],
   exports: [
     InputComponent,
