@@ -51,13 +51,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Integer addComment(CommentRequest request) {
+    public BasicCommentResponse addComment(CommentRequest request) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return addComment(request, user);
     }
 
     @Override
-    public Integer addComment(CommentRequest request, User user) {
+    public BasicCommentResponse addComment(CommentRequest request, User user) {
         if (request.getContent().isEmpty()) {
             throw EMPTY_COMMENT.getError();
         }
@@ -77,11 +77,11 @@ public class CommentServiceImpl implements CommentService {
                 .setCreatedAt(LocalDateTime.now())
                 .setVerified(true);
 
-        Integer commentId = commentRepository.save(comment).getId();
+        commentRepository.save(comment);
 
         verifyComment(comment);
 
-        return commentId;
+        return commentMapper.map(comment);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Integer updateComment(Integer id, CommentRequest commentRequest) {
+    public BasicCommentResponse updateComment(Integer id, CommentRequest commentRequest) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Comment comment = commentRepository.findById(id)
@@ -132,7 +132,7 @@ public class CommentServiceImpl implements CommentService {
 
         this.verifyComment(comment);
 
-        return commentRepository.save(comment).getId();
+        return commentMapper.map(commentRepository.save(comment));
     }
 
     @Override

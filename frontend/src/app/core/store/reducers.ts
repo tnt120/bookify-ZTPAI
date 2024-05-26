@@ -4,6 +4,7 @@ import { AppState } from "../models/app-state.model";
 
 const initialState: AppState = {
   user: {
+    id: 0,
     email: '',
     role: '',
     firstName: '',

@@ -41,12 +41,12 @@ public class CommentController {
     }
 
     @PostMapping()
-    public ResponseEntity<Integer> addComment(@RequestBody CommentRequest comment) {
+    public ResponseEntity<BasicCommentResponse> addComment(@RequestBody CommentRequest comment) {
         return ResponseEntity.ok(this.commentService.addComment(comment));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Integer> editComment(@PathVariable Integer id, @RequestBody CommentRequest comment) {
+    public ResponseEntity<BasicCommentResponse> editComment(@PathVariable Integer id, @RequestBody CommentRequest comment) {
         return ResponseEntity.ok(this.commentService.updateComment(id, comment));
     }
 

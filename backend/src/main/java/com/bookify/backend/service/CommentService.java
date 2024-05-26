@@ -13,15 +13,15 @@ public interface CommentService {
 
     Integer getCommentCountForBook(Integer bookId);
 
-    Integer addComment(CommentRequest commentRequest);
+    BasicCommentResponse addComment(CommentRequest commentRequest);
 
-    Integer addComment(CommentRequest request, User user);
+    BasicCommentResponse addComment(CommentRequest request, User user);
 
     PageResponse<BasicCommentResponse> getAllComments(Integer page, Integer size, String sortBy, String order, Integer book, Integer user);
 
     PageResponse<BasicCommentResponse> getCommentsForBook(Integer bookId, Integer page, Integer size);
 
-    Integer updateComment(Integer id, CommentRequest commentRequest);
+    BasicCommentResponse updateComment(Integer id, CommentRequest commentRequest);
 
     Integer deleteComment(Integer id);
 

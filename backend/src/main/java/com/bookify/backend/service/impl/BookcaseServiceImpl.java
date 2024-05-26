@@ -3,11 +3,13 @@ package com.bookify.backend.service.impl;
 import com.bookify.backend.api.external.requests.CommentRequest;
 import com.bookify.backend.api.external.requests.RatingRequest;
 import com.bookify.backend.api.external.requests.UpdateBookcaseRequest;
+import com.bookify.backend.api.external.response.BasicCommentResponse;
 import com.bookify.backend.api.external.response.BookBookcaseResponse;
 import com.bookify.backend.api.external.response.DetailsBookcaseResponse;
 import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.*;
 import com.bookify.backend.mapper.BookcaseMapper;
+import com.bookify.backend.mapper.CommentMapper;
 import com.bookify.backend.repository.*;
 import com.bookify.backend.service.BookcaseService;
 import com.bookify.backend.service.CommentService;
@@ -38,6 +40,7 @@ public class BookcaseServiceImpl implements BookcaseService {
     private final BookcaseMapper bookcaseMapper;
     private final RatingService ratingService;
     private final CommentService commentService;
+    private final CommentMapper commentMapper;
 
     @Override
     @Transactional
@@ -57,6 +60,14 @@ public class BookcaseServiceImpl implements BookcaseService {
                     BookBookcaseResponse response = bookcaseMapper.map(userBook);
                     if (bookcaseType.getId() == 1) {
                         response.getBook().setRatings(List.of(ratingService.getUserRating(user.getId(), response.getBook().getId())));
+
+                        Optional<Comment> optionalComment = commentRepository.findByUserIdAndBookId(user.getId(), response.getBook().getId());
+
+                        List<BasicCommentResponse> comments = optionalComment
+                                .map(comment -> List.of(commentMapper.map(comment)))
+                                .orElse(List.of());
+
+                        response.getBook().setComments(comments);
                     }
                     return response;
                 })

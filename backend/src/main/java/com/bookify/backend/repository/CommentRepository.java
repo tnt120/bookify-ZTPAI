@@ -17,4 +17,5 @@ public interface CommentRepository extends JpaRepository<Comment, Integer>, JpaS
     List<Comment> findAllByBookId(Integer bookId, Pageable pageable);
     Integer countByBookId(Integer bookId);
     Optional<Comment> findByBookAndUser(Book book, User user);
+    Optional<Comment> findByUserIdAndBookId(Integer userId, Integer bookId);
 }
