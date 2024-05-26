@@ -8,10 +8,8 @@ import { UpdateBookcaseRequest } from '../../models/update-bookcase-request.mode
 import { ProgressDialogData } from '../../models/progres-dialog-data.model';
 import { BookcaseProgresDialogComponent } from '../bookcase-progres-dialog/bookcase-progres-dialog.component';
 import { Subscription } from 'rxjs';
-import { RatingService } from '../../../../core/services/rating/rating.service';
-import { CommentService } from '../../../../core/services/comment/comment.service';
-import { commentRequest } from '../../../../core/models/comment-request.model';
 import { CustomSnackbarService } from '../../../../core/services/custom-snackbar/custom-snackbar.service';
+import { FeedbackService } from '../../services/feedback/feedback.service';
 
 @Component({
   selector: 'app-bookcase-card',
@@ -31,8 +29,7 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private bookcaseService: BookcaseService,
-    private ratingService: RatingService,
-    private commentService: CommentService,
+    private feedbackService: FeedbackService,
     private customSnackbarService: CustomSnackbarService
   ) {}
 
@@ -162,64 +159,32 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
   }
 
   private editRating(rating: number) {
-    this.subscriptions.push(this.ratingService.editRating(this.bookcaseResponse.book.ratings![0].id, rating, this.bookcaseResponse.book.id).subscribe({
-      next: res => {
-        this.bookcaseResponse.book.ratings![0].value = rating;
-        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Rating updated', type: 'success', duration: 2500})
-      },
-      error: err => {
-        console.error('Edit rating error: ', err);
-        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while updating rating', type: 'error', duration: 2500})
-      }
-    }));
+    this.feedbackService.editRating(this.bookcaseResponse.book.ratings![0].id, rating, this.bookcaseResponse.book.id).then(res => {
+      this.bookcaseResponse.book.ratings![0].value = rating;
+    });
   }
 
   private addComment(comment: string) {
-    const request: commentRequest = {
-      bookId: this.book.id,
-      content: comment
-    };
-
-    this.subscriptions.push(this.commentService.addComment(request).subscribe({
-      next: res => {
+    this.feedbackService.addComment(comment, this.book.id).then(res => {
+      if (res) {
         this.bookcaseResponse.book.comments?.push(res);
-        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Comment added', type: 'success', duration: 2500})
-      },
-      error: err => {
-        console.error('Add comment error: ', err);
-        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while adding comment', type: 'error', duration: 2500})
       }
-    }));
+    });
   }
 
   private editComment(comment: string) {
-    const request: commentRequest = {
-      bookId: this.book.id,
-      content: comment
-    };
-
-    this.subscriptions.push(this.commentService.updateComment(this.bookcaseResponse.book.comments![0].id, request).subscribe({
-      next: res => {
+    this.feedbackService.editComment(comment, this.bookcaseResponse.book.comments![0].id, this.book.id).then(res => {
+      if (res) {
         this.bookcaseResponse.book.comments![0] = res;
-        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Comment updated', type: 'success', duration: 2500})
-      },
-      error: err => {
-        console.error('Edit comment error: ', err);
-        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while updating comment', type: 'error', duration: 2500})
       }
-    }));
+    });
   }
 
   private deleteComment() {
-    this.subscriptions.push(this.commentService.deleteComment(this.bookcaseResponse.book.comments![0].id).subscribe({
-      next: res => {
+    this.feedbackService.deleteComment(this.bookcaseResponse.book.comments![0].id).then(res => {
+      if (res !== 0) {
         this.bookcaseResponse.book.comments = [];
-        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Comment deleted', type: 'success', duration: 2500})
-      },
-      error: err => {
-        console.error('Delete comment error: ', err);
-        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while deleting comment', type: 'error', duration: 2500})
       }
-    }));
+    });
   }
 }

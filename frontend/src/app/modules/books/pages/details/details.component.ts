@@ -6,7 +6,6 @@ import { Rating } from '../../models/rating.model';
 import { DetailsBookcaseAction, DetailsBookcaseResponse } from '../../models/details-bookcase-response.model';
 import { BookcaseService } from '../../services/bookcase/bookcase.service';
 import { Subscription, take } from 'rxjs';
-import { BookcaseType } from '../../../../core/enums/bookcase-type.enum';
 import { Store } from '@ngrx/store';
 import { selectUser } from '../../../../core/store/reducers';
 import { Roles } from '../../../../core/enums/roles.enum';
@@ -40,7 +39,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   protected ratingsCount = Array(10).fill(0);
 
-  private userId = 0;
+  protected userId = 0;
+
+  protected hasComment = false;
 
   subscriptions: Subscription[] = [];
 
@@ -65,6 +66,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
         if (book) {
           this.book = book;
           this.cover = this.bookCover;
+
+          if (this.userId > 0 && book.comments) {
+            this.hasComment = book.comments.some(comment => comment.userId === this.userId);
+          }
 
           if (book.ratings) {
             this.ratingsCount = this.getRatingsCount(book.ratings);
@@ -117,7 +122,23 @@ export class DetailsComponent implements OnInit, OnDestroy {
       bookId: this.book.id,
       userId: this.userId
     }
-    
+
     this.dialog.open(CommentsDialogComponent, { data, width: "550px" });
+  }
+
+  updateBookcase(bookcaseId: number) {
+    this.detailsBookcaseType!.bookcaseId = bookcaseId;
+  }
+
+  onAddComment() {
+    console.log('Add comment');
+  }
+
+  onEditComment() {
+    console.log('Edit comment');
+  }
+
+  onDeleteComment() {
+    console.log('Delete comment');
   }
 }

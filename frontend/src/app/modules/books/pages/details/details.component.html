@@ -16,7 +16,7 @@
                 </div>
 
                 @if (detailsBookcaseAction !== null) {
-                  <app-bookcase-actions [detailsBookcaseAction]="detailsBookcaseAction"></app-bookcase-actions>
+                  <app-bookcase-actions [detailsBookcaseAction]="detailsBookcaseAction" (updateResolveEmitter)="updateBookcase($event)"></app-bookcase-actions>
                 }
             </div>
         </div>
@@ -34,7 +34,19 @@
                 </div>
             </div>
             <div class="comments-container">
-                <h2>Comments</h2>
+                <div class="info">
+                  <h2>Comments</h2>
+                  @if (detailsBookcaseType && !hasComment) {
+                    @if (detailsBookcaseType.bookcaseId !== 1) {
+                      <p>To add comment, add this book to "finished" bookcase</p>
+                    }
+                    @else {
+                      <button mat-icon-button color="accent" (click)="onAddComment()">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                    }
+                  }
+                </div>
                 <div class="comments">
                     @if (book.comments?.length === 0) {
                         <div class="empty-comments">
@@ -44,7 +56,12 @@
                     }
                     @else {
                         @for (comment of book.comments; track comment) {
+                          @if (comment.userId === userId) {
+                            <app-comment [comment]="comment" [userComment]="true" (editEmitter)="onEditComment()" (deleteEmitter)="onDeleteComment()"></app-comment>
+                          }
+                          @else {
                             <app-comment [comment]="comment"></app-comment>
+                          }
                         }
                         @if (book.commentCount && book.commentCount > 3) {
                             <button mat-flat-button color="accent" (click)="showAllComments()">Show all comments</button>
