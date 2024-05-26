@@ -61,7 +61,10 @@ export class BookService {
       );
   }
 
-  getBook(id: number): Observable<BookReponse> {
-    return this.http.get<BookReponse>(`${this.apiUrl}/${id}`);
+  getBook(bookId: number, userId: number): Observable<BookReponse> {
+    let params = new HttpParams()
+      .set('userId', userId);
+
+    return this.http.get<BookReponse>(`${this.apiUrl}/${bookId}`, { params });
   }
 }

@@ -10,6 +10,6 @@ public interface BookService {
     Integer update(Integer id, BookRequest request);
     Integer delete(Integer id);
     PageResponse<BookResponse> getAllBooks(Integer page, Integer size, String sortBy, String order, String title, Integer author, Integer genre);
-    BookResponse getBook(Integer id);
+    BookResponse getBook(Integer bookId, Integer userId);
     void uploadCover(Integer bookId, MultipartFile file);
 }

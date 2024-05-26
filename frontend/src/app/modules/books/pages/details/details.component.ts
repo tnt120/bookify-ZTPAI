@@ -10,6 +10,9 @@ import { BookcaseType } from '../../../../core/enums/bookcase-type.enum';
 import { Store } from '@ngrx/store';
 import { selectUser } from '../../../../core/store/reducers';
 import { Roles } from '../../../../core/enums/roles.enum';
+import { CommentsDialogComponent } from '../../components/comments-dialog/comments-dialog.component';
+import { CommentsDialogData } from '../../models/comments-dialog-data.model';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-details',
@@ -23,6 +26,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   private readonly store = inject(Store);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly dialog = inject(MatDialog);
 
   protected bookId: number = 0;
 
@@ -36,6 +40,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   protected ratingsCount = Array(10).fill(0);
 
+  private userId = 0;
+
   subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
@@ -45,8 +51,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.bookId = parseInt(id);
     }
 
-    this.getBookDetails();
     this.getBookcaseType();
+    this.getBookDetails();
   }
 
   ngOnDestroy(): void {
@@ -54,7 +60,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   getBookDetails() {
-    this.bookService.getBook(this.bookId).subscribe({
+    this.bookService.getBook(this.bookId, this.userId).subscribe({
       next: book => {
         if (book) {
           this.book = book;
@@ -77,6 +83,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       take(1)
     ).subscribe(user => {
       if (user.role !== Roles.unAuthorized) {
+        this.userId = user.id;
         this.bookcaseService.getBookcaseType(this.bookId).subscribe({
           next: details => {
             this.detailsBookcaseType = details;
@@ -103,5 +110,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       return counts;
     }, Array(10).fill(0));
+  }
+
+  showAllComments() {
+    const data: CommentsDialogData = {
+      bookId: this.book.id,
+      userId: this.userId
+    }
+    
+    this.dialog.open(CommentsDialogComponent, { data, width: "550px" });
   }
 }

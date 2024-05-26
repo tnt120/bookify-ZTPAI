@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -162,8 +163,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookResponse getBook(Integer id) {
-        return bookRepository.findById(id)
+    public BookResponse getBook(Integer bookId, Integer userId) {
+        return bookRepository.findById(bookId)
                 .map(book -> {
                     BookResponse response = bookMapper.mapToBookResponse(book);
                     response.setAvgRating(ratingService.getAvgRating(book.getId()));
@@ -172,7 +173,23 @@ public class BookServiceImpl implements BookService {
                             .map(ratingMapper::map)
                             .toList()
                     );
-                    response.setComments(commentService.getCommentsForBook(book.getId(), 3)
+
+                    List<Comment> comments = new ArrayList<>();
+
+                    if (userId != null && userId != 0) {
+                        commentRepository.findByUserIdAndBookId(userId, bookId).ifPresent(comments::add);
+                    }
+
+                    Integer limit = !comments.isEmpty() ? 2 : 3;
+
+                    List<Comment> bookComments = commentService.getCommentsForBook(book.getId(), limit)
+                            .stream()
+                            .filter(comment -> !Objects.equals(comment.getUser().getId(), userId))
+                            .toList();
+
+                    comments.addAll(bookComments);
+
+                    response.setComments(comments
                             .stream()
                             .map(commentMapper::map)
                             .filter(BasicCommentResponse::isVerified)

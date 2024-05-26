@@ -78,7 +78,7 @@ export class ManageBookComponent implements OnInit, OnDestroy {
     if (this.bookId !== 0) {
       this.title = 'Edit Book';
 
-      this.bookService.getBook(this.bookId).subscribe({
+      this.bookService.getBook(this.bookId, 0).subscribe({
         next: book => {
           this.bookReponse = book;
           this.manageForm.patchValue({

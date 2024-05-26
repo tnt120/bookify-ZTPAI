@@ -46,6 +46,9 @@
                         @for (comment of book.comments; track comment) {
                             <app-comment [comment]="comment"></app-comment>
                         }
+                        @if (book.commentCount && book.commentCount > 3) {
+                            <button mat-flat-button color="accent" (click)="showAllComments()">Show all comments</button>
+                        }
                     }
                 </div>
             </div>
