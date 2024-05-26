@@ -14,6 +14,7 @@ import { ManageAuthorDialogComponent } from '../../components/manage-author-dial
 import { AuthorRequestUpdate } from '../../../../core/models/author-request-update';
 import { ConfirimationDialogData } from '../../../../core/models/confirmation-dialog-data.model';
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { CustomSnackbarService } from '../../../../core/services/custom-snackbar/custom-snackbar.service';
 
 @Component({
   selector: 'app-manage-authors',
@@ -22,6 +23,7 @@ import { ConfirmationDialogComponent } from '../../../../shared/components/confi
 })
 export class ManageAuthorsComponent implements OnInit, OnDestroy {
   private readonly authorService = inject(AuthorService);
+  private readonly customSnackBarService = inject(CustomSnackbarService);
 
   constructor(
     public dialog: MatDialog
@@ -100,9 +102,11 @@ export class ManageAuthorsComponent implements OnInit, OnDestroy {
           this.authorService.saveAuthor(result).subscribe({
             next: (id: number) => {
               this.getAuthors();
+              this.customSnackBarService.openCustomSnackBar({ title: 'Success', message: 'Author has been added successfully', type: 'success', duration: 2500 });
             },
             error: (error) => {
               console.error(error);
+              this.customSnackBarService.openCustomSnackBar({ title: 'Error', message: 'Error while adding author', type: 'error', duration: 2500 });
             }
           })
         } else if (author) {
@@ -110,9 +114,11 @@ export class ManageAuthorsComponent implements OnInit, OnDestroy {
           this.subscribions.push(this.authorService.updateAuthor(author.id!, data).subscribe({
             next: () => {
               this.getAuthors();
+              this.customSnackBarService.openCustomSnackBar({ title: 'Success', message: 'Author has been updated successfully', type: 'success', duration: 2500 });
             },
             error: (error) => {
               console.error(error);
+              this.customSnackBarService.openCustomSnackBar({ title: 'Error', message: 'Error while updating author', type: 'error', duration: 2500 });
             }
           }));
         }
@@ -157,9 +163,11 @@ export class ManageAuthorsComponent implements OnInit, OnDestroy {
         this.subscribions.push(this.authorService.deleteAuthor(author.id!).subscribe({
           next: () => {
             this.getAuthors();
+            this.customSnackBarService.openCustomSnackBar({ title: 'Success', message: 'Author has been deleted successfully', type: 'success', duration: 2500 });
           },
           error: (err) => {
             console.error(err);
+            this.customSnackBarService.openCustomSnackBar({ title: 'Error', message: 'Error while deleting author', type: 'error', duration: 2500 });
           }
         }));
       }

@@ -19,6 +19,7 @@ import { ConfirimationDialogData } from '../../../../core/models/confirmation-di
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { BookReponse } from '../../../../core/models/book-reponse.model';
 import { Pagination } from '../../../../core/models/pagination.model';
+import { CustomSnackbarService } from '../../../../core/services/custom-snackbar/custom-snackbar.service';
 
 @Component({
   selector: 'app-manage-books',
@@ -30,6 +31,7 @@ export class ManageBooksComponent implements OnInit, OnDestroy {
   private readonly genreService = inject(GenreService);
   private readonly authorService = inject(AuthorService);
   private readonly router = inject(Router);
+  private readonly customSnackbarService = inject(CustomSnackbarService);
 
   constructor(
     public dialog: MatDialog
@@ -123,9 +125,11 @@ export class ManageBooksComponent implements OnInit, OnDestroy {
         this.bookService.deleteBook(book.id).subscribe({
           next: () => {
             this.getBooks();
+            this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Book has been deleted successfully', type: 'success', duration: 2500});
           },
           error: (err) => {
             console.error(err);
+            this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while deleting book', type: 'error', duration: 2500});
           }
         })
       }

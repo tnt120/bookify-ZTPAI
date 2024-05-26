@@ -145,9 +145,11 @@ export class BookcaseActionsComponent implements OnDestroy {
         this.detailsBookcaseAction.id = 0;
         this.detailsBookcaseAction.bookcaseId = 0;
         this.updateResolveEmitter.emit(0);
+        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Book deleted successfully from your bookcase', type: 'success', duration: 2500})
       },
       error: err => {
         console.error('Delete bookcase error: ', err);
+        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while deleting book from your bookcase', type: 'error', duration: 2500})
       }
     }));
   }

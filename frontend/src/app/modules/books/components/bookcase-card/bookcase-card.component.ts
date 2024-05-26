@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { RatingService } from '../../../../core/services/rating/rating.service';
 import { CommentService } from '../../../../core/services/comment/comment.service';
 import { commentRequest } from '../../../../core/models/comment-request.model';
+import { CustomSnackbarService } from '../../../../core/services/custom-snackbar/custom-snackbar.service';
 
 @Component({
   selector: 'app-bookcase-card',
@@ -31,7 +32,8 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private bookcaseService: BookcaseService,
     private ratingService: RatingService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private customSnackbarService: CustomSnackbarService
   ) {}
 
   book!: BookReponse;
@@ -150,9 +152,11 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
       next: res => {
         this.bookcaseResponse.currentPage = currentPage;
         this.calcProgressPercentage();
+        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Progress updated', type: 'success', duration: 2500})
       },
       error: err => {
         console.error('Update bookcase error: ', err);
+        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while updating progress', type: 'error', duration: 2500})
       }
     }));
   }
@@ -161,9 +165,11 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.ratingService.editRating(this.bookcaseResponse.book.ratings![0].id, rating, this.bookcaseResponse.book.id).subscribe({
       next: res => {
         this.bookcaseResponse.book.ratings![0].value = rating;
+        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Rating updated', type: 'success', duration: 2500})
       },
       error: err => {
         console.error('Edit rating error: ', err);
+        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while updating rating', type: 'error', duration: 2500})
       }
     }));
   }
@@ -173,13 +179,15 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
       bookId: this.book.id,
       content: comment
     };
-    
+
     this.subscriptions.push(this.commentService.addComment(request).subscribe({
       next: res => {
         this.bookcaseResponse.book.comments?.push(res);
+        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Comment added', type: 'success', duration: 2500})
       },
       error: err => {
         console.error('Add comment error: ', err);
+        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while adding comment', type: 'error', duration: 2500})
       }
     }));
   }
@@ -193,9 +201,11 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.commentService.updateComment(this.bookcaseResponse.book.comments![0].id, request).subscribe({
       next: res => {
         this.bookcaseResponse.book.comments![0] = res;
+        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Comment updated', type: 'success', duration: 2500})
       },
       error: err => {
         console.error('Edit comment error: ', err);
+        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while updating comment', type: 'error', duration: 2500})
       }
     }));
   }
@@ -204,9 +214,11 @@ export class BookcaseCardComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.commentService.deleteComment(this.bookcaseResponse.book.comments![0].id).subscribe({
       next: res => {
         this.bookcaseResponse.book.comments = [];
+        this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Comment deleted', type: 'success', duration: 2500})
       },
       error: err => {
         console.error('Delete comment error: ', err);
+        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while deleting comment', type: 'error', duration: 2500})
       }
     }));
   }
