@@ -8,8 +8,8 @@
           <p>{{ comment.content }}</p>
         </div>
         <div class="buttons">
-          <button type="button" mat-flat-button color="primary" (click)="approveComment()">Approve</button>
-          <button type="button" mat-flat-button color="warn" (click)="deleteComment()">Delete</button>
+          <button type="button" mat-flat-button color="primary" (click)="openConfirmationDialog(false)">Approve</button>
+          <button type="button" mat-flat-button color="warn" (click)="openConfirmationDialog(true)">Delete</button>
         </div>
       }
       @else {
