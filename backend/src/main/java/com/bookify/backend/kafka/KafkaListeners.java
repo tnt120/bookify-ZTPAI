@@ -31,6 +31,10 @@ public class KafkaListeners {
         context.setVariable("commentId", kafkaReceiveModel.getCommentId());
         context.setVariable("link", "http://localhost:4200/dashboard/commentApproval/" + kafkaReceiveModel.getCommentId());
 
+        if (kafkaReceiveModel.getBook() != null) {
+            context.setVariable("book", kafkaReceiveModel.getBook());
+        }
+
         emailService.sendHtmlEmailToMultiple(
                 kafkaReceiveModel.getEmails(),
                 kafkaReceiveModel.getSubject(),

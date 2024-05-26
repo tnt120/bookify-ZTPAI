@@ -149,6 +149,19 @@ public class CommentServiceImpl implements CommentService {
             throw INVALID_USER.getError();
         }
 
+        if (user.getRole().getName().equals("ADMIN")) {
+            User commentUser = comment.getUser();
+
+            KafkaReceiveModel kafkaReceiveModel = new KafkaReceiveModel()
+                    .setCommentId(comment.getId())
+                    .setEmails(List.of(commentUser.getEmail()))
+                    .setStrategy("DELETE")
+                    .setSubject("Deleted comment")
+                    .setBook(comment.getBook().getTitle());
+
+            this.kafkaTemplate.send("mails", kafkaReceiveModel);
+        }
+
         commentRepository.delete(comment);
 
         return commentId;

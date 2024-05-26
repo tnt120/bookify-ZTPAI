@@ -12,4 +12,5 @@ public class KafkaReceiveModel {
     private List<String> emails;
     private Integer commentId;
     private String subject;
+    private String book;
 }

@@ -36,7 +36,8 @@ public class MailConfiguration {
     @Bean
     public Map<String, String> templateDispatcher() {
         return Map.of(
-                "VERIFY", "verifyComment"
+                "VERIFY", "verifyComment",
+                "DELETE", "deleteComment"
         );
     }
 }
