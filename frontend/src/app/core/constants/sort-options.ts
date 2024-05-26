@@ -48,3 +48,30 @@ export const baseSortGenresOptions: SortOption[] = [
     order: 'desc',
   },
 ]
+
+export const baseSortCommentsOptions: SortOption[] = [
+  {
+    sortBy: 'createdAt',
+    order: 'asc',
+  },
+  {
+    sortBy: 'createdAt',
+    order: 'desc',
+  },
+  {
+    sortBy: 'book_id',
+    order: 'asc',
+  },
+  {
+    sortBy: 'book_id',
+    order: 'desc',
+  },
+  {
+    sortBy: 'user_id',
+    order: 'asc',
+  },
+  {
+    sortBy: 'user_id',
+    order: 'desc',
+  },
+]

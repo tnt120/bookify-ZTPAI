@@ -1,12 +1,15 @@
 package com.bookify.backend.service.impl;
 
 import com.bookify.backend.api.external.requests.BookRequest;
+import com.bookify.backend.api.external.response.BasicCommentResponse;
 import com.bookify.backend.api.external.response.BookResponse;
 import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.*;
 import com.bookify.backend.mapper.BookMapper;
+import com.bookify.backend.mapper.RatingMapper;
 import com.bookify.backend.repository.*;
 import com.bookify.backend.service.BookService;
+import com.bookify.backend.service.CommentService;
 import com.bookify.backend.service.FileStorageService;
 import com.bookify.backend.service.RatingService;
 import com.bookify.backend.specification.BookSpecification;
@@ -33,10 +36,13 @@ public class BookServiceImpl implements BookService {
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
     private final BookMapper bookMapper;
+    private final RatingMapper ratingMapper;
     private final FileStorageService fileStorageService;
     private final RatingService ratingService;
+    private final CommentService commentService;
     private final RatingRepository ratingRepository;
     private final CommentRepository commentRepository;
+    private final UserBookRepository userBookRepository;
 
     @Override
     public Integer save(BookRequest request) {
@@ -115,8 +121,7 @@ public class BookServiceImpl implements BookService {
 
         fileStorageService.deleteFile(book.getCoverUrl());
 
-        ratingRepository.deleteAllByBook(book);
-        commentRepository.deleteAllByBook(book);
+        deleteAssociated(book);
 
         bookRepository.delete(book);
 
@@ -155,11 +160,21 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookResponse getBook(Integer id) {
-        return bookRepository.findById(id)
+    public BookResponse getBook(Integer bookId, Integer userId) {
+        return bookRepository.findById(bookId)
                 .map(book -> {
                     BookResponse response = bookMapper.mapToBookResponse(book);
                     response.setAvgRating(ratingService.getAvgRating(book.getId()));
+                    response.setRatings(ratingService.getRatingsForBook(book.getId())
+                            .stream()
+                            .map(ratingMapper::map)
+                            .toList()
+                    );
+
+                    List<BasicCommentResponse> comments = commentService.getComments(book.getId(), userId);
+
+                    response.setComments(comments);
+                    response.setCommentCount(commentService.getCommentCountForBook(book.getId()));
                     return response;
                 })
                 .orElseThrow(BOOK_NOT_FOUND::getError);
@@ -184,5 +199,12 @@ public class BookServiceImpl implements BookService {
 
         book.setCoverUrl(bookCover);
         bookRepository.save(book);
+    }
+
+    @Override
+    public void deleteAssociated(Book book) {
+        ratingRepository.deleteAllByBook(book);
+        commentRepository.deleteAllByBook(book);
+        userBookRepository.deleteAllByBook(book);
     }
 }

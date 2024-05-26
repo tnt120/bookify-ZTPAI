@@ -1,9 +1,5 @@
 package com.bookify.backend;
 
-import com.bookify.backend.api.internal.Author;
-import com.bookify.backend.api.internal.Book;
-import com.bookify.backend.api.internal.Genre;
-import com.bookify.backend.api.internal.Role;
 import com.bookify.backend.repository.AuthorRepository;
 import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.repository.GenreRepository;

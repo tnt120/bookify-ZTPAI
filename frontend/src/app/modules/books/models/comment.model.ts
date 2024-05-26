@@ -1,5 +1,8 @@
 export interface Comment {
-    user: string,
-    date: string,
-    content: string
+    id: number,
+    userId: number,
+    userFirstname: string,
+    createdAt: string,
+    content: string,
+    verified: boolean
 }

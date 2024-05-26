@@ -7,19 +7,27 @@
       (searchBookEmitter)="onSearch($event)"
       (sortEmitter)="onSort($event)"
     ></app-search-bar>
-    <div class="books-container" style="height: 100% !important;">
-        @if (books$ | async; as books) {
-            @for (book of books; track book.id) {
-                <app-book-card [book]="book"></app-book-card>
-            }
+    @if (books$ | async; as books) {
+        @if (books.length === 0) {
+            <div class="empty-books">
+                <img src="../../../../../assets/images/no-books.jpeg" alt="no-books" />
+                <p>No books found. Try to change filters.</p>
+            </div>
         }
-    </div>
+        @else {
+            <div class="books-container" style="height: 100% !important;">
+                @for (book of books; track book.id) {
+                    <app-book-card [routerLink]="['details', book.id]" routerLinkActivate="active" [book]="book"></app-book-card>
+                }
+            </div>
+        }
+    }
     <mat-paginator #paginator
         class="paginator"
         (page)="handlePageEvent($event)"
-        [length]="totalElements"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="pageSizeOptions"
-        [pageIndex]="pageIndex">
+        [length]="pagination.totalElements"
+        [pageSize]="pagination.pageSize"
+        [pageSizeOptions]="pagination.pageSizeOptions"
+        [pageIndex]="pagination.pageIndex">
     </mat-paginator>
 </div>

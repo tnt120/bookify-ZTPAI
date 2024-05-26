@@ -43,7 +43,7 @@ export class BookService {
     });
   }
 
-  getBooks(page: number, size: number, sort: SortOption, filters: FiltersBookModel): Observable<PageResponse> {
+  getBooks(page: number, size: number, sort: SortOption, filters: FiltersBookModel): Observable<PageResponse<BookReponse>> {
     let params = new HttpParams()
       .set('page', page)
       .set('size', size)
@@ -56,12 +56,15 @@ export class BookService {
 
       if (filters.genre) params = params.set('genre', filters.genre);
 
-      return this.http.get<PageResponse>(this.apiUrl, { params }).pipe(
+      return this.http.get<PageResponse<BookReponse>>(this.apiUrl, { params }).pipe(
         tap(response => this.booksSubject.next(response.content))
       );
   }
 
-  getBook(id: number): Observable<BookReponse> {
-    return this.http.get<BookReponse>(`${this.apiUrl}/${id}`);
+  getBook(bookId: number, userId: number): Observable<BookReponse> {
+    let params = new HttpParams()
+      .set('userId', userId);
+
+    return this.http.get<BookReponse>(`${this.apiUrl}/${bookId}`, { params });
   }
 }

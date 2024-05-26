@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Comments</h1>
+<mat-dialog-content>
+    <div class="comments-container">
+      @for (comment of comments; track comment.id) {
+        <app-comment [comment]="comment"></app-comment>
+      }
+      <mat-paginator #paginator
+          class="paginator"
+          (page)="handlePageEvent($event)"
+          [length]="pagination.totalElements"
+          [pageSize]="pagination.pageSize"
+          [pageSizeOptions]="pagination.pageSizeOptions"
+          [pageIndex]="pagination.pageIndex">
+      </mat-paginator>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="warn" mat-dialog-close>Exit</button>
+</mat-dialog-actions>

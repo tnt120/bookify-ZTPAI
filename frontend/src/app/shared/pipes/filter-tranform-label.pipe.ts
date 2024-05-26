@@ -11,6 +11,7 @@ export class FilterTranformLabelPipe implements PipeTransform {
     }
 
     return value
+      .replaceAll('_', ' ')
       .replace(/([a-z])([A-Z])/g, '$1 $2')
       .replace(/(?:^|\s)\S/g, a => a.toUpperCase())
   }

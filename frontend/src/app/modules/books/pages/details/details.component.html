@@ -2,27 +2,29 @@
     @if (book) {
         <app-title-bar [title]="book.title"></app-title-bar>
         <div class="book-details-container">
-            <div class="image" [style.background-image]="coverUrl"></div>
+            <img [src]="cover" alt="cover" class="cover-img" />
             <div class="info">
+              <div class="info-container">
                 <div class="details">
-                    <div><span>Author: </span>{{ book.author }}</div>
-                    <div><span>Genre: </span>{{ book.genre }}</div>
+                    <div><span>Author: </span>{{ book.author.firstName }} {{ book.author.lastName }}</div>
+                    <div><span>Genre: </span>{{ book.genre.name }}</div>
                     <div class="community">
-                        <p><span>Rating: </span>{{ avgRating }}</p>
-                        <p>{{ ratingsAmount }} ratings, {{ commentsAmount }} comments</p>
+                        <p><span>Rating: </span>{{ book.avgRating }}</p>
+                        <p>{{ book.ratings?.length }} ratings, {{ book.commentCount }} comments</p>
                     </div>
                     <div><span>Release date: </span>{{ book.releaseDate }}</div>
                     <div><span>Pages: </span>{{ book.pages }}</div>
                 </div>
-
-                <div class="actions">
-                    <h2>Manage bookcase</h2>
-                    <div class="actions-buttons">
-                        <app-action-button text="Finished"></app-action-button>
-                        <app-action-button text="Reading"></app-action-button>
-                        <app-action-button text="To read"></app-action-button>
-                    </div>
+                <div class="rating" *ngIf="userRating">
+                  <img src="../../../../../assets/icons/edit.svg" alt="edit-icon" (click)="changeRating()">
+                  <img src="../../../../../assets/icons/star.svg" alt="star-icon">
+                  <p>{{ userRating.value }}</p>
                 </div>
+              </div>
+
+                @if (detailsBookcaseAction !== null) {
+                  <app-bookcase-actions [detailsBookcaseAction]="detailsBookcaseAction" (updateResolveEmitter)="updateBookcase($event)"></app-bookcase-actions>
+                }
             </div>
         </div>
         <div class="description-container">
@@ -39,10 +41,38 @@
                 </div>
             </div>
             <div class="comments-container">
-                <h2>Comments</h2>
+                <div class="info">
+                  <h2>Comments</h2>
+                  @if (detailsBookcaseType && !hasComment) {
+                    @if (detailsBookcaseType.bookcaseId !== 1) {
+                      <p>To add comment, add this book to "finished" bookcase</p>
+                    }
+                    @else {
+                      <button mat-icon-button color="accent" (click)="commentAction('add')">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                    }
+                  }
+                </div>
                 <div class="comments">
-                    @for (comment of book.comments; track comment) {
-                        <app-comment [comment]="comment"></app-comment>
+                    @if (book.comments?.length === 0) {
+                        <div class="empty-comments">
+                            <img src="../../../../../assets/images/empty-comments.jpeg" alt="no-comments">
+                            <p>No comments yet</p>
+                        </div>
+                    }
+                    @else {
+                        @for (comment of book.comments; track comment) {
+                          @if (comment.userId === userId) {
+                            <app-comment [comment]="comment" [userComment]="true" (editEmitter)="commentAction('modify')"></app-comment>
+                          }
+                          @else {
+                            <app-comment [comment]="comment"></app-comment>
+                          }
+                        }
+                        @if (book.commentCount && book.commentCount > 3) {
+                            <button mat-flat-button color="accent" (click)="showAllComments()">Show all comments</button>
+                        }
                     }
                 </div>
             </div>

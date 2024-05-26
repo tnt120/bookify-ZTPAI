@@ -13,6 +13,7 @@ import { ManageGenreDialogComponent } from '../../components/manage-genre-dialog
 import { GenreRequestUpdate } from '../../../../core/models/genre-request-update.model';
 import { ConfirimationDialogData } from '../../../../core/models/confirmation-dialog-data.model';
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { CustomSnackbarService } from '../../../../core/services/custom-snackbar/custom-snackbar.service';
 
 @Component({
   selector: 'app-manage-genres',
@@ -21,6 +22,7 @@ import { ConfirmationDialogComponent } from '../../../../shared/components/confi
 })
 export class ManageGenresComponent implements OnInit, OnDestroy {
   private readonly genreService = inject(GenreService);
+  private readonly customSnackbarService = inject(CustomSnackbarService);
 
   constructor(
     public dialog: MatDialog
@@ -97,9 +99,11 @@ export class ManageGenresComponent implements OnInit, OnDestroy {
           this.genreService.saveGenre(result).subscribe({
             next: (id: number) => {
               this.getGenres();
+              this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Genre has been added successfully', type: 'success', duration: 2500 })
             },
             error: (error) => {
               console.error(error);
+              this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while adding genre', type: 'error', duration: 2500 });
             }
           })
         } else if (genre) {
@@ -107,9 +111,11 @@ export class ManageGenresComponent implements OnInit, OnDestroy {
           this.subscriptions.push(this.genreService.updateGenre(genre.id!, data).subscribe({
             next: () => {
               this.getGenres();
+              this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Genre has been updated successfully', type: 'success', duration: 2500 });
             },
             error: (error) => {
               console.error(error);
+              this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while updating genre', type: 'error', duration: 2500 });
             }
           }));
         }
@@ -154,9 +160,11 @@ export class ManageGenresComponent implements OnInit, OnDestroy {
         this.subscriptions.push(this.genreService.deleteGenre(genre.id!).subscribe({
           next: () => {
             this.getGenres();
+            this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Genre has been deleted successfully', type: 'success', duration: 2500 });
           },
           error: (error) => {
             console.error(error);
+            this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while deleting genre', type: 'error', duration: 2500 });
           }
         }));
       }

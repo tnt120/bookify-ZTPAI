@@ -41,6 +41,25 @@
       <input [(ngModel)]="filtersGenre.name" type="text" name="name" matInput placeholder="Genre" color="accent">
     </mat-form-field>
   }
+  @else if (type === 'comments') {
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Title</mat-label>
+      <input [(ngModel)]="filtersComments.title" type="text" name="title" matInput placeholder="Title" color="accent">
+    </mat-form-field>
+    <div class="search-bar-container-select-section">
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>User id</mat-label>
+        <input (keydown)="onType($event)" [(ngModel)]="filtersComments.user" type="number" min="0" step="1" name="userId" matInput placeholder="User id" color="accent">
+      </mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>Verified</mat-label>
+        <mat-select [(ngModel)]="filtersComments.verified" name="verified">
+          <mat-option [value]="true">Yes</mat-option>
+          <mat-option [value]="false">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  }
   <div class="search-bar-container-actions">
       <app-search-button (click)="onSearch()"></app-search-button>
       <app-filter-control [sortOptions]="sortOptions" [activeSort]="activeSort" (optionSelected)="onSortSelected($event)"></app-filter-control>

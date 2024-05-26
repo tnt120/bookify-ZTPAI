@@ -8,7 +8,7 @@
         align-items: center;
         padding: 0 0 2em 0;
         gap: 2em;
-  
+
         .book-details-container {
             width: 80%;
             display: flex;
@@ -16,12 +16,9 @@
             justify-content: center;
             gap: 3em;
 
-            .image {
+            .cover-img {
                 width: 335px;
                 height: 500px;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
             }
 
             .info {
@@ -32,36 +29,41 @@
                 justify-content: space-between;
                 padding: 1em 0 0 0;
 
-                .details {
+                .info-container {
+                  display: flex;
+                  align-items: start;
+                  justify-content: space-between;
+
+                  .rating {
                     display: flex;
-                    flex-direction: column;
-                    gap: 1em;
-
-                    .community {
-                        p:nth-child(2) {
-                            font-size: $font-size-s;
-                            font-style: italic;
-                        }
-                    }
-
-                    span {
-                        font-weight: bold;
-                    }
-                }
-
-                .actions {
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1em;
                     justify-content: center;
                     align-items: center;
+                    font-weight: bold;
+                    font-size: $font-size-l;
 
-                    .actions-buttons {
-                        display: flex;
-                        gap: 1em;
+                    img {
+                      cursor: pointer;
                     }
+                  }
+
+                  .details {
+                      display: flex;
+                      flex-direction: column;
+                      gap: 1em;
+
+                      .community {
+                          p:nth-child(2) {
+                              font-size: $font-size-s;
+                              font-style: italic;
+                          }
+                      }
+
+                      span {
+                          font-weight: bold;
+                      }
+                  }
                 }
+
             }
         }
 
@@ -70,13 +72,12 @@
             display: flex;
             flex-direction: column;
             gap: 1em;
-
         }
-        
+
         .community-container {
             width: 80%;
-            display: flex;           
-            
+            display: flex;
+
             .rating-container {
                 width: 40%;
 
@@ -100,12 +101,37 @@
                     }
                 }
             }
-            
+
             .comments-container {
                 width: 60%;
 
+                .info {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+
+                  p {
+                    font-size: $font-size-xs;
+                    font-style: italic;
+                  }
+                }
+
                 .comments {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1em;
+                    align-items: center;
                     padding: 1em 0 0 1em;
+
+                    .empty-comments {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+
+                        img {
+                            width: 50%;
+                        }
+                    }
                 }
             }
         }
@@ -121,9 +147,19 @@
         .container {
             .book-details-container {
                 flex-direction: column;
-                
+
                 .info {
                     gap: 2em;
+
+                    .info-container {
+                      flex-direction: column;
+                      gap: 1em;
+
+                      .rating {
+                        width: 100%;
+                        justify-content: end;
+                      }
+                    }
                 }
             }
 

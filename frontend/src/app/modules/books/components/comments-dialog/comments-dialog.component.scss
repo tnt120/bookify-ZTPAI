@@ -1,0 +1,18 @@
+@import '../../../../../styles/variables';
+
+:host {
+  h1 {
+    font-size: $font-size-xl;
+    margin-bottom: 1em;
+  }
+
+  mat-dialog-content {
+    .comments-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 1em;
+    }
+  }
+}

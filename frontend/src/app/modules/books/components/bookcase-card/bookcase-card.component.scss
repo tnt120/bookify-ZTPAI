@@ -16,10 +16,11 @@
     .image {
       width: 136px;
       height: 200px;
-      background: url('../../../../../assets/images/covers/fall-of-ruin.jpg');
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
+
+      img {
+        width: 136px;
+        height: 200px;
+      }
     }
 
     .info-container{
@@ -30,6 +31,16 @@
       justify-content: space-between;
 
       .details {
+        .book-title, .book-author {
+          max-height: $font-size-m * 3;
+          width: 100%;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+
         p {
           margin-bottom: 10px;
           font-style: italic;
@@ -62,17 +73,27 @@
       padding: 0 1em 1em 0;
       justify-content: space-between;
 
-      .rating {
+      .rating, .comment {
         display: flex;
         justify-content: center;
         align-items: center;
+
+        img {
+          cursor: pointer;
+        }
+      }
+
+      .rating {
         font-weight: bold;
         font-size: $font-size-l;
       }
 
-      .action-buttons {
-        display: flex;
+      .comment {
         gap: 0.5em;
+
+        p {
+          cursor: pointer;
+        }
       }
     }
   }
@@ -85,10 +106,16 @@
     .bookcase-card-container {
       flex-direction: column;
       width: 250px;
+      height: 750px;
 
       .image {
-        width: 250px;
+        width: 248px;
         height: 375px;
+
+        img {
+          width: 248px;
+          height: 375px;
+        }
       }
 
       .info-container {
@@ -100,8 +127,14 @@
       }
 
       .actions-container {
+        align-items: center;
+        justify-content: center;
+        padding: 0 0 1em 0;
+        gap: 1em;
+
         .rating {
-          display: none;
+          width: 80%;
+          justify-content: end;
         }
       }
     }

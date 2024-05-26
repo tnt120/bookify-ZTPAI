@@ -43,7 +43,9 @@ public class SecurityConfig {
                                 HttpMethod.GET,
                                 "/api/author",
                                 "/api/book/**",
-                                "/api/genre/**"
+                                "/api/genre/**",
+                                "/api/comments/**",
+                                "/api/rating/**"
                         )
                         .permitAll()
                         .anyRequest()

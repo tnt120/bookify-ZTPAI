@@ -2,7 +2,7 @@
     <div class="rating-badge">{{ book.avgRating }}</div>
     <div class="book-details">
         <div class="book-image">
-            <img [src]="bookCover">
+            <img [src]="bookCover" alt="cover" />
         </div>
         <p class="book-title">{{ book.title }}</p>
         <p class="book-author">{{ book.author.firstName + ' ' + book.author.lastName }}</p>

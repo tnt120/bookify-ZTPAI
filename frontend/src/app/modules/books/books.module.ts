@@ -18,6 +18,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { BookcaseActionsComponent } from './components/bookcase-actions/bookcase-actions.component';
+import { BookcaseProgresDialogComponent } from './components/bookcase-progres-dialog/bookcase-progres-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { ReadingDialogComponent } from './components/reading-dialog/reading-dialog.component';
+import { CommentsDialogComponent } from './components/comments-dialog/comments-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +34,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     BookCardComponent,
     BookcaseCardComponent,
     ActionButtonComponent,
-    CommentComponent
+    CommentComponent,
+    BookcaseActionsComponent,
+    BookcaseProgresDialogComponent,
+    ReadingDialogComponent,
+    CommentsDialogComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +51,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatIconModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatButtonModule
   ]
 })
 export class BooksModule { }

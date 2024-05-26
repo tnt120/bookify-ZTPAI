@@ -1,6 +1,5 @@
 package com.bookify.backend.controller;
 
-import com.bookify.backend.api.external.*;
 import com.bookify.backend.api.external.requests.BookRequest;
 import com.bookify.backend.api.external.response.BookResponse;
 import com.bookify.backend.api.external.response.PageResponse;
@@ -10,9 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/book")
@@ -33,9 +29,12 @@ public class BookController {
         return ResponseEntity.ok(bookService.getAllBooks(page, size, sortBy, order, title, author, genre));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BookResponse> getBook(@PathVariable Integer id) {
-        return ResponseEntity.ok(bookService.getBook(id));
+    @GetMapping("/{bookId}")
+    public ResponseEntity<BookResponse> getBook(
+            @PathVariable Integer bookId,
+            @RequestParam Integer userId
+    ) {
+        return ResponseEntity.ok(bookService.getBook(bookId, userId));
     }
 
     @PostMapping()

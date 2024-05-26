@@ -1,29 +1,47 @@
 <div class="bookcase-card-container">
-  <div class="image"></div>
+  <div class="image">
+    <img [src]="cover" alt="cover">
+  </div>
   <div class="info-container">
     <div class="details">
-      <p><span>Title:</span> {{ book.title }}</p>
-      <p><span>Author:</span> {{ book.author }}</p>
-      <p><span>Genre:</span> {{ book.genre }}</p>
+      <p class="book-title"><span>Title:</span> {{ book.title }}</p>
+      <p class="book-author"><span>Author:</span> {{ book.author.firstName }} {{ book.author.lastName }}</p>
+      <p><span>Genre:</span> {{ book.genre.name }}</p>
       <p><span>Pages:</span> {{ book.pages }}</p>
     </div>
-    <div class="progress-container">
-      <div class="text-icon">
-        <p>Progress:</p>
-        <img src="../../../../../assets/icons/edit.svg" alt="edit-icon">
+    @if (type === 'reading') {
+      <div class="progress-container">
+        <div class="text-icon">
+          <p>Progress:</p>
+          <img src="../../../../../assets/icons/edit.svg" alt="edit-icon" (click)="updateProgress()">
+        </div>
+        <mat-progress-bar mode="determinate" [value]="progressPercentege" [matTooltip]="'Pages readed: ' + bookcaseResponse.currentPage + '/' + book.pages"></mat-progress-bar>
       </div>
-      <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
-    </div>
+    }
   </div>
   <div class="actions-container">
-    <div class="rating">
-      <img src="../../../../../assets/icons/star.svg" alt="star-icon">
-      <p>{{ avgRating }}</p>
-    </div>
-    <div class="action-buttons">
-      <app-action-button text="Finished"></app-action-button>
-      <app-action-button text="Reading"></app-action-button>
-      <app-action-button text="Delete"></app-action-button>
-    </div>
+    @if (book.ratings && book.ratings[0] && type === 'finished') {
+      <div class="rating">
+        <img src="../../../../../assets/icons/edit.svg" alt="edit-icon" (click)="changeRating()">
+        <img src="../../../../../assets/icons/star.svg" alt="star-icon">
+        <p>{{ book.ratings[0].value }}</p>
+      </div>
+    }
+    @else {
+      <div></div>
+    }
+    @if (book.comments && book.comments[0] && type === 'finished') {
+      <div class="comment">
+        <p (click)="commentAction('modify')">Show & edit comment</p>
+        @if (!book.comments[0].verified) {
+          <img src="../../../../../assets/icons/warning.svg" alt="warning" matTooltip="Your comment is suspicious and must be verified by admin"/>
+        }
+      </div>
+    } @else if (type === 'finished') {
+      <div class="comment">
+        <p (click)="commentAction('add')">Add comment</p>
+      </div>
+    }
+    <app-bookcase-actions (updateResolveEmitter)="onBookUpdate($event)" [detailsBookcaseAction]="detailsBookcaseAction" [isCard]="true"></app-bookcase-actions>
   </div>
 </div>

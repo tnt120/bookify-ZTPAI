@@ -1,27 +1,69 @@
 <div class="container">
   <app-title-bar title="My Bookcase"></app-title-bar>
   <div class="bookcase-book-container">
-    <app-tabs>
+    <app-tabs (tabChangeEmitter)="onTabChange($event)">
       <app-tab title="Finished">
-        @if (books$ | async; as books) {
-          @for (book of books.slice(0, 2); track book.id) {
-            <app-bookcase-card [book]="book" type="finished"></app-bookcase-card>
+        @if (finishedBooks$ | async; as books) {
+          @for (book of books; track book.id) {
+            <app-bookcase-card [bookcaseResponse]="book" type="finished" (updateResolveEmitter)="onUpdate($event, finished)"></app-bookcase-card>
+          }
+          @if (books.length === 0) {
+            <div class="empty-books">
+              <img src="../../../../../assets/images/no-books.jpeg" alt="no-books" />
+              <p>No finished books.</p>
+          </div>
           }
         }
+        <mat-paginator #paginator
+          class="paginator"
+          (page)="handlePageEvent($event, finished)"
+          [length]="paginations[finished].totalElements"
+          [pageSize]="paginations[finished].pageSize"
+          [pageSizeOptions]="paginations[finished].pageSizeOptions"
+          [pageIndex]="paginations[finished].pageIndex">
+        </mat-paginator>
       </app-tab>
       <app-tab title="Reading">
-        @if (books$ | async; as books) {
-          @for (book of books.slice(2, 3); track book.id) {
-            <app-bookcase-card [book]="book" type="reading"></app-bookcase-card>
+        @if (readingBooks$ | async; as books) {
+          @for (book of books; track book.id) {
+            <app-bookcase-card [bookcaseResponse]="book" type="reading" (updateResolveEmitter)="onUpdate($event, reading)"></app-bookcase-card>
+          }
+          @if (books.length === 0) {
+            <div class="empty-books">
+              <img src="../../../../../assets/images/no-books.jpeg" alt="no-books" />
+              <p>No currently reading books.</p>
+            </div>
           }
         }
+        <mat-paginator #paginator
+          class="paginator"
+          (page)="handlePageEvent($event, reading)"
+          [length]="paginations[reading].totalElements"
+          [pageSize]="paginations[reading].pageSize"
+          [pageSizeOptions]="paginations[reading].pageSizeOptions"
+          [pageIndex]="paginations[reading].pageIndex">
+        </mat-paginator>
       </app-tab>
       <app-tab title="To Read">
-        @if (books$ | async; as books) {
-          @for (book of books.slice(3, 6); track book.id) {
-            <app-bookcase-card [book]="book" type="to-read"></app-bookcase-card>
+        @if (toReadBooks$ | async; as books) {
+          @for (book of books; track book.id) {
+            <app-bookcase-card [bookcaseResponse]="book" type="to-read" (updateResolveEmitter)="onUpdate($event, toRead)"></app-bookcase-card>
+          }
+          @if (books.length === 0) {
+            <div class="empty-books">
+              <img src="../../../../../assets/images/no-books.jpeg" alt="no-books" />
+              <p>No books to read.</p>
+            </div>
           }
         }
+        <mat-paginator #paginator
+          class="paginator"
+          (page)="handlePageEvent($event, toRead)"
+          [length]="paginations[toRead].totalElements"
+          [pageSize]="paginations[toRead].pageSize"
+          [pageSizeOptions]="paginations[toRead].pageSizeOptions"
+          [pageIndex]="paginations[toRead].pageIndex">
+        </mat-paginator>
       </app-tab>
     </app-tabs>
   </div>

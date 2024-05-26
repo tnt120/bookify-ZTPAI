@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+  <p *ngIf="data.additionalMessage">{{ data.additionalMessage }}</p>
+  @if (data.type === 'page') {
+    <mat-form-field class="example-full-width">
+      <mat-label>Current page</mat-label>
+      <input [(ngModel)]="currentPage" (keydown)="onType($event)" type="number" min="0" step="1" name="currentPage" matInput placeholder="Current page" color="accent" required cdkFocusInitial>
+      <mat-error *ngIf="!isValid()">Current page minimum value is 0</mat-error>
+    </mat-form-field>
+  }
+
+  @if (data.type === 'rating') {
+    <mat-form-field class="example-full-width">
+      <mat-label>Rating</mat-label>
+      <input [(ngModel)]="rating" (keydown)="onType($event)" type="number" min="1" max="10" step="1" name="rating" matInput placeholder="Rating" color="accent" required cdkFocusInitial>
+      <mat-error *ngIf="!isValid()">Rating must be integer between 1 - 10</mat-error>
+    </mat-form-field>
+  }
+
+  @if (data.type === 'comment') {
+    <mat-form-field>
+      <mat-label>Comment</mat-label>
+      <textarea [(ngModel)]="comment" name="comment" matInput maxlength="250" required></textarea>
+      <mat-hint align="end">{{comment.length}}/250</mat-hint>
+      <mat-error *ngIf="comment.length === 0">Comment must have at least one character</mat-error>
+    </mat-form-field>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="warn" mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="dialogResolve('submit')" [disabled]="!isValid()">{{ data.confirmText }}</button>
+  <button *ngIf="data.type === 'comment' && data.comment !== ''" mat-flat-button color="warn" [mat-dialog-close]="dialogResolve('delete')">Delete</button>
+</mat-dialog-actions>

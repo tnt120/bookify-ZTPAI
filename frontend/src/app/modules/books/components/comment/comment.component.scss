@@ -16,10 +16,20 @@
         .details {
             display: flex;
             align-items: center;
-            gap: 1em;
+            justify-content: space-between;
             border-bottom: 1px solid $purple-3;
             width: 100%;
             padding: 0.5em 1em;
+
+            .user {
+              display: flex;
+              align-items: center;
+              gap: 1em;
+            }
+
+            .date {
+                font-size: $font-size-s;
+            }
 
             img {
                 height: 24px;

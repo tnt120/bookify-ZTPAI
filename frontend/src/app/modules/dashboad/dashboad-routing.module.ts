@@ -5,6 +5,7 @@ import { ManageAuthorsComponent } from './pages/manage-authors/manage-authors.co
 import { ManageGenresComponent } from './pages/manage-genres/manage-genres.component';
 import { ManageCommentsComponent } from './pages/manage-comments/manage-comments.component';
 import { ManageBookComponent } from './pages/manage-book/manage-book.component';
+import { CommentApprovalComponent } from './pages/comment-approval/comment-approval.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'manage/:id',
     component: ManageBookComponent
+  },
+  {
+    path: 'commentApproval/:id',
+    component: CommentApprovalComponent
   }
 ];
 

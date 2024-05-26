@@ -11,6 +11,7 @@ import { GenreService } from '../../../../core/services/genre/genre.service';
 import { AuthorService } from '../../../../core/services/author/author.service';
 import { Author } from '../../../../core/models/author.model';
 import { Genre } from '../../../../core/models/genre.model';
+import { CustomSnackbarService } from '../../../../core/services/custom-snackbar/custom-snackbar.service';
 
 @Component({
   selector: 'app-manage-book',
@@ -65,7 +66,8 @@ export class ManageBookComponent implements OnInit, OnDestroy {
     private bookService: BookService,
     private genreService: GenreService,
     private authorService: AuthorService,
-    private router: Router
+    private router: Router,
+    private customSnackbarService: CustomSnackbarService
   ) { }
 
   ngOnInit(): void {
@@ -78,7 +80,7 @@ export class ManageBookComponent implements OnInit, OnDestroy {
     if (this.bookId !== 0) {
       this.title = 'Edit Book';
 
-      this.bookService.getBook(this.bookId).subscribe({
+      this.bookService.getBook(this.bookId, 0).subscribe({
         next: book => {
           this.bookReponse = book;
           this.manageForm.patchValue({
@@ -148,11 +150,15 @@ export class ManageBookComponent implements OnInit, OnDestroy {
         this.subscriptions.push(this.bookService.uploadCover(id, this.selectedBookCover!).subscribe({
           next: (res: any) => {
             this.router.navigate(['/dashboard']);
+            this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Book has been added successfully', type: 'success', duration: 2500 })
+          },
+          error: (err) => {
+            this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while adding book', type: 'error', duration: 2500 })
           }
         }))
       },
       error: (err) => {
-        this.errors.form = err.error.message;
+        this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while adding book', type: 'error', duration: 2500 })
       }
     }));
   }
@@ -166,10 +172,15 @@ export class ManageBookComponent implements OnInit, OnDestroy {
           this.bookService.uploadCover(this.bookId, this.selectedBookCover).subscribe({
             next: () => {
               this.router.navigate(['/dashboard']);
+              this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Book has been updated successfully', type: 'success', duration: 2500 })
+            },
+            error: (err) => {
+              this.customSnackbarService.openCustomSnackBar({ title: 'Error', message: 'Error while updating book', type: 'error', duration: 2500 });
             }
           })
         } else {
           this.router.navigate(['/dashboard']);
+          this.customSnackbarService.openCustomSnackBar({ title: 'Success', message: 'Book has been updated successfully', type: 'success', duration: 2500 })
         }
       },
       error: (err) => {

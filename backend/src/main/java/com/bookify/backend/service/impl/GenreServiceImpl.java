@@ -1,11 +1,12 @@
 package com.bookify.backend.service.impl;
 
-import com.bookify.backend.api.external.GenreDTO;
+import com.bookify.backend.api.external.response.GenreResponse;
 import com.bookify.backend.api.internal.Genre;
 import com.bookify.backend.api.internal.User;
 import com.bookify.backend.mapper.GenreMapper;
 import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.repository.GenreRepository;
+import com.bookify.backend.service.BookService;
 import com.bookify.backend.service.GenreService;
 import com.bookify.backend.specification.GenreSpecification;
 import jakarta.transaction.Transactional;
@@ -26,9 +27,10 @@ public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
     private final GenreMapper genreMapper;
     private final BookRepository bookRepository;
+    private final BookService bookService;
 
     @Override
-    public List<GenreDTO> getAllGenres(String sortBy, String order, String name) {
+    public List<GenreResponse> getAllGenres(String sortBy, String order, String name) {
         Sort sort = order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
         Specification<Genre> spec = Specification.where(null);
@@ -42,7 +44,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Integer save(GenreDTO genre) {
+    public Integer save(GenreResponse genre) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
@@ -58,7 +60,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Integer update(Integer genreId, GenreDTO request) {
+    public Integer update(Integer genreId, GenreResponse request) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
@@ -87,6 +89,7 @@ public class GenreServiceImpl implements GenreService {
         Genre genre = genreRepository.findById(id)
                 .orElseThrow(GENRE_NOT_FOUND::getError);
 
+        bookRepository.findByGenre(genre).ifPresent(bookService::deleteAssociated);
         bookRepository.deleteAllByGenre(genre);
 
         genreRepository.delete(genre);

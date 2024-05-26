@@ -1,50 +1,73 @@
 package com.bookify.backend.controller;
 
-import com.bookify.backend.api.external.CommentDTO;
-import com.bookify.backend.api.external.StatusResponseDTO;
-import com.bookify.backend.api.external.UserDTO;
-import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
+import com.bookify.backend.api.external.requests.CommentRequest;
+import com.bookify.backend.api.external.response.BasicCommentResponse;
+import com.bookify.backend.api.external.response.PageResponse;
+import com.bookify.backend.service.CommentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class CommentController {
-    @GetMapping()
-    public List<CommentDTO> getComments() {
-        return List.of(new CommentDTO()
-                .setId(1)
-                .setContent("Fajna ksiazka")
-                .setCommentDate(LocalDate.of(2024, 4, 9))
-                .setCommentAuthor(new UserDTO().setId(1).setEmail("test@test.com")));
+    private final CommentService commentService;
+
+    @GetMapping("/all")
+    public ResponseEntity<PageResponse<BasicCommentResponse>> getComments(
+            @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+            @RequestParam(name = "sort", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "asc", required = false) String order,
+            @RequestParam(name = "verified") Boolean verified,
+            @RequestParam(name = "title", required = false) String title,
+            @RequestParam(name = "user", required = false) Integer user
+    ) {
+        return ResponseEntity.ok(commentService.getAllComments(page, size, sortBy, order, verified, null, user, title));
+    }
+
+    @GetMapping("allByBook/{id}")
+    public ResponseEntity<PageResponse<BasicCommentResponse>> getComments
+            (@PathVariable Integer id,
+             @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+             @RequestParam(name = "size", defaultValue = "10", required = false) Integer size
+            ) {
+        return ResponseEntity.ok(commentService.getCommentsForBook(id, page, size));
     }
 
     @GetMapping("/{id}")
-    public List<CommentDTO> getComments(@PathVariable Integer id) {
-        return List.of(new CommentDTO()
-                .setId(1)
-                .setContent("Super ksiazka")
-                .setCommentDate(LocalDate.of(2024, 4, 9))
-                .setCommentAuthor(new UserDTO().setId(1).setEmail("test123@test.com")));
+    public ResponseEntity<BasicCommentResponse> getComment(@PathVariable Integer id) {
+        return ResponseEntity.ok(commentService.getComment(id));
+    }
+
+    @GetMapping("/limited/{bookId}")
+    public ResponseEntity<List<BasicCommentResponse>> getCommentsLimited(
+            @PathVariable Integer bookId,
+            @RequestParam(name = "userId", defaultValue = "0", required = false) Integer userId
+    ) {
+        return ResponseEntity.ok(commentService.getComments(bookId, userId));
     }
 
     @PostMapping()
-    public ResponseEntity<Object> addComment(@RequestBody CommentDTO comment) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(new StatusResponseDTO(201));
+    public ResponseEntity<BasicCommentResponse> addComment(@RequestBody CommentRequest comment) {
+        return ResponseEntity.ok(this.commentService.addComment(comment));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> editComment(@PathVariable Integer id, @RequestBody CommentDTO comment) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<BasicCommentResponse> editComment(@PathVariable Integer id, @RequestBody CommentRequest comment) {
+        return ResponseEntity.ok(this.commentService.updateComment(id, comment));
+    }
+
+    @PatchMapping("/verify/{id}")
+    public ResponseEntity<Integer> verifyComment(@PathVariable Integer id) {
+        return ResponseEntity.ok(this.commentService.verifyComment(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteComment(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(new StatusResponseDTO(200));
+    public ResponseEntity<Integer> deleteComment(@PathVariable Integer id) {
+        return ResponseEntity.ok(this.commentService.deleteComment(id));
     }
 }

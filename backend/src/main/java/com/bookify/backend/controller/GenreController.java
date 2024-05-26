@@ -1,10 +1,8 @@
 package com.bookify.backend.controller;
 
-import com.bookify.backend.api.external.GenreDTO;
-import com.bookify.backend.api.external.StatusResponseDTO;
+import com.bookify.backend.api.external.response.GenreResponse;
 import com.bookify.backend.service.GenreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +15,7 @@ public class GenreController {
     private final GenreService genreService;
 
     @GetMapping
-    public ResponseEntity<List<GenreDTO>> getGenres(
+    public ResponseEntity<List<GenreResponse>> getGenres(
             @RequestParam(name = "sort", defaultValue = "id", required = false) String sortBy,
             @RequestParam(name = "order", defaultValue = "asc", required = false) String order,
             @RequestParam(name = "name", required = false) String name
@@ -26,12 +24,12 @@ public class GenreController {
     }
 
     @PostMapping()
-    public ResponseEntity<Integer> addGenre(@RequestBody GenreDTO genre) {
+    public ResponseEntity<Integer> addGenre(@RequestBody GenreResponse genre) {
         return ResponseEntity.ok(genreService.save(genre));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Integer> editGenre(@PathVariable Integer id, @RequestBody GenreDTO genre) {
+    public ResponseEntity<Integer> editGenre(@PathVariable Integer id, @RequestBody GenreResponse genre) {
         return ResponseEntity.ok(genreService.update(id, genre));
     }
 

@@ -1,0 +1,17 @@
+<div class="actions">
+  <h2 *ngIf="!isCard">Manage bookcase</h2>
+  <div class="actions-buttons">
+      @if (detailsBookcaseAction.bookcaseId !== bookcaseType.FINISHED) {
+        <app-action-button text="Finished" (click)="onActionClick(bookcaseType.FINISHED)"></app-action-button>
+      }
+      @if (detailsBookcaseAction.bookcaseId !== bookcaseType.READING) {
+        <app-action-button text="Reading" (click)="onActionClick(bookcaseType.READING)"></app-action-button>
+      }
+      @if (detailsBookcaseAction.bookcaseId !== bookcaseType.TO_READ) {
+        <app-action-button text="To read" (click)="onActionClick(bookcaseType.TO_READ)"></app-action-button>
+      }
+      @if (detailsBookcaseAction.bookcaseId !== 0) {
+        <app-action-button text="Delete" (click)="onActionClick(0)"></app-action-button>
+      }
+  </div>
+</div>

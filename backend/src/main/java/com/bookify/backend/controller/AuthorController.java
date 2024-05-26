@@ -1,6 +1,6 @@
 package com.bookify.backend.controller;
 
-import com.bookify.backend.api.external.AuthorDTO;
+import com.bookify.backend.api.external.response.AuthorResponse;
 import com.bookify.backend.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping
-    public ResponseEntity<List<AuthorDTO>> getAuthors(
+    public ResponseEntity<List<AuthorResponse>> getAuthors(
             @RequestParam(name = "sort", defaultValue = "id", required = false) String sortBy,
             @RequestParam(name = "order", defaultValue = "asc", required = false) String order,
             @RequestParam(name = "firstName", required = false) String firstName,
@@ -26,12 +26,12 @@ public class AuthorController {
     }
 
     @PostMapping()
-    public ResponseEntity<Integer> addAuthor(@RequestBody AuthorDTO authorDTO) {
-        return ResponseEntity.ok(authorService.save(authorDTO));
+    public ResponseEntity<Integer> addAuthor(@RequestBody AuthorResponse authorResponse) {
+        return ResponseEntity.ok(authorService.save(authorResponse));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Integer> editAuthor(@PathVariable Integer id, @RequestBody AuthorDTO author) {
+    public ResponseEntity<Integer> editAuthor(@PathVariable Integer id, @RequestBody AuthorResponse author) {
         return ResponseEntity.status(HttpStatus.OK).body(authorService.update(id, author));
     }
 

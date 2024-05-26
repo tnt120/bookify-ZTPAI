@@ -1,7 +1,7 @@
 <div class="tabs-container">
   <div class="tabs">
     @for (tab of tabs; track tab.title) {
-      <div class="tab" [ngClass]="{'active': tab.active === true }" (click)="selectTab(tab)">{{ tab.title }} </div>
+      <div class="tab" [ngClass]="{'active': tab.active === true }" (click)="selectTab(tab)">{{ tab.title }}</div>
     }
   </div>
   <ng-content></ng-content>

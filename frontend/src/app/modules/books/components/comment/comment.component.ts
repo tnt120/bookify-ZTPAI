@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Comment } from '../../models/comment.model';
 
 @Component({
@@ -10,4 +10,13 @@ export class CommentComponent {
   @Input({ required: true })
   comment!: Comment;
 
+  @Input()
+  userComment = false;
+
+  @Output()
+  editEmitter = new EventEmitter();
+
+  onEdit() {
+    this.editEmitter.emit();
+  }
 }
