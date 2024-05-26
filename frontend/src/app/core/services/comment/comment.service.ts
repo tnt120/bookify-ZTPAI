@@ -36,4 +36,12 @@ export class CommentService {
   deleteComment(commentId: number): Observable<number> {
     return this.http.delete<number>(`${this.apiUrl}/${commentId}`);
   }
+
+  getSingleComment(commentId: number): Observable<Comment> {
+    return this.http.get<Comment>(`${this.apiUrl}/${commentId}`);
+  }
+
+  approveComment(commentId: number): Observable<number> {
+    return this.http.patch<number>(`${this.apiUrl}/verify/${commentId}`, {});
+  }
 }

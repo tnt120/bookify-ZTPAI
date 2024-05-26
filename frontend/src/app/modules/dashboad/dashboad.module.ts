@@ -22,6 +22,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ManageAuthorDialogComponent } from './components/manage-author-dialog/manage-author-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ManageGenreDialogComponent } from './components/manage-genre-dialog/manage-genre-dialog.component';
+import { CommentApprovalComponent } from './pages/comment-approval/comment-approval.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ManageGenreDialogComponent } from './components/manage-genre-dialog/man
     NavComponent,
     ManageBookComponent,
     ManageAuthorDialogComponent,
-    ManageGenreDialogComponent
+    ManageGenreDialogComponent,
+    CommentApprovalComponent
   ],
   imports: [
     CommonModule,

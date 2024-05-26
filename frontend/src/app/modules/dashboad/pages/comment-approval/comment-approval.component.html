@@ -1,0 +1,31 @@
+<div class="container">
+  <app-title-bar title="Verify comment"></app-title-bar>
+  <div class="content-container">
+    @if (comment) {
+      @if (!comment.verified) {
+        <div>
+          <h3>Comment content:</h3>
+          <p>{{ comment.content }}</p>
+        </div>
+        <div class="buttons">
+          <button type="button" mat-flat-button color="primary" (click)="approveComment()">Approve</button>
+          <button type="button" mat-flat-button color="warn" (click)="deleteComment()">Delete</button>
+        </div>
+      }
+      @else {
+        <h3>The comment has already been verified</h3>
+        <ng-container *ngTemplateOutlet="backToDashboardTemplate"></ng-container>
+      }
+    }
+    @else {
+      <h3>Comment with id: {{ commentId }} does not exist</h3>
+      <ng-container *ngTemplateOutlet="backToDashboardTemplate"></ng-container>
+    }
+  </div>
+</div>
+
+<ng-template #backToDashboardTemplate>
+  <div class="buttons">
+    <button type="button" mat-flat-button color="accent" (click)="backToDashboard()">Back to Dashboard</button>
+  </div>
+</ng-template>

@@ -1,0 +1,36 @@
+@import '../../../../../styles/variables';
+
+:host {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 2em 0;
+    gap: 2em;
+
+    .content-container {
+      max-width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 2em;
+
+      .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2em;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :host {
+    .container {
+      .content-container {
+        max-width: 90%;
+      }
+    }
+  }
+}

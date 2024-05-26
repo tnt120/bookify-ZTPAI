@@ -29,7 +29,7 @@ public class KafkaListeners {
 
         Context context = new Context();
         context.setVariable("commentId", kafkaReceiveModel.getCommentId());
-        context.setVariable("link", "http://localhost:8080/mailVerify/" + kafkaReceiveModel.getCommentId());
+        context.setVariable("link", "http://localhost:4200/dashboard/commentApproval/" + kafkaReceiveModel.getCommentId());
 
         emailService.sendHtmlEmailToMultiple(
                 kafkaReceiveModel.getEmails(),

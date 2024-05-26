@@ -142,7 +142,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(COMMENT_NOT_FOUND::getError);
 
-        if (!comment.getUser().getId().equals(user.getId())) {
+        if (!comment.getUser().getId().equals(user.getId()) && !user.getRole().getName().equals("ADMIN")) {
             throw INVALID_USER.getError();
         }
 
