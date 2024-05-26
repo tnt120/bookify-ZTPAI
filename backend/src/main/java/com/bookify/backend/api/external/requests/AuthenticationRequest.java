@@ -1,4 +1,4 @@
-package com.bookify.backend.api.external;
+package com.bookify.backend.api.external.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

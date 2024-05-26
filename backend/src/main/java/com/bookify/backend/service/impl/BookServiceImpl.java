@@ -42,6 +42,7 @@ public class BookServiceImpl implements BookService {
     private final CommentService commentService;
     private final RatingRepository ratingRepository;
     private final CommentRepository commentRepository;
+    private final UserBookRepository userBookRepository;
 
     @Override
     public Integer save(BookRequest request) {
@@ -120,8 +121,7 @@ public class BookServiceImpl implements BookService {
 
         fileStorageService.deleteFile(book.getCoverUrl());
 
-        ratingRepository.deleteAllByBook(book);
-        commentRepository.deleteAllByBook(book);
+        deleteAssociated(book);
 
         bookRepository.delete(book);
 
@@ -199,5 +199,12 @@ public class BookServiceImpl implements BookService {
 
         book.setCoverUrl(bookCover);
         bookRepository.save(book);
+    }
+
+    @Override
+    public void deleteAssociated(Book book) {
+        ratingRepository.deleteAllByBook(book);
+        commentRepository.deleteAllByBook(book);
+        userBookRepository.deleteAllByBook(book);
     }
 }

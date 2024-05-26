@@ -1,6 +1,5 @@
 package com.bookify.backend.api.external.response;
 
-import com.bookify.backend.api.external.BookcaseTypeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +13,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class BookBookcaseResponse {
     private Integer id;
-    private BookcaseTypeDTO bookcaseType;
+    private BookcaseTypeResponse bookcaseType;
     private BookResponse book;
     private Integer currentPage;
 }

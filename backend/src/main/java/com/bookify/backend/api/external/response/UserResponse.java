@@ -1,4 +1,4 @@
-package com.bookify.backend.api.external;
+package com.bookify.backend.api.external.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Builder
 @AllArgsConstructor
-public class UserDTO {
+public class UserResponse {
     private Integer id;
     private String email;
     private String role;

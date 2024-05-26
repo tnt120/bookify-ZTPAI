@@ -1,12 +1,13 @@
 package com.bookify.backend.service.impl;
 
-import com.bookify.backend.api.external.AuthorDTO;
+import com.bookify.backend.api.external.response.AuthorResponse;
 import com.bookify.backend.api.internal.Author;
 import com.bookify.backend.api.internal.User;
 import com.bookify.backend.mapper.AuthorMapper;
 import com.bookify.backend.repository.AuthorRepository;
 import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.service.AuthorService;
+import com.bookify.backend.service.BookService;
 import com.bookify.backend.specification.AuthorSpecification;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +28,10 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
     private final BookRepository bookRepository;
+    private final BookService bookService;
 
     @Override
-    public List<AuthorDTO> getAllAuthors(String sortBy, String order, String firstName, String lastName) {
+    public List<AuthorResponse> getAllAuthors(String sortBy, String order, String firstName, String lastName) {
         Sort sort = order.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
         Specification<Author> spec = Specification.where(null);
@@ -44,18 +46,18 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Integer save(AuthorDTO authorDTO) {
+    public Integer save(AuthorResponse authorResponse) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
             throw NO_PERMISSION.getError();
         }
 
-        return authorRepository.save(authorMapper.map(authorDTO)).getId();
+        return authorRepository.save(authorMapper.map(authorResponse)).getId();
     }
 
     @Override
-    public Integer update(Integer authorId, AuthorDTO request) {
+    public Integer update(Integer authorId, AuthorResponse request) {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (!Objects.equals(user.getRole().getName(), "ADMIN")) {
@@ -88,6 +90,8 @@ public class AuthorServiceImpl implements AuthorService {
         Author author = authorRepository.findById(id)
                 .orElseThrow(AUTHOR_NOT_FOUND::getError);
 
+
+        bookRepository.findByAuthor(author).ifPresent(bookService::deleteAssociated);
         bookRepository.deleteAllByAuthor(author);
 
         authorRepository.delete(author);

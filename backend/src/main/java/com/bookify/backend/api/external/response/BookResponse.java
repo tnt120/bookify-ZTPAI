@@ -1,7 +1,5 @@
 package com.bookify.backend.api.external.response;
 
-import com.bookify.backend.api.external.AuthorDTO;
-import com.bookify.backend.api.external.GenreDTO;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -17,8 +15,8 @@ public class BookResponse {
     private Integer id;
     private String title;
     private byte[] cover;
-    private AuthorDTO author;
-    private GenreDTO genre;
+    private AuthorResponse author;
+    private GenreResponse genre;
     private Integer pages;
     private LocalDate releaseDate;
     private String description;

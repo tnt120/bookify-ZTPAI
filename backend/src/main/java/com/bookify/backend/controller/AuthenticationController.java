@@ -1,9 +1,9 @@
 package com.bookify.backend.controller;
 
-import com.bookify.backend.api.external.AuthenticationRequest;
-import com.bookify.backend.api.external.AuthenticationResponse;
-import com.bookify.backend.api.external.RegisterRequest;
-import com.bookify.backend.api.external.UserDTO;
+import com.bookify.backend.api.external.requests.AuthenticationRequest;
+import com.bookify.backend.api.external.response.AuthenticationResponse;
+import com.bookify.backend.api.external.requests.RegisterRequest;
+import com.bookify.backend.api.external.response.UserResponse;
 import com.bookify.backend.handler.UserAlreadyExistsException;
 import com.bookify.backend.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<UserDTO> verify() {
+    public ResponseEntity<UserResponse> verify() {
         return ResponseEntity.ok(authService.verify());
     }
 }

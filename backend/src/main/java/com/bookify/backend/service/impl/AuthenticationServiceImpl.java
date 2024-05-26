@@ -1,9 +1,9 @@
 package com.bookify.backend.service.impl;
 
-import com.bookify.backend.api.external.AuthenticationRequest;
-import com.bookify.backend.api.external.AuthenticationResponse;
-import com.bookify.backend.api.external.RegisterRequest;
-import com.bookify.backend.api.external.UserDTO;
+import com.bookify.backend.api.external.requests.AuthenticationRequest;
+import com.bookify.backend.api.external.response.AuthenticationResponse;
+import com.bookify.backend.api.external.requests.RegisterRequest;
+import com.bookify.backend.api.external.response.UserResponse;
 import com.bookify.backend.api.internal.Role;
 import com.bookify.backend.api.internal.User;
 import com.bookify.backend.mapper.UserMapper;
@@ -75,7 +75,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public UserDTO verify() {
+    public UserResponse verify() {
         var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return userMapper.map(user);

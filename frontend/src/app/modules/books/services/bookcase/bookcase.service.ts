@@ -28,6 +28,12 @@ export class BookcaseService {
     private http: HttpClient
   ) { }
 
+  clearBooks(): void {
+    this.finishedBooksSubject.next([]);
+    this.readingBooksSubject.next([]);
+    this.toReadBooksSubject.next([]);
+  }
+
   getUserBooks(bookcaseId: number, page: number, size: number): Observable<PageResponse<BookBookcaseResponse>> {
     let params = new HttpParams()
       .set('bookcaseId', bookcaseId)

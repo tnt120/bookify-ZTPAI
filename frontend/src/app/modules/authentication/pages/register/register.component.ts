@@ -65,7 +65,7 @@ export class RegisterComponent {
   }
 
   onLogin() {
-    this.router.navigate(['auth/login']);
+    this.router.navigate(['auth']);
   }
 
   toogleHide() {

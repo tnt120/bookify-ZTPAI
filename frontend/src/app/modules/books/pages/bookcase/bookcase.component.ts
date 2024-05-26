@@ -52,6 +52,7 @@ export class BookcaseComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.bookcaseService.clearBooks();
   }
 
   getBooks(bookcaseId: number) {

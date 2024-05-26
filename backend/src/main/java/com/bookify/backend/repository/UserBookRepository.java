@@ -15,4 +15,5 @@ import java.util.Optional;
 public interface UserBookRepository extends JpaRepository<UserBook, Integer> {
     Page<UserBook> findByUserAndBookcaseType(User user, BookcaseType bookcaseType, Pageable pageable);
     Optional<UserBook> findByUserAndBook(User user, Book book);
+    void deleteAllByBook(Book book);
 }
