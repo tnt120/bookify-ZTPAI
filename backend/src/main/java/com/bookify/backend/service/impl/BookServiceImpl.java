@@ -6,7 +6,6 @@ import com.bookify.backend.api.external.response.BookResponse;
 import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.*;
 import com.bookify.backend.mapper.BookMapper;
-import com.bookify.backend.mapper.CommentMapper;
 import com.bookify.backend.mapper.RatingMapper;
 import com.bookify.backend.repository.*;
 import com.bookify.backend.service.BookService;
@@ -25,7 +24,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +37,6 @@ public class BookServiceImpl implements BookService {
     private final GenreRepository genreRepository;
     private final BookMapper bookMapper;
     private final RatingMapper ratingMapper;
-    private final CommentMapper commentMapper;
     private final FileStorageService fileStorageService;
     private final RatingService ratingService;
     private final CommentService commentService;
@@ -174,27 +171,9 @@ public class BookServiceImpl implements BookService {
                             .toList()
                     );
 
-                    List<Comment> comments = new ArrayList<>();
+                    List<BasicCommentResponse> comments = commentService.getComments(book.getId(), userId);
 
-                    if (userId != null && userId != 0) {
-                        commentRepository.findByUserIdAndBookId(userId, bookId).ifPresent(comments::add);
-                    }
-
-                    Integer limit = !comments.isEmpty() ? 2 : 3;
-
-                    List<Comment> bookComments = commentService.getCommentsForBook(book.getId(), limit)
-                            .stream()
-                            .filter(comment -> !Objects.equals(comment.getUser().getId(), userId))
-                            .toList();
-
-                    comments.addAll(bookComments);
-
-                    response.setComments(comments
-                            .stream()
-                            .map(commentMapper::map)
-                            .filter(BasicCommentResponse::isVerified)
-                            .toList()
-                    );
+                    response.setComments(comments);
                     response.setCommentCount(commentService.getCommentCountForBook(book.getId()));
                     return response;
                 })

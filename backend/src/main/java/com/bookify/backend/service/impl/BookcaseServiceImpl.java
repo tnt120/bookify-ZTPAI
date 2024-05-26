@@ -10,6 +10,7 @@ import com.bookify.backend.api.external.response.PageResponse;
 import com.bookify.backend.api.internal.*;
 import com.bookify.backend.mapper.BookcaseMapper;
 import com.bookify.backend.mapper.CommentMapper;
+import com.bookify.backend.mapper.RatingMapper;
 import com.bookify.backend.repository.*;
 import com.bookify.backend.service.BookcaseService;
 import com.bookify.backend.service.CommentService;
@@ -41,6 +42,7 @@ public class BookcaseServiceImpl implements BookcaseService {
     private final RatingService ratingService;
     private final CommentService commentService;
     private final CommentMapper commentMapper;
+    private final RatingMapper ratingMapper;
 
     @Override
     @Transactional
@@ -101,9 +103,14 @@ public class BookcaseServiceImpl implements BookcaseService {
 
         UserBook userBook = userBookOptional.get();
 
-        return new DetailsBookcaseResponse()
+        DetailsBookcaseResponse response = new DetailsBookcaseResponse()
                 .setId(userBook.getId())
                 .setBookcaseId(userBook.getBookcaseType().getId());
+
+        ratingRepository.findByBookIdAndUserId(bookId, user.getId())
+                .ifPresent(value -> response.setRating(ratingMapper.map(value)));
+
+        return response;
     }
 
     @Override

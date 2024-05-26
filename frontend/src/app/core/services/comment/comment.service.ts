@@ -66,4 +66,11 @@ export class CommentService {
       tap(response => this.commentsSubject.next(response.content))
     );
   }
+
+  getLimitedBook(bookId: number, userId: number): Observable<Comment[]> {
+    let params = new HttpParams()
+      .set('userId', userId);
+
+    return this.http.get<Comment[]>(`${this.apiUrl}/limited/${bookId}`, { params });
+  }
 }

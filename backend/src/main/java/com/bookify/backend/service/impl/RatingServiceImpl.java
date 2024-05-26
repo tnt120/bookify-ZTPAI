@@ -9,6 +9,7 @@ import com.bookify.backend.mapper.RatingMapper;
 import com.bookify.backend.repository.BookRepository;
 import com.bookify.backend.repository.RatingRepository;
 import com.bookify.backend.service.RatingService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -106,6 +107,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
+    @Transactional
     public BasicRatingResponse getUserRating(Integer userId, Integer bookId) {
 
         return ratingMapper.map(ratingRepository.findByBookIdAndUserId(bookId, userId)

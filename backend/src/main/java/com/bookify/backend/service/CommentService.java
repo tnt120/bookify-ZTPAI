@@ -28,4 +28,6 @@ public interface CommentService {
     BasicCommentResponse getComment(Integer id);
 
     Integer verifyComment(Integer id);
+
+    List<BasicCommentResponse> getComments(Integer bookId, Integer userId);
 }

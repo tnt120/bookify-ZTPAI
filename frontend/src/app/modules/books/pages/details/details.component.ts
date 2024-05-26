@@ -12,6 +12,12 @@ import { Roles } from '../../../../core/enums/roles.enum';
 import { CommentsDialogComponent } from '../../components/comments-dialog/comments-dialog.component';
 import { CommentsDialogData } from '../../models/comments-dialog-data.model';
 import { MatDialog } from '@angular/material/dialog';
+import { FeedbackService } from '../../services/feedback/feedback.service';
+import { ProgressDialogData } from '../../models/progres-dialog-data.model';
+import { Comment } from '../../models/comment.model';
+import { BookcaseProgresDialogComponent } from '../../components/bookcase-progres-dialog/bookcase-progres-dialog.component';
+import { CommentService } from '../../../../core/services/comment/comment.service';
+import { RatingService } from '../../../../core/services/rating/rating.service';
 
 @Component({
   selector: 'app-details',
@@ -22,6 +28,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   private readonly bookService = inject(BookService);
   private readonly bookcaseService = inject(BookcaseService);
+  private readonly feedbackService = inject(FeedbackService);
+  private readonly commentService = inject(CommentService);
+  private readonly ratingService = inject(RatingService);
   private readonly store = inject(Store);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -42,6 +51,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   protected userId = 0;
 
   protected hasComment = false;
+
+  protected userComment: Comment | undefined = undefined;
+
+  protected userRating: Rating | null = null;
 
   subscriptions: Subscription[] = [];
 
@@ -67,9 +80,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.book = book;
           this.cover = this.bookCover;
 
-          if (this.userId > 0 && book.comments) {
-            this.hasComment = book.comments.some(comment => comment.userId === this.userId);
-          }
+          this.checkUserComment();
 
           if (book.ratings) {
             this.ratingsCount = this.getRatingsCount(book.ratings);
@@ -93,6 +104,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
           next: details => {
             this.detailsBookcaseType = details;
             this.detailsBookcaseAction = { ...details, bookId: this.bookId};
+
+            if (details.rating) {
+              this.userRating = details.rating;
+            }
           },
           error: error => {
             console.error(error);
@@ -101,6 +116,30 @@ export class DetailsComponent implements OnInit, OnDestroy {
         })
       } else {
         this.detailsBookcaseType = null;
+      }
+    }));
+  }
+
+  getLimitedBook() {
+    this.subscriptions.push(this.commentService.getLimitedBook(this.bookId, this.userId).subscribe({
+      next: comments => {
+        this.book.comments = comments;
+        this.checkUserComment();
+      },
+      error: error => {
+        console.error(error);
+      }
+    }));
+  }
+
+  getRating() {
+    this.subscriptions.push(this.ratingService.getUserRating(this.userId, this.bookId).subscribe({
+      next: rating => {
+        this.userRating = rating;
+      },
+      error: error => {
+        this.userRating = null;
+        console.error(error);
       }
     }));
   }
@@ -128,17 +167,96 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   updateBookcase(bookcaseId: number) {
     this.detailsBookcaseType!.bookcaseId = bookcaseId;
+    this.getLimitedBook();
+    this.getRating();
   }
 
-  onAddComment() {
-    console.log('Add comment');
+  commentAction(type: 'modify' | 'add') {
+    const data: ProgressDialogData = {
+      title: type === 'add' ? 'Add comment' : 'Preview & modify comment',
+      message: type === 'add' ? 'Enter your comment' : 'Your comment. You can simply modify it or delete',
+      confirmText: type === 'add' ? 'Add' : 'Modify',
+      type: 'comment',
+      value: 0,
+      comment: this.userComment?.content
+    }
+
+    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data, width: '400px', height: '600px'});
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (type === 'add') {
+          this.addComment(result.comment);
+        } else if (result.type === 'submit') {
+          this.editComment(result.comment);
+        } else {
+          this.deleteComment();
+        }
+      }
+    }))
   }
 
-  onEditComment() {
-    console.log('Edit comment');
+  changeRating() {
+    const data: ProgressDialogData = {
+      title: 'Change rating',
+      message: 'Enter new rating',
+      confirmText: 'Update',
+      type: 'rating',
+      value: this.userRating!.value
+    };
+
+    const dialogRef = this.dialog.open(BookcaseProgresDialogComponent, { data, width: '400px', height: '300px'});
+
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.editRating(result.rating);
+      }
+    }));
   }
 
-  onDeleteComment() {
-    console.log('Delete comment');
+  private editRating(rating: number) {
+    this.feedbackService.editRating(this.userRating!.id, rating, this.book.id).then(res => {
+      this.userRating!.value = rating;
+    });
+  }
+
+  private checkUserComment() {
+    if (this.userId > 0 && this.book.comments) {
+      this.hasComment = this.book.comments.some(comment => comment.userId === this.userId);
+
+      if (this.hasComment) {
+        this.userComment = this.book.comments.find(comment => comment.userId === this.userId);
+      }
+    }
+  }
+
+  private addComment(comment: string) {
+    this.feedbackService.addComment(comment, this.book.id).then(res => {
+      if (res) {
+        this.userComment = res;
+        this.hasComment = true;
+        this.getLimitedBook();
+      }
+    });
+  }
+
+  private editComment(comment: string) {
+    this.feedbackService.editComment(comment, this.userComment!.id, this.book.id).then(res => {
+      if (res) {
+        this.userComment = res;
+        this.hasComment = true;
+        this.getLimitedBook();
+      }
+    });
+  }
+
+  private deleteComment() {
+    this.feedbackService.deleteComment(this.userComment!.id).then(res => {
+      if (res !== 0) {
+        this.userComment = undefined;
+        this.hasComment = false;
+        this.getLimitedBook();
+      }
+    });
   }
 }

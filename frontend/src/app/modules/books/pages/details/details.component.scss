@@ -16,7 +16,7 @@
             justify-content: center;
             gap: 3em;
 
-            img {
+            .cover-img {
                 width: 335px;
                 height: 500px;
             }
@@ -29,22 +29,41 @@
                 justify-content: space-between;
                 padding: 1em 0 0 0;
 
-                .details {
+                .info-container {
+                  display: flex;
+                  align-items: start;
+                  justify-content: space-between;
+
+                  .rating {
                     display: flex;
-                    flex-direction: column;
-                    gap: 1em;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: bold;
+                    font-size: $font-size-l;
 
-                    .community {
-                        p:nth-child(2) {
-                            font-size: $font-size-s;
-                            font-style: italic;
-                        }
+                    img {
+                      cursor: pointer;
                     }
+                  }
 
-                    span {
-                        font-weight: bold;
-                    }
+                  .details {
+                      display: flex;
+                      flex-direction: column;
+                      gap: 1em;
+
+                      .community {
+                          p:nth-child(2) {
+                              font-size: $font-size-s;
+                              font-style: italic;
+                          }
+                      }
+
+                      span {
+                          font-weight: bold;
+                      }
+                  }
                 }
+
             }
         }
 
@@ -131,6 +150,16 @@
 
                 .info {
                     gap: 2em;
+
+                    .info-container {
+                      flex-direction: column;
+                      gap: 1em;
+
+                      .rating {
+                        width: 100%;
+                        justify-content: end;
+                      }
+                    }
                 }
             }
 

@@ -13,6 +13,7 @@ import com.bookify.backend.repository.CommentRepository;
 import com.bookify.backend.repository.UserRepository;
 import com.bookify.backend.service.CommentService;
 import com.bookify.backend.specification.CommentSpecification;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -188,6 +190,30 @@ public class CommentServiceImpl implements CommentService {
         comment.setVerified(true);
 
         return commentRepository.save(comment).getId();
+    }
+
+    @Override
+    @Transactional
+    public List<BasicCommentResponse> getComments(Integer bookId, Integer userId) {
+
+        List<Comment> comments = new ArrayList<>();
+
+        if (userId != 0) {
+            commentRepository.findByUserIdAndBookId(userId, bookId).ifPresent(comments::add);
+        }
+
+        List<Comment> bookComments = getCommentsForBook(bookId, 3)
+                .stream()
+                .filter(comment -> !Objects.equals(comment.getUser().getId(), userId))
+                .toList();
+
+        comments.addAll(bookComments);
+
+        return comments
+                .stream()
+                .map(commentMapper::map)
+                .filter(BasicCommentResponse::isVerified)
+                .toList();
     }
 
     private void verifyComment(Comment comment) {

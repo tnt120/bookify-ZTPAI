@@ -16,14 +16,7 @@ export class CommentComponent {
   @Output()
   editEmitter = new EventEmitter();
 
-  @Output()
-  deleteEmitter = new EventEmitter();
-
   onEdit() {
     this.editEmitter.emit();
-  }
-
-  onDelete() {
-    this.deleteEmitter.emit();
   }
 }

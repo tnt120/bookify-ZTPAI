@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor
@@ -39,6 +41,14 @@ public class CommentController {
     @GetMapping("/{id}")
     public ResponseEntity<BasicCommentResponse> getComment(@PathVariable Integer id) {
         return ResponseEntity.ok(commentService.getComment(id));
+    }
+
+    @GetMapping("/limited/{bookId}")
+    public ResponseEntity<List<BasicCommentResponse>> getCommentsLimited(
+            @PathVariable Integer bookId,
+            @RequestParam(name = "userId", defaultValue = "0", required = false) Integer userId
+    ) {
+        return ResponseEntity.ok(commentService.getComments(bookId, userId));
     }
 
     @PostMapping()

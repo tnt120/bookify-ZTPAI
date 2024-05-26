@@ -14,4 +14,5 @@ import lombok.experimental.Accessors;
 public class DetailsBookcaseResponse {
     private Integer id;
     private Integer bookcaseId;
+    private BasicRatingResponse rating;
 }
